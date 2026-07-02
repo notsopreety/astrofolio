@@ -1,305 +1,173 @@
 ---
 author: Sat Naing
-pubDatetime: 2022-09-23T04:58:53Z
-modDatetime: 2026-06-03T00:00:00.000Z
-title: How to configure AstroPaper theme
-slug: how-to-configure-astropaper-theme
-featured: true
-draft: false
+pubDatetime: 2023-09-25T10:25:54.547Z
+title: AstroPaper 3.0
+slug: astro-paper-v3
+featured: false
+ogImage: https://github.com/satnaing/astro-paper/assets/53733092/1ef0cf03-8137-4d67-ac81-84a032119e3a
 tags:
-  - configuration
-  - docs
-description: How you can make AstroPaper theme absolutely yours.
+  - release
+description: "AstroPaper Version 3: Elevating Your Web Experience with Astro v3 and Seamless View Transitions"
 ---
-import ResponsiveTable from '@/components/ResponsiveTable.astro';
 
-This guide covers the available configuration options in AstroPaper — from site metadata and feature flags to fonts, social links, and layout settings.
+We're excited to announce the release of AstroPaper v3, packed with new features, enhancements, and bug fixes to elevate your web development experience. Let's dive into the highlights of this release:
+
+![AstroPaper v3](https://astro-paper.pages.dev/_astro/AstroPaper-v3.uaW8qzSG_Z1UhOpb.webp)
 
 ## Table of contents
 
-## Configuring astro-paper.config.ts
+## Features & Changes
 
-All site-wide configuration lives in `astro-paper.config.ts` at the root of the project. Use `defineAstroPaperConfig()` to get full IntelliSense support:
+### Astro v3 Integration
 
-```ts file="astro-paper.config.ts"
-import { defineAstroPaperConfig } from "./src/types/config";
+<video autoplay loop="loop" muted="muted" plays-inline="true">
+  <source src="https://github.com/satnaing/astro-paper/assets/53733092/18fdb604-1ca3-41a0-8372-1367759091ff" type="video/mp4">
+  <!-- <source src="/assets/docs/astro-paper-v3-view-transitions-demo.mp4" type="video/mp4"> -->
+</video>
 
-export default defineAstroPaperConfig({
-  site: {
-    url: "https://your-site.com/", // replace with your deployed URL
-    title: "AstroPaper",
-    description: "A minimal, responsive and SEO-friendly Astro blog theme.",
-    author: "Sat Naing",
-    profile: "https://satnaing.dev",
-    ogImage: "default-og.jpg",
-    lang: "en",
-    timezone: "Asia/Bangkok",
-    dir: "ltr",
-  },
-  posts: {
-    perPage: 4,
-    perIndex: 4,
-    scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
-  },
-  features: {
-    lightAndDarkMode: true,
-    dynamicOgImage: true,
-    showArchives: true,
-    showBackButton: true,
-    editPost: {
-      enabled: true,
-      url: "https://github.com/satnaing/astro-paper/edit/main/",
-    },
-    search: "pagefind",
-  },
-  socials: [
-    { name: "github", url: "https://github.com/satnaing/astro-paper" },
-    { name: "x", url: "https://x.com/username" },
-    { name: "linkedin", url: "https://www.linkedin.com/in/username/" },
-    { name: "mail", url: "mailto:yourmail@gmail.com" },
-  ],
-  shareLinks: [
-    { name: "whatsapp", url: "https://wa.me/?text=" },
-    { name: "facebook", url: "https://www.facebook.com/sharer.php?u=" },
-    { name: "x", url: "https://x.com/intent/post?url=" },
-    { name: "telegram", url: "https://t.me/share/url?url=" },
-    { name: "mail", url: "mailto:?subject=See%20this%20post&body=" },
-  ],
-});
-```
+AstroPaper now fully supports [Astro v3](https://astro.build/blog/astro-3/), offering improved performance and rendering speed.
 
-### `site` options
+Besides, we've added support for Astro's [ViewTransitions API](https://docs.astro.build/en/guides/view-transitions/), allowing you to create captivating and dynamic transitions between views.
 
-<ResponsiveTable>
+In the "Recent Section", only non-featured posts will be displayed to avoid duplications and better support for ViewTransitions API.
 
-| Option               | Description                                                                                                                                    |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `url`                | Your deployed website URL. Used for canonical URLs, OG image URLs, RSS feed, and sitemap. In production this must be set correctly.            |
-| `title`              | Your site name.                                                                                                                                |
-| `description`        | Your site description. Useful for SEO and social media sharing.                                                                                |
-| `author`             | Your name. Used as the default post author.                                                                                                    |
-| `profile`            | Your personal/portfolio website URL, used for structured data. Set to `undefined` if you don't have one.                                       |
-| `ogImage`            | Default OG image filename in `/public` (e.g. `"default-og.jpg"`). Used when no post-specific OG image is set and `dynamicOgImage` is disabled. |
-| `lang`               | HTML ISO language code for `<html lang="...">`. Defaults to `"en"`.                                                                            |
-| `timezone`           | IANA timezone for post dates (e.g. `"Asia/Bangkok"`). Ensures consistent timestamps across localhost and your deployed site.                   |
-| `dir`                | Text direction for `<html dir="...">`. Supports `"ltr"` \| `"rtl"` \| `"auto"`.                                                                |
-| `googleVerification` | Google Search Console verification meta tag value. Optional. Takes precedence over the `PUBLIC_GOOGLE_SITE_VERIFICATION` environment variable. |
+### Update OG Image Generation Logic
 
-</ResponsiveTable>
+![Example OG Image](https://user-images.githubusercontent.com/40914272/269252964-a0dc6735-80f7-41ed-8e74-4d4d70f96891.png)
 
-### `posts` options
+We've updated the logic for automatic OG image generation, making it even more reliable and efficient. Besides, it now supports special characters in post titles, ensuring accurate, flexible and eye-catching social media previews.
 
-<ResponsiveTable>
+`SITE.ogImage` is now optional. If it is not specified, AstroPaper will automatically generate an OG image using `SITE.title`, `SITE.desc` and `SITE.website`
 
-| Option                | Description                                                                                                                       |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `perPage`             | Number of posts shown per page on paginated listing pages. Defaults to `4`.                                                       |
-| `perIndex`            | Number of posts shown in the Recent section on the home page. Defaults to `4`.                                                    |
-| `scheduledPostMargin` | Posts with a future `pubDatetime` within this window (in ms) are treated as published. Defaults to 15 minutes (`15 * 60 * 1000`). |
+### Theme meta tag
 
-</ResponsiveTable>
+The theme-color meta tag has been added to dynamically adapt to theme switches, ensuring a seamless user experience.
 
-### `features` options
+> Notice the difference at the top
 
-<ResponsiveTable>
+**_AstroPaper v2 theme switch_**
 
-| Option             | Description                                                                                                                                                                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `lightAndDarkMode` | Enable or disable the light/dark mode toggle. Defaults to `true`.                                                                                                                                                                             |
-| `dynamicOgImage`   | Generate a dynamic OG image per post when no `ogImage` is specified in frontmatter. Defaults to `true`. See the [trade-off](https://astro-paper.pages.dev/posts/dynamic-og-image-generation-in-astropaper-blog-posts/#trade-off) for details. |
-| `showArchives`     | Show the `/archives` page and its header link. Defaults to `true`.                                                                                                                                                                            |
-| `showBackButton`   | Show the "Go back" button on post pages. Defaults to `true`.                                                                                                                                                                                  |
-| `editPost`         | An "Edit page" link shown under post titles. Set `enabled: true` and provide the base `url` for your repository's edit URL. Per-post override via `hideEditPost` frontmatter.                                                                 |
-| `search`           | Search provider. `"pagefind"` is the default. Set to `false` to disable search entirely.                                                                                                                                                      |
+<video autoplay loop="loop" muted="muted" plays-inline="true">
+  <source src="https://github.com/satnaing/astro-paper/assets/53733092/3ab5a1e8-1891-4264-a5bb-0ded69143c1a" type="video/mp4">
+</video>
 
-</ResponsiveTable>
+**_AstroPaper v3 theme switch_**
 
-## Update layout width
+<video autoplay loop="loop" muted="muted" plays-inline="true">
+  <source src="https://github.com/satnaing/astro-paper/assets/53733092/8ac9deb8-d1f8-4029-86bd-6aa0def380b4" type="video/mp4">
+</video>
 
-The default `max-width` for the entire blog is `768px` (`max-w-3xl`). If you'd like to change it, update the `max-w-app` utility in `src/styles/global.css`:
+## Other Changes
 
-```css file="src/styles/global.css"
-@utility max-w-app {
-  /* [!code --:1] */
-  @apply max-w-3xl;
-  /* [!code ++:1] */
-  @apply max-w-4xl xl:max-w-5xl;
+### Astro Prettier Plugin
+
+Astro Prettier Plugin is installed out-of-the-box in order to keep the project tidy and organized.
+
+### Minor Style Changes
+
+The single-line code block wrapping issue has been solved, making your code snippets look pristine.
+
+Update nav style CSS to allow adding more nav links to the navigation.
+
+## Upgrade to AstroPaper v3
+
+> This section is only for those who want to upgrade AstroPaper v3 from the older versions.
+
+This section will help you migrate from AstroPaper v2 to AstroPaper v3.
+
+Before reading the rest of the section, you might also want to check [this article](https://astro-paper.pages.dev/posts/how-to-update-dependencies/) for upgrading dependencies and AstroPaper.
+
+## Option 1: Fresh Restart (recommended)
+
+In this release, a lot of changes have been made\_ replacing old Astro APIs with newer APIs, bug fixes, new features etc. Thus, if you are someone who didn't make customization very much, you should follow this approach.
+
+**_Step 1: Keep all your updated files_**
+
+It's important to keep all the files which have been already updated. These files include
+
+- `/src/config.ts` (didn't touch in v3)
+- `/src/styles/base.css` (minor changes in v3; mentioned below)
+- `/src/assets/` (didn't touch in v3)
+- `/public/assets/` (didn't touch in v3)
+- `/content/blog/` (it's your blog content directory 🤷🏻‍♂️)
+- Any other customizations you've made.
+
+```css
+/* file: /src/styles/base.css */
+@layer base {
+  /* Other Codes */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-skin-card-muted;
+  }
+
+  /* Old code
+  code {
+    white-space: pre;
+    overflow: scroll;
+  } 
+  */
+
+  /* New code */
+  code,
+  blockquote {
+    word-wrap: break-word;
+  }
+  pre > code {
+    white-space: pre;
+  }
+}
+
+@layer components {
+  /* other codes */
 }
 ```
 
-You can explore more `max-width` values in the [Tailwind CSS docs](https://tailwindcss.com/docs/max-width).
+**_Step 1: Replace everything else with AstroPaper v3_**
 
-## Configuring logo or title
+In this step, replace everything\_ except above files/directories (plus your customized files/directories)\_ with AstroPaper v3.
 
-![An arrow pointing at the website logo](https://res.cloudinary.com/noezectz/v1663911318/astro-paper/AstroPaper-logo-config_goff5l.png)
+**_Step 3: Schema Updates_**
 
-There are 3 options you can do:
+Keep in mind that `/src/content/_schemas.ts` has been replaced with `/src/content/config.ts`.
 
-### Option 1: Site title text
+Besides, there is no longer `BlogFrontmatter` type exported from `/src/content/config.ts`.
 
-This is the easiest option. Update `site.title` in `astro-paper.config.ts`.
+Therefore, all the `BlogFrontmatter` type inside files need to be updated with `CollectionEntry<"blog">["data"]`.
 
-### Option 2: Astro's SVG component
+For example: `src/components/Card.tsx`
 
-You might want to use this option if you want to use an SVG logo.
+```ts
+// AstroPaper v2
+import type { BlogFrontmatter } from "@content/_schemas";
 
-- First add an SVG inside `src/assets/` directory. (e.g. `src/assets/dummy-logo.svg`)
-- Then import that SVG inside `Header.astro`
-
-  ```astro file="src/components/Header.astro"
-  ---
-  // ...
-  import DummyLogo from "@/assets/dummy-logo.svg";
-  ---
-  ```
-
-- Finally, replace `{config.site.title}` with imported logo.
-
-  ```html
-  <a
-    href="/"
-    class="absolute py-1 text-left text-2xl leading-7 font-semibold whitespace-nowrap sm:static"
-  >
-    <DummyLogo class="scale-75 dark:invert" />
-    <!-- {config.site.title} -->
-  </a>
-  ```
-
-The best part of this approach is that you can customize your SVG styles as needed. In the example above, you can see how the SVG logo color can be inverted in dark mode.
-
-### Option 3: Astro's Image component
-
-If your logo is an image but not SVG, you can use Astro's Image component.
-
-- Add your logo inside `src/assets/` directory. (e.g. `src/assets/dummy-logo.png`)
-- Import `Image` and your logo in `Header.astro`
-
-  ```astro file="src/components/Header.astro"
-  ---
-  // ...
-  import { Image } from "astro:assets";
-  import dummyLogo from "@/assets/dummy-logo.png";
-  ---
-  ```
-
-- Then, replace `{config.site.title}` with imported logo.
-
-  ```html
-  <a
-    href="/"
-    class="absolute py-1 text-left text-2xl leading-7 font-semibold whitespace-nowrap sm:static"
-  >
-    <image src="{dummyLogo}" alt="My Blog" class="dark:invert" />
-    <!-- {config.site.title} -->
-  </a>
-  ```
-
-With this approach, you can still adjust your image's appearance using CSS classes. However, this might not always fit what you want. If you need to display different logo images based on light or dark mode, check how light/dark icons are handled inside the `Header.astro` component.
-
-## Configuring social links
-
-![An arrow pointing at social link icons](https://github.com/user-attachments/assets/8b895400-d088-442f-881b-02d2443e00cf)
-
-Social links are configured in the `socials` array inside `astro-paper.config.ts`. Each entry requires a `name` matching an SVG filename in `src/assets/icons/socials/` and a `url`:
-
-```ts file="astro-paper.config.ts"
-export default defineAstroPaperConfig({
-  // ...
-  socials: [
-    { name: "github", url: "https://github.com/satnaing/astro-paper" },
-    { name: "x", url: "https://x.com/username" },
-    { name: "linkedin", url: "https://www.linkedin.com/in/username/" },
-    { name: "mail", url: "mailto:yourmail@gmail.com" },
-  ],
-});
-```
-
-To add a social not in the defaults, add its SVG icon to `src/assets/icons/socials/` and add an entry to the array. The `name` must match the SVG filename without the `.svg` extension.
-
-## Configuring share links
-
-![An arrow pointing at share link icons](https://github.com/user-attachments/assets/4f930b68-b625-45df-8c41-e076dd2b838e)
-
-Share links are configured in the `shareLinks` array. Each entry requires a `name` (matching an SVG in `src/assets/icons/socials/`) and a base `url` to which the post URL is appended:
-
-```ts file="astro-paper.config.ts"
-export default defineAstroPaperConfig({
-  // ...
-  shareLinks: [
-    { name: "whatsapp", url: "https://wa.me/?text=" },
-    { name: "facebook", url: "https://www.facebook.com/sharer.php?u=" },
-    { name: "x", url: "https://x.com/intent/post?url=" },
-    { name: "telegram", url: "https://t.me/share/url?url=" },
-    { name: "mail", url: "mailto:?subject=See%20this%20post&body=" },
-  ],
-});
-```
-
-## Configuring fonts
-
-AstroPaper uses Astro's [fonts API](https://docs.astro.build/en/guides/fonts/) with [Google Sans Code](https://fonts.google.com/specimen/Google+Sans+Code) as the default font. This provides consistent typography across all platforms with automatic font optimizations including preloading and caching.
-
-### Using the default font
-
-The font is automatically configured in `astro.config.ts` and loaded in `Layout.astro`. No additional configuration is needed to use the default Google Sans Code font.
-
-### Customizing the font
-
-To use a different font, update three places:
-
-1. **Update the font configuration in `astro.config.ts`:**
-
-```ts file="astro.config.ts"
-import { defineConfig, fontProviders } from "astro/config";
-
-export default defineConfig({
-  // ...
-  fonts: [
-    {
-      name: "Your Font Name", // [!code highlight]
-      cssVariable: "--font-your-font", // [!code highlight]
-      provider: fontProviders.google(),
-      fallbacks: ["monospace"],
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal", "italic"],
-    },
-  ],
-});
-```
-
-2. **Update the Font component in `Layout.astro`:**
-
-```astro file="src/layouts/Layout.astro"
----
-import { Font } from "astro:assets";
-// ...
----
-
-<head>
-  <!-- ... -->
-  <Font
-    cssVariable="--font-your-font"
-    preload={[{ subset: "latin", weight: 400, style: "normal" }]}
-  />
-  <!-- ... -->
-</head>
-```
-
-3. **Update the CSS variable mapping in `src/styles/theme.css`:**
-
-```css file="src/styles/theme.css"
-@theme inline {
-  --font-app: var(--font-your-font); /* [!code highlight] */
-  /* ... */
+export interface Props {
+  href?: string;
+  frontmatter: BlogFrontmatter;
+  secHeading?: boolean;
 }
 ```
 
-The `--font-app` variable is used throughout the theme via the `font-app` Tailwind utility class, so updating this single variable applies your custom font everywhere.
+```ts
+// AstroPaper v3
+import type { CollectionEntry } from "astro:content";
 
-> [!WARNING]
-> Make sure the font name matches exactly as it appears on [Google Fonts](https://fonts.google.com). For other font providers or local fonts, refer to the [Astro Fonts documentation](https://docs.astro.build/en/guides/fonts/).
+export interface Props {
+  href?: string;
+  frontmatter: CollectionEntry<"blog">["data"];
+  secHeading?: boolean;
+}
+```
 
-## See also
+## Option 2: Upgrade using Git
 
-- [Customizing AstroPaper theme color schemes](https://astro-paper.pages.dev/posts/customizing-astropaper-theme-color-schemes/) — change or add color schemes via `src/styles/theme.css`.
-- [Adding new posts](https://astro-paper.pages.dev/posts/adding-new-posts-in-astropaper-theme/) — frontmatter reference and file conventions.
+This approach is not recommended for most users. You should do the "Option 1" if you can. Only do this if you know how to resolve merge conflicts and you know what you're doing.
+
+Actually, I've already written a blog post for this case and you can check out [here](https://astro-paper.pages.dev/posts/how-to-update-dependencies/#updating-astropaper-using-git).
+
+## Outro
+
+Ready to explore the exciting new features and improvements in AstroPaper v3? Start [using AstroPaper](https://github.com/satnaing/astro-paper) now.
+
+For other bug fixes and integration updates, check out the [release notes](https://github.com/satnaing/astro-paper/releases/tag/v3.0.0) to learn more.
+
+If you encounter any bugs or face difficulties during the upgrade process, please feel free to open an issue or start a discussion on [GitHub](https://github.com/satnaing/astro-paper).

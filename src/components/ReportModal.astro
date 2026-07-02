@@ -1,0 +1,369 @@
+---
+interface Props {
+  postId: string;
+}
+
+const { postId } = Astro.props;
+---
+
+<!-- Report Post Modal Overlay -->
+<div id="report-modal-overlay" class="report-modal-overlay" aria-hidden="true" style="display: none;">
+  <div class="report-modal">
+    <div class="report-modal-header">
+      <h2>Report this content</h2>
+      <button id="close-report-btn" class="close-report-btn" aria-label="Close modal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Success message alert -->
+    <div id="report-success-alert" class="report-success-alert" style="display: none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>Thank you for your report. We'll review it as soon as possible.</span>
+    </div>
+
+    <form id="report-form" class="report-form">
+      <!-- Hidden Web3Forms fields -->
+      <input type="hidden" name="access_key" value="9154ff52-22b2-4f18-a5fb-8bdf249f0d50" />
+      <input type="hidden" name="from_name" value="Post Report System" />
+      <input type="hidden" name="subject" id="report-subject" value="Content Report: spam" />
+      
+      <!-- Honeypot Bot Spam Protection -->
+      <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+      <div class="form-group">
+        <label for="report-name">Full Name *</label>
+        <input type="text" id="report-name" name="name" required placeholder="Your full name" />
+      </div>
+
+      <div class="form-group">
+        <label for="report-email">Email *</label>
+        <input type="email" id="report-email" name="email" required placeholder="your.email@example.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="report-post-url">Post URL *</label>
+        <input type="text" id="report-post-url" name="post_url" readonly value={`http://samirb.com.np/posts/${postId}`} class="disabled-input" />
+      </div>
+
+      <div class="form-group">
+        <label>Reason for reporting *</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="reason" value="spam" required checked />
+            <span>Spam or misleading</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="reason" value="harmful" required />
+            <span>Harmful or dangerous content</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="reason" value="hateful" required />
+            <span>Hateful or abusive content</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="reason" value="misinformation" required />
+            <span>Misinformation</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="reason" value="other" required />
+            <span>Other</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="report-details">Additional details (optional)</label>
+        <textarea id="report-details" name="additional_details" placeholder="Any additional details you'd like to share" rows="4"></textarea>
+      </div>
+
+      <button type="submit" id="submit-report-btn" class="submit-report-btn">Submit Report</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function setupReportModal() {
+    const openBtn = document.getElementById("open-report-btn");
+    const closeBtn = document.getElementById("close-report-btn");
+    const overlay = document.getElementById("report-modal-overlay");
+    const form = document.getElementById("report-form") as HTMLFormElement | null;
+    const successAlert = document.getElementById("report-success-alert");
+    const subjectInput = document.getElementById("report-subject") as HTMLInputElement | null;
+
+    if (!openBtn || !overlay || !closeBtn || !form) return;
+
+    openBtn.onclick = () => {
+      overlay.style.display = "flex";
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden"; // Prevent background scroll
+      if (successAlert) successAlert.style.display = "none";
+      form.style.display = "flex";
+      form.reset();
+    };
+
+    const closeModal = () => {
+      overlay.style.display = "none";
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
+
+    closeBtn.onclick = closeModal;
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeModal();
+    };
+
+    // Update subject input when radio reason changes
+    const radios = form.querySelectorAll('input[name="reason"]');
+    radios.forEach((radio) => {
+      radio.onchange = (e) => {
+        const val = (e.target as HTMLInputElement).value;
+        if (subjectInput) {
+          subjectInput.value = `Content Report: ${val}`;
+        }
+      };
+    });
+
+    // Submit via AJAX
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+
+      // Rate limit: 5 minutes = 300,000 milliseconds
+      const limitMs = 300000;
+      const lastSubmit = localStorage.getItem("lastReportSubmit");
+      if (lastSubmit) {
+        const timePassed = Date.now() - parseInt(lastSubmit, 10);
+        if (timePassed < limitMs) {
+          const remainingMins = Math.ceil((limitMs - timePassed) / 60000);
+          alert(`You've submitted a report recently. Please wait ${remainingMins} minute(s) before submitting another.`);
+          return;
+        }
+      }
+
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+      }
+
+      const formData = new FormData(form);
+      const data: Record<string, any> = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          if (successAlert) successAlert.style.display = "flex";
+          form.style.display = "none";
+          localStorage.setItem("lastReportSubmit", Date.now().toString());
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      } catch (err) {
+        alert("An error occurred. Please try again.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Report";
+        }
+      }
+    };
+  }
+
+  setupReportModal();
+  document.addEventListener("astro:after-swap", setupReportModal);
+</script>
+
+<style>
+  .report-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .report-modal {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: slideUp 0.2s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .report-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--card-border);
+    padding-bottom: 0.75rem;
+  }
+
+  .report-modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .close-report-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .close-report-btn:hover {
+    background: var(--badge-hover-bg);
+  }
+
+  .report-success-alert {
+    background: #def7ec;
+    color: #03543f;
+    border: 1px solid #bcf0da;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  :global(.dark) .report-success-alert {
+    background: #052e16;
+    color: #86efac;
+    border-color: #14532d;
+  }
+
+  .report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group textarea {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+  }
+
+  .form-group .disabled-input {
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+
+  .radio-label input[type="radio"] {
+    cursor: pointer;
+    accent-color: var(--accent-color);
+  }
+
+  .submit-report-btn {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .submit-report-btn:hover {
+    opacity: 0.9;
+  }
+
+  @media (max-width: 600px) {
+    .report-modal {
+      padding: 1.25rem;
+      width: 95%;
+      max-height: 95vh;
+    }
+  }
+</style>
