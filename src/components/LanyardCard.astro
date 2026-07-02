@@ -835,6 +835,18 @@ const decorUrl = user.avatar_decoration_data
             `<img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" />`
           ).join("");
         }
+
+        // Update Avatar Decoration
+        const decorImg = document.getElementById("avatar-decoration") as HTMLImageElement;
+        const decorData = data.user?.avatar_decoration_data || null;
+        if (decorImg) {
+          if (decorData && decorData.asset) {
+            decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${decorData.asset}.png`;
+            decorImg.style.display = "block";
+          } else {
+            decorImg.style.display = "none";
+          }
+        }
       })
       .catch((err) => console.error("Failed to load profile details", err));
   }
@@ -893,9 +905,13 @@ const decorUrl = user.avatar_decoration_data
   }
 
   let initialLoadTimeout: any = null;
+  let profilePollInterval: any = null;
 
   function connectLanyard() {
     fetchProfileDetails();
+    if (!profilePollInterval) {
+      profilePollInterval = setInterval(fetchProfileDetails, 30000);
+    }
     const ws = new WebSocket("wss://api.lanyard.rest/socket");
     let heartbeatInterval: any;
 
