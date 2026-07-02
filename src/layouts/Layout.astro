@@ -91,9 +91,15 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 							if (color) {
 								localStorage.setItem("discord-accent", color);
 								document.documentElement.style.setProperty("--accent-color", color);
+							} else if (!discordAccent) {
+								document.documentElement.style.setProperty("--accent-color", "#81c784");
 							}
 						})
-						.catch(() => {});
+						.catch(() => {
+							if (!discordAccent) {
+								document.documentElement.style.setProperty("--accent-color", "#81c784");
+							}
+						});
 				}
 			})();
 		</script>
@@ -224,9 +230,15 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 							if (color) {
 								localStorage.setItem("discord-accent", color);
 								document.documentElement.style.setProperty("--accent-color", color);
+							} else if (!discordAccent) {
+								document.documentElement.style.setProperty("--accent-color", "#81c784");
 							}
 						})
-						.catch(() => {});
+						.catch(() => {
+							if (!discordAccent) {
+								document.documentElement.style.setProperty("--accent-color", "#81c784");
+							}
+						});
 				} else {
 					document.documentElement.style.removeProperty("--accent-color");
 				}
