@@ -836,15 +836,37 @@ const decorUrl = user.avatar_decoration_data
           ).join("");
         }
 
+        // Update Avatar
+        const avatarImg = document.getElementById("discord-avatar") as HTMLImageElement;
+        if (avatarImg && data.user) {
+          if (data.user.avatar) {
+            avatarImg.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${data.user.avatar}.webp?size=160`;
+          } else {
+            avatarImg.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+          }
+        }
+
         // Update Avatar Decoration
         const decorImg = document.getElementById("avatar-decoration") as HTMLImageElement;
-        const decorData = data.user?.avatar_decoration_data || null;
-        if (decorImg) {
-          if (decorData && decorData.asset) {
-            decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${decorData.asset}.png`;
+        if (decorImg && data.user) {
+          if (data.user.avatar_decoration_data) {
+            decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${data.user.avatar_decoration_data.asset}.png`;
             decorImg.style.display = "block";
           } else {
             decorImg.style.display = "none";
+          }
+        }
+
+        // Update Banner Color / Profile Border
+        const discordCard = document.getElementById("discord-card");
+        if (discordCard && data.user) {
+          const banner = data.user.banner_color || null;
+          if (banner) {
+            discordCard.style.borderTop = `6px solid ${banner}`;
+            // Dynamically update primary site accent custom property in document body if available!
+            document.documentElement.style.setProperty("--accent-color", banner);
+          } else {
+            discordCard.style.borderTop = "";
           }
         }
       })
@@ -905,13 +927,9 @@ const decorUrl = user.avatar_decoration_data
   }
 
   let initialLoadTimeout: any = null;
-  let profilePollInterval: any = null;
 
   function connectLanyard() {
     fetchProfileDetails();
-    if (!profilePollInterval) {
-      profilePollInterval = setInterval(fetchProfileDetails, 30000);
-    }
     const ws = new WebSocket("wss://api.lanyard.rest/socket");
     let heartbeatInterval: any;
 
@@ -950,6 +968,7 @@ const decorUrl = user.avatar_decoration_data
             httpPollInterval = null;
           }
           updateLiveStatus(msg.d);
+          fetchProfileDetails();
         }
       }
     };
