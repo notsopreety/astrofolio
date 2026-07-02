@@ -55,7 +55,7 @@ const decorUrl = user.avatar_decoration_data
           <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" />
         </div>
         <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} />
-        <span class="status-dot offline" id="discord-status-dot"></span>
+        <span class="discord-status-dot offline" id="discord-status-dot"></span>
       </div>
     </div>
 
@@ -264,7 +264,7 @@ const decorUrl = user.avatar_decoration_data
     z-index: 2;
   }
 
-  .status-dot {
+  .discord-status-dot {
     position: absolute;
     bottom: 6px;
     right: 6px;
@@ -277,40 +277,40 @@ const decorUrl = user.avatar_decoration_data
     justify-content: center;
     z-index: 10;
   }
-
-  .status-dot::after {
+ 
+  .discord-status-dot::after {
     content: '';
     display: block;
     border-radius: 50%;
     flex-shrink: 0;
   }
-
+ 
   /* Online status - Solid green circle */
-  .status-dot.online::after {
+  .discord-status-dot.online::after {
     width: 14px;
     height: 14px;
     background-color: var(--discord-online);
   }
-
+ 
   /* Idle status - Crescent moon */
-  .status-dot.idle::after {
+  .discord-status-dot.idle::after {
     width: 14px;
     height: 14px;
     background-color: transparent;
     box-shadow: -4px -3px 0 0 var(--discord-idle);
     transform: translate(2px, 2px);
   }
-
+ 
   /* Do Not Disturb status - Red circle with horizontal pill minus */
-  .status-dot.dnd {
+  .discord-status-dot.dnd {
     position: absolute;
   }
-  .status-dot.dnd::after {
+  .discord-status-dot.dnd::after {
     width: 14px;
     height: 14px;
     background-color: var(--discord-dnd);
   }
-  .status-dot.dnd::before {
+  .discord-status-dot.dnd::before {
     content: '';
     position: absolute;
     width: 10px;
@@ -319,9 +319,9 @@ const decorUrl = user.avatar_decoration_data
     z-index: 11;
     border-radius: 1.5px;
   }
-
+ 
   /* Offline / Invisible status - Hollow grey ring */
-  .status-dot.offline::after {
+  .discord-status-dot.offline::after {
     width: 8px;
     height: 8px;
     background-color: transparent;
@@ -888,7 +888,7 @@ const decorUrl = user.avatar_decoration_data
     // Status Indicator
     const indicator = document.getElementById("discord-status-dot");
     if (indicator) {
-      indicator.className = `status-dot ${status}`;
+      indicator.className = `discord-status-dot ${status}`;
     }
 
     // Avatar
