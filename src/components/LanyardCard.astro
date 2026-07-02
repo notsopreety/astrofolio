@@ -781,6 +781,14 @@ const decorUrl = user.avatar_decoration_data
   let httpPollInterval: any = null;
   let profilePollInterval: any = null;
 
+  function startProfilePolling() {
+    // Fetch profile immediately, then every 30s regardless of WS events
+    fetchProfileDetails();
+    if (!profilePollInterval) {
+      profilePollInterval = setInterval(fetchProfileDetails, 30000);
+    }
+  }
+
   function handleFailure() {
     console.log("Lanyard WebSocket failed or timed out. Falling back to HTTP polling.");
     clearTimeout(initialLoadTimeout);
@@ -793,6 +801,7 @@ const decorUrl = user.avatar_decoration_data
           .then((json) => {
             if (json.success && json.data) {
               updateLiveStatus(json.data);
+              fetchProfileDetails();
             }
           })
           .catch((err) => console.error("Lanyard HTTP fallback failed:", err));
@@ -800,12 +809,6 @@ const decorUrl = user.avatar_decoration_data
       
       fetchLanyardHttp();
       httpPollInterval = setInterval(fetchLanyardHttp, 10000);
-    }
-
-    // Also poll profile details every 30 s in HTTP fallback mode
-    if (!profilePollInterval) {
-      fetchProfileDetails();
-      profilePollInterval = setInterval(fetchProfileDetails, 30000);
     }
   }
 
@@ -987,11 +990,9 @@ const decorUrl = user.avatar_decoration_data
             httpPollInterval = null;
           }
           updateLiveStatus(msg.d);
-
-          // Keep profile details refreshed every 30 s via WS too
-          if (!profilePollInterval) {
-            fetchProfileDetails();
-            profilePollInterval = setInterval(fetchProfileDetails, 30000);
+          // Start profile polling once on INIT (keeps refreshing every 30s)
+          if (msg.t === "INIT_STATE") {
+            startProfilePolling();
           }
         }
       }
