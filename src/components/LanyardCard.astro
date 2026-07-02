@@ -73,7 +73,7 @@ const decorUrl = user.avatar_decoration_data
         <span id="profile-pronouns">{pronounsVal}</span>
 
         <!-- Clan Tag -->
-        <span class="clan-badge-wrapper" id="clan-badge-container" style={clan && clan.identity_enabled ? "display: inline-flex;" : "display: none;"}>
+        <span class="clan-badge-wrapper" id="clan-badge-container" title={clan && clan.identity_enabled ? `Clan: ${clan.tag}` : ""} style={clan && clan.identity_enabled ? "display: inline-flex;" : "display: none;"}>
           <span class="clan-badge">
             {clan?.badge ? (
               <img id="clan-badge-icon" class="clan-badge-icon" src={`https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`} alt="" />
@@ -808,7 +808,10 @@ const decorUrl = user.avatar_decoration_data
         const clanBadgeIcon = document.getElementById("clan-badge-icon") as HTMLImageElement;
 
         if (clan && clan.identity_enabled) {
-          if (clanBadgeContainer) clanBadgeContainer.style.display = "inline-flex";
+          if (clanBadgeContainer) {
+            clanBadgeContainer.style.display = "inline-flex";
+            clanBadgeContainer.title = `Clan: ${clan.tag}`;
+          }
           if (clanTag) clanTag.textContent = clan.tag;
           if (clanBadgeIcon && clan.badge) {
             clanBadgeIcon.src = `https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`;
