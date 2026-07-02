@@ -858,17 +858,22 @@ const decorUrl = user.avatar_decoration_data
         }
 
         // Update Banner Color / Profile Border + Site-wide accent color
+        // dcdn.dstn.to returns: banner_color as "#rrggbb" string, accent_color as integer
         const discordCard = document.getElementById("discord-card");
         if (discordCard && data.user) {
-          const banner = data.user.banner_color || data.user.accent_color
-            ? `#${(data.user.accent_color >>> 0).toString(16).padStart(6, "0")}`
-            : null;
-          const color = data.user.banner_color || banner || null;
+          let color: string | null = null;
+
+          if (data.user.banner_color) {
+            // Hex string e.g. "#ce577b"
+            color = data.user.banner_color;
+          } else if (data.user.accent_color) {
+            // Integer e.g. 13522811 → "#ce577b"
+            color = `#${(data.user.accent_color >>> 0).toString(16).padStart(6, "0")}`;
+          }
+
           if (color) {
             discordCard.style.borderTop = `6px solid ${color}`;
-            // Update CSS variable on root for live theme color
             document.documentElement.style.setProperty("--accent-color", color);
-            // Persist to localStorage so next page load/navigation is instant
             localStorage.setItem("discord-accent", color);
           } else {
             discordCard.style.borderTop = "";
