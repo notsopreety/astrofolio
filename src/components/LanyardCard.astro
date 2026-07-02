@@ -857,16 +857,23 @@ const decorUrl = user.avatar_decoration_data
           }
         }
 
-        // Update Banner Color / Profile Border
+        // Update Banner Color / Profile Border + Site-wide accent color
         const discordCard = document.getElementById("discord-card");
         if (discordCard && data.user) {
-          const banner = data.user.banner_color || null;
-          if (banner) {
-            discordCard.style.borderTop = `6px solid ${banner}`;
-            // Dynamically update primary site accent custom property in document body if available!
-            document.documentElement.style.setProperty("--accent-color", banner);
+          const banner = data.user.banner_color || data.user.accent_color
+            ? `#${(data.user.accent_color >>> 0).toString(16).padStart(6, "0")}`
+            : null;
+          const color = data.user.banner_color || banner || null;
+          if (color) {
+            discordCard.style.borderTop = `6px solid ${color}`;
+            // Update CSS variable on root for live theme color
+            document.documentElement.style.setProperty("--accent-color", color);
+            // Persist to localStorage so next page load/navigation is instant
+            localStorage.setItem("discord-accent", color);
           } else {
             discordCard.style.borderTop = "";
+            document.documentElement.style.setProperty("--accent-color", "#81c784");
+            localStorage.setItem("discord-accent", "#81c784");
           }
         }
       })
