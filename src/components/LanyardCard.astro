@@ -1132,12 +1132,33 @@ const decorUrl = user.avatar_decoration_data
       }
     }
 
-    // Only re-fetch profile details when something profile-specific actually changed
+    // Re-fetch profile details whenever any visible content changes
+    const fpGame = data.activities?.find((a: any) => a.type !== 4 && a.name !== "Spotify");
+    const fpCustomStatus = data.activities?.find((a: any) => a.type === 4);
+    const fpSpotify = data.spotify;
+
     const currentFingerprint = [
+      // Profile identity
       user?.avatar || "",
       user?.avatar_decoration_data?.asset || "",
       user?.banner_color || "",
+      user?.clan?.tag || "",
+      // Presence status
       status || "",
+      // Custom status text + emoji
+      fpCustomStatus?.state || "",
+      fpCustomStatus?.emoji?.name || "",
+      fpCustomStatus?.emoji?.id || "",
+      // Playing activity
+      fpGame?.name || "",
+      fpGame?.details || "",
+      fpGame?.state || "",
+      fpGame?.assets?.large_image || "",
+      // Spotify
+      fpSpotify?.song || "",
+      fpSpotify?.artist || "",
+      // Listening state
+      String(!!data.listening_to_spotify),
     ].join("|");
 
     if (currentFingerprint !== lastProfileFingerprint) {
