@@ -779,6 +779,7 @@ const decorUrl = user.avatar_decoration_data
   const USER_ID = "931511745284038696";
 
   let httpPollInterval: any = null;
+  let profilePollInterval: any = null;
 
   function handleFailure() {
     console.log("Lanyard WebSocket failed or timed out. Falling back to HTTP polling.");
@@ -799,6 +800,12 @@ const decorUrl = user.avatar_decoration_data
       
       fetchLanyardHttp();
       httpPollInterval = setInterval(fetchLanyardHttp, 10000);
+    }
+
+    // Also poll profile details every 30 s in HTTP fallback mode
+    if (!profilePollInterval) {
+      fetchProfileDetails();
+      profilePollInterval = setInterval(fetchProfileDetails, 30000);
     }
   }
 
@@ -980,6 +987,12 @@ const decorUrl = user.avatar_decoration_data
             httpPollInterval = null;
           }
           updateLiveStatus(msg.d);
+
+          // Keep profile details refreshed every 30 s via WS too
+          if (!profilePollInterval) {
+            fetchProfileDetails();
+            profilePollInterval = setInterval(fetchProfileDetails, 30000);
+          }
         }
       }
     };
@@ -988,6 +1001,8 @@ const decorUrl = user.avatar_decoration_data
       clearInterval(heartbeatInterval);
       clearInterval(spotifyTimer);
       clearInterval(activityTimer);
+      clearInterval(profilePollInterval);
+      profilePollInterval = null;
       if (initialLoadTimeout) {
         setTimeout(connectLanyard, 5000);
       }
