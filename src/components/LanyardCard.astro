@@ -100,7 +100,7 @@ const decorUrl = user.avatar_decoration_data
   </div>
 
   <!-- Single mascot element dynamically moved between cards -->
-  <img id="lanyard-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
+  <img id="lanyard-mascot" class="girl-mascot-img" style="display: none;" alt="Mascot" />
 
   <!-- Playing Activity Card -->
   <fieldset class="activity-card" id="playing-card" style="display: none;">
@@ -1069,20 +1069,23 @@ const decorUrl = user.avatar_decoration_data
     }
 
     // Mascot logic: Show on the first visible card
-    const lanyardMascot = document.getElementById("lanyard-mascot");
+    const lanyardMascot = document.getElementById("lanyard-mascot") as HTMLImageElement;
     if (lanyardMascot) {
       if (isPlaying && playingCard) {
         if (lanyardMascot.parentElement !== playingCard) {
           playingCard.appendChild(lanyardMascot);
         }
+        lanyardMascot.src = "/1.png";
         lanyardMascot.style.display = "block";
       } else if (isSpotify && spotifyCard) {
         if (lanyardMascot.parentElement !== spotifyCard) {
           spotifyCard.appendChild(lanyardMascot);
         }
+        lanyardMascot.src = "/1.png";
         lanyardMascot.style.display = "block";
       } else {
         lanyardMascot.style.display = "none";
+        lanyardMascot.removeAttribute("src");
         // Append back to root container to preserve it in DOM only if not already there
         if (container && lanyardMascot.parentElement !== container) {
           container.appendChild(lanyardMascot);
