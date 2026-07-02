@@ -803,7 +803,7 @@ const decorUrl = user.avatar_decoration_data
   }
 
   function fetchProfileDetails() {
-    fetch(`https://dcdn.dstn.to/profile/${USER_ID}`)
+    fetch(`https://dcdn.dstn.to/profile/${USER_ID}?t=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
         // Update Clan Tag
