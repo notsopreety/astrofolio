@@ -849,8 +849,9 @@ const decorUrl = user.avatar_decoration_data
         // Update Avatar
         const avatarImg = document.getElementById("discord-avatar") as HTMLImageElement;
         if (avatarImg && data.user) {
+          const ts = Date.now();
           if (data.user.avatar) {
-            avatarImg.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${data.user.avatar}.webp?size=160`;
+            avatarImg.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${data.user.avatar}.webp?size=160&_t=${ts}`;
           } else {
             avatarImg.src = "https://cdn.discordapp.com/embed/avatars/0.png";
           }
@@ -859,8 +860,9 @@ const decorUrl = user.avatar_decoration_data
         // Update Avatar Decoration
         const decorImg = document.getElementById("avatar-decoration") as HTMLImageElement;
         if (decorImg && data.user) {
-          if (data.user.avatar_decoration_data) {
-            decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${data.user.avatar_decoration_data.asset}.png`;
+          if (data.user.avatar_decoration_data?.asset) {
+            const asset = data.user.avatar_decoration_data.asset;
+            decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?_t=${Date.now()}`;
             decorImg.style.display = "block";
           } else {
             decorImg.style.display = "none";
