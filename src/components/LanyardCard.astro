@@ -76,7 +76,11 @@ const decorUrl = user.avatar_decoration_data
       <!-- Clan Tag -->
       <div class="clan-badge-wrapper" id="clan-badge-container" style={clan && clan.identity_enabled ? "display: block;" : "display: none;"}>
         <span class="clan-badge">
-          <span class="heart-icon">💜</span>
+          {clan?.badge ? (
+            <img id="clan-badge-icon" class="clan-badge-icon" src={`https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`} alt="" />
+          ) : (
+            <span class="heart-icon">💜</span>
+          )}
           <span id="clan-tag">{clan?.tag || ""}</span>
         </span>
       </div>
@@ -374,6 +378,13 @@ const decorUrl = user.avatar_decoration_data
     align-items: center;
     gap: 0.35rem;
     font-family: var(--font-mono);
+  }
+
+  .clan-badge-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 
   .badges-row {
@@ -778,6 +789,40 @@ const decorUrl = user.avatar_decoration_data
     }
   }
 
+  function fetchProfileDetails() {
+    fetch(`https://dcdn.dstn.to/profile/${USER_ID}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Update Clan Tag
+        const clan = data.clan || null;
+        const clanBadgeContainer = document.getElementById("clan-badge-container");
+        const clanTag = document.getElementById("clan-tag");
+        const clanBadgeIcon = document.getElementById("clan-badge-icon") as HTMLImageElement;
+
+        if (clan && clan.identity_enabled) {
+          if (clanBadgeContainer) clanBadgeContainer.style.display = "block";
+          if (clanTag) clanTag.textContent = clan.tag;
+          if (clanBadgeIcon && clan.badge) {
+            clanBadgeIcon.src = `https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`;
+            clanBadgeIcon.style.display = "block";
+          } else if (clanBadgeIcon) {
+            clanBadgeIcon.style.display = "none";
+          }
+        } else {
+          if (clanBadgeContainer) clanBadgeContainer.style.display = "none";
+        }
+
+        // Update Badges Row
+        const badgesContainer = document.getElementById("badges-container");
+        if (badgesContainer && data.badges) {
+          badgesContainer.innerHTML = data.badges.map((badge: any) => 
+            `<img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" />`
+          ).join("");
+        }
+      })
+      .catch((err) => console.error("Failed to load profile details", err));
+  }
+
   // LanyardCard details are preloaded server-side. WS handles real-time updates.
 
   let spotifyTimer: any = null;
@@ -834,6 +879,7 @@ const decorUrl = user.avatar_decoration_data
   let initialLoadTimeout: any = null;
 
   function connectLanyard() {
+    fetchProfileDetails();
     const ws = new WebSocket("wss://api.lanyard.rest/socket");
     let heartbeatInterval: any;
 
