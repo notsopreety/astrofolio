@@ -18,7 +18,7 @@ try {
 
 const user = initialProfileData?.user || {};
 const profile = initialProfileData?.user_profile || {};
-const clan = initialProfileData?.clan || null;
+const clan = user?.clan || null;
 const badges = initialProfileData?.badges || [];
 
 const displayNameVal = user.global_name || user.username || "Samir Badaila";
@@ -794,7 +794,7 @@ const decorUrl = user.avatar_decoration_data
       .then((res) => res.json())
       .then((data) => {
         // Update Clan Tag
-        const clan = data.clan || null;
+        const clan = data.user?.clan || null;
         const clanBadgeContainer = document.getElementById("clan-badge-container");
         const clanTag = document.getElementById("clan-tag");
         const clanBadgeIcon = document.getElementById("clan-badge-icon") as HTMLImageElement;
