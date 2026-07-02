@@ -17,7 +17,7 @@ function formatDate(date: Date) {
 }
 ---
 
-<Layout title="Blog | sawmer.dev">
+<Layout title="Posts | samirb.com.np">
   <div class="blog-container">
     <div class="breadcrumb">
       <a href="/">Home</a>
@@ -25,14 +25,14 @@ function formatDate(date: Date) {
       <span>Posts</span>
     </div>
     <header class="blog-header">
-      <h1 class="blog-title">Blog</h1>
+      <h1 class="blog-title">Posts</h1>
       <p class="blog-desc">All the articles I've posted.</p>
     </header>
 
     <ul class="posts-list">
       {sortedPosts.map((post) => (
         <li class="post-item">
-          <a href={`/blog/${post.id}`} class="post-title-link">
+          <a href={`/posts/${post.id}`} class="post-title-link">
             <h2 class="post-title" transition:name={post.id}>{post.data.title}</h2>
           </a>
           <div class="post-meta">

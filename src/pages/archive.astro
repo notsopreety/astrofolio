@@ -30,7 +30,7 @@ function formatDate(date: Date) {
 }
 ---
 
-<Layout title="Archive | sawmer.dev">
+<Layout title="Archive | samirb.com.np">
   <div class="archive-container">
     <div class="breadcrumb">
       <a href="/">Home</a>
@@ -52,7 +52,7 @@ function formatDate(date: Date) {
                 <time class="post-date" datetime={post.data.pubDatetime.toISOString()}>
                   {formatDate(post.data.pubDatetime)}
                 </time>
-                <a href={`/blog/${post.id}`} class="post-title-link" transition:name={post.id}>
+                 <a href={`/posts/${post.id}`} class="post-title-link" transition:name={post.id}>
                   {post.data.title}
                 </a>
               </li>

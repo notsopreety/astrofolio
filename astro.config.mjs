@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import remarkToc from 'remark-toc';
 import remarkCollapse from 'remark-collapse';
 import rehypeSlug from 'rehype-slug';
@@ -11,33 +12,35 @@ import rehypeCallouts from 'rehype-callouts';
 export default defineConfig({
   integrations: [mdx()],
   markdown: {
-    remarkPlugins: [
-      // Generate "## Table of Contents" section automatically
-      [remarkToc, { heading: 'Table of contents|toc|contents', tight: true }],
-      // Collapsible ToC under "Table of contents" heading
-      [remarkCollapse, { test: 'Table of contents' }],
-    ],
-    rehypePlugins: [
-      // Add id="" to all headings for anchor links
-      rehypeSlug,
-      // Add # anchor links to all headings
-      [rehypeAutolinkHeadings, {
-        behavior: 'append',
-        properties: {
-          className: ['heading-anchor'],
-          ariaHidden: 'true',
-          tabIndex: -1,
-        },
-        content: {
-          type: 'element',
-          tagName: 'span',
-          properties: {},
-          children: [{ type: 'text', value: '#' }],
-        },
-      }],
-      // Callout blocks: > [!NOTE], > [!WARNING], etc.
-      rehypeCallouts,
-    ],
+    processor: unified({
+      remarkPlugins: [
+        // Generate "## Table of Contents" section automatically
+        [remarkToc, { heading: 'Table of contents|toc|contents', tight: true }],
+        // Collapsible ToC under "Table of contents" heading
+        [remarkCollapse, { test: 'Table of contents', summary: 'Open Table of contents' }],
+      ],
+      rehypePlugins: [
+        // Add id="" to all headings for anchor links
+        rehypeSlug,
+        // Add # anchor links to all headings
+        [rehypeAutolinkHeadings, {
+          behavior: 'append',
+          properties: {
+            className: ['heading-anchor'],
+            ariaHidden: 'true',
+            tabIndex: -1,
+          },
+          content: {
+            type: 'element',
+            tagName: 'span',
+            properties: {},
+            children: [{ type: 'text', value: '#' }],
+          },
+        }],
+        // Callout blocks: > [!NOTE], > [!WARNING], etc.
+        rehypeCallouts,
+      ],
+    }),
     shikiConfig: {
       // Dual-theme: switches with data-theme
       themes: { light: 'github-light', dark: 'night-owl' },

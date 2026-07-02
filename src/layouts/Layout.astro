@@ -19,11 +19,23 @@ const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		
+		<!-- Fonts Preloading -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="preload" href="/fonts/MinecraftTen-VGORe.woff" as="font" type="font/woff" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" />
+
 		<ClientRouter />
 		
 		<!-- Theme Initialization to prevent flash of unstyled content -->
 		<script is:inline>
 			(function () {
+				if ('scrollRestoration' in history) {
+					history.scrollRestoration = 'manual';
+				}
+				window.scrollTo(0, 0);
+
 				const stored = localStorage.getItem("theme");
 				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 				const theme = stored ?? (prefersDark ? "dark" : "light");
@@ -43,13 +55,30 @@ const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(
 		<header class="site-header">
 			<div class="header-container">
 				<a href="/" class="site-logo" transition:name="site-logo">
-					sawmer<span class="logo-accent">.dev</span>
+					samirb.com<span class="logo-accent">.np</span>
 				</a>
+
+				<button
+					id="menu-btn"
+					class="menu-btn"
+					aria-label="Open Menu"
+					aria-expanded="false"
+				>
+					<svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<line x1="4" y1="12" x2="20" y2="12"></line>
+						<line x1="4" y1="6" x2="20" y2="6"></line>
+						<line x1="4" y1="18" x2="20" y2="18"></line>
+					</svg>
+					<svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+				</button>
 
 				<nav id="site-nav" class="site-nav">
 					<a href="/" class:list={["nav-link", { active: currentPath === "/" }]}>Home</a>
-					<a href="/blog" class:list={["nav-link", { active: currentPath.startsWith("/blog") }]}>Blog</a>
-					<a href="/about" class:list={["nav-link", { active: currentPath.startsWith("/about") }]}>About</a>
+					<a href="/posts" class:list={["nav-link", { active: currentPath.startsWith("/posts") }]}>Posts</a>
+					<a href="/message" class:list={["nav-link", { active: currentPath.startsWith("/message") }]}>Message</a>
 					
 					<!-- Archive Box Icon Link -->
 					<a href="/archive" class:list={["nav-link", "archive-icon-link", { active: currentPath.startsWith("/archive") }]} title="Archive" aria-label="Archive">
@@ -58,6 +87,7 @@ const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(
 							<path d="M10 12h4"></path>
 							<path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"></path>
 						</svg>
+						<span class="nav-archive-text">Archive</span>
 					</a>
 					
 					<button
@@ -158,14 +188,48 @@ const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(
 				});
 			}
 
+			function setupMenuToggle() {
+				const menuBtn = document.getElementById("menu-btn");
+				const siteNav = document.getElementById("site-nav");
+				const menuIcon = document.getElementById("menu-icon");
+				const closeIcon = document.getElementById("close-icon");
+
+				if (!menuBtn || !siteNav || !menuIcon || !closeIcon) return;
+
+				// Reset state
+				menuBtn.setAttribute("aria-expanded", "false");
+				siteNav.classList.remove("open");
+				menuIcon.classList.remove("hidden");
+				closeIcon.classList.add("hidden");
+
+				menuBtn.addEventListener("click", () => {
+					const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
+					menuBtn.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+					
+					siteNav.classList.toggle("open");
+					menuIcon.classList.toggle("hidden");
+					closeIcon.classList.toggle("hidden");
+				});
+			}
+
+			// Force redirect scroll position to top on refresh/load
+			if ('scrollRestoration' in history) {
+				history.scrollRestoration = 'manual';
+			}
+			window.scrollTo(0, 0);
+			window.addEventListener('load', () => window.scrollTo(0, 0));
+
 			// Initialize
 			applyTheme();
 			setupTheme();
+			setupMenuToggle();
 
 			// Listen for view transitions
 			document.addEventListener("astro:after-swap", () => {
 				applyTheme();
 				setupTheme();
+				setupMenuToggle();
+				window.scrollTo(0, 0);
 			});
 		</script>
 	</body>

@@ -1,0 +1,246 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Message | samirb.com.np">
+  <div class="message-container">
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span class="separator">&raquo;</span>
+      <span>Message</span>
+    </div>
+
+    <header class="message-header">
+      <h1 class="message-title">Message</h1>
+      <p class="message-desc">Send me a message directly.</p>
+    </header>
+
+    <div class="message-content">
+      <fieldset class="message-fieldset">
+        <legend class="message-legend">Send a Message</legend>
+        
+        <!-- Success message alert -->
+        <div id="contact-success-alert" class="contact-success-alert" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Thank you! Your message has been sent successfully.</span>
+        </div>
+
+        <form id="contact-form" class="contact-form">
+          <input type="hidden" name="access_key" value="9154ff52-22b2-4f18-a5fb-8bdf249f0d50" />
+          <input type="hidden" name="from_name" value="samirb.com.np Contact Form" />
+          <input type="hidden" name="subject" value="New Contact Message from samirb.com.np" />
+          
+          <!-- Honeypot Bot Spam Protection -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+          <div class="form-group">
+            <label for="contact-name">Full Name *</label>
+            <input type="text" id="contact-name" name="name" required placeholder="Your full name" />
+          </div>
+
+          <div class="form-group">
+            <label for="contact-email">Email *</label>
+            <input type="email" id="contact-email" name="email" required placeholder="your.email@example.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="contact-msg">Message *</label>
+            <textarea id="contact-msg" name="message" required placeholder="Write your message here..." rows="6"></textarea>
+          </div>
+
+          <button type="submit" id="submit-contact-btn" class="submit-contact-btn">Send Message</button>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const successAlert = document.getElementById("contact-success-alert");
+
+    if (!form) return;
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+
+      // Rate limit: 5 minutes = 300,000 milliseconds
+      const limitMs = 300000;
+      const lastSubmit = localStorage.getItem("lastContactSubmit");
+      if (lastSubmit) {
+        const timePassed = Date.now() - parseInt(lastSubmit, 10);
+        if (timePassed < limitMs) {
+          const remainingMins = Math.ceil((limitMs - timePassed) / 60000);
+          alert(`You've sent a message recently. Please wait ${remainingMins} minute(s) before sending another.`);
+          return;
+        }
+      }
+
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+      }
+
+      const formData = new FormData(form);
+      const data: Record<string, any> = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          if (successAlert) successAlert.style.display = "flex";
+          form.style.display = "none";
+          localStorage.setItem("lastContactSubmit", Date.now().toString());
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
+      } catch (err) {
+        alert("An error occurred. Please try again.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send Message";
+        }
+      }
+    };
+  }
+
+  setupContactForm();
+  document.addEventListener("astro:after-swap", setupContactForm);
+</script>
+
+<style>
+  .message-container {
+    width: 100%;
+  }
+
+  .message-header {
+    margin-bottom: 2rem;
+  }
+
+  .message-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .message-desc {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+  }
+
+  .message-fieldset {
+    background: transparent;
+    border: 1.5px solid var(--accent-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 0;
+    min-inline-size: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .message-legend {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent-color);
+    letter-spacing: 0.08em;
+    font-family: var(--font-minecraft);
+    padding: 0 0.5rem;
+    margin-left: 0.5rem;
+    width: auto;
+    line-height: 1;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+  }
+
+  .submit-contact-btn {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    padding: 0.85rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+    width: 100%;
+    outline: none;
+  }
+
+  .submit-contact-btn:hover {
+    opacity: 0.95;
+  }
+
+  .contact-success-alert {
+    background: #def7ec;
+    color: #03543f;
+    border: 1px solid #bcf0da;
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  :global(.dark) .contact-success-alert {
+    background: #052e16;
+    color: #86efac;
+    border-color: #14532d;
+  }
+</style>

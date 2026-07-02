@@ -1,9 +1,43 @@
 ---
+const USER_ID = "931511745284038696";
+
+let initialProfileData = null;
+let fetchFailed = false;
+
+try {
+  const response = await fetch(`https://dcdn.dstn.to/profile/${USER_ID}`);
+  if (response.ok) {
+    initialProfileData = await response.json();
+  } else {
+    fetchFailed = true;
+  }
+} catch (e) {
+  console.error("Failed to preload Discord profile card", e);
+  fetchFailed = true;
+}
+
+const user = initialProfileData?.user || {};
+const profile = initialProfileData?.user_profile || {};
+const clan = initialProfileData?.clan || null;
+const badges = initialProfileData?.badges || [];
+
+const displayNameVal = user.global_name || user.username || "Samir Badaila";
+const usernameVal = user.username ? `@${user.username}` : "@loading";
+const pronounsVal = profile.pronouns || "He/Him/His";
+const bioVal = profile.bio || user.bio || "Not ded yet!!";
+const avatarUrl = user.avatar
+  ? `https://cdn.discordapp.com/avatars/${USER_ID}/${user.avatar}.webp?size=160`
+  : "https://cdn.discordapp.com/embed/avatars/0.png";
+const bannerColor = user.banner_color || null;
+
+const decorUrl = user.avatar_decoration_data
+  ? `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`
+  : null;
 ---
 
-<div class="lanyard-sidebar-container">
+<div class="lanyard-sidebar-container" id="lanyard-sidebar-container" style={fetchFailed ? "display: none;" : "display: flex;"}>
   <!-- Main Profile Card -->
-  <div class="discord-profile-card" id="discord-card">
+  <div class="discord-profile-card" id="discord-card" style={bannerColor ? `border-top: 6px solid ${bannerColor};` : ""}>
     <!-- Custom Status Chip -->
     <div class="status-chip-container">
       <div class="status-chip-wrapper" id="speech-bubble" style="display: none;">
@@ -18,9 +52,9 @@
     <div class="avatar-wrapper">
       <div class="avatar-decor-container">
         <div class="avatar-base">
-          <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" />
+          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" />
         </div>
-        <img id="avatar-decoration" class="avatar-decor-img" src="" alt="" style="display: none;" />
+        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} />
         <span class="status-dot offline" id="discord-status-dot"></span>
       </div>
     </div>
@@ -28,34 +62,36 @@
     <!-- Profile Details -->
     <div class="profile-info-section">
       <h2 class="profile-display-name">
-        <span id="display-name">Loading...</span>
+        <span id="display-name">{displayNameVal}</span>
         <svg class="verified-icon" viewBox="0 0 24 24" width="18" height="18" fill="#ce33dc">
           <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
         </svg>
       </h2>
       <p class="profile-sub-title">
-        <span id="profile-username">@loading</span>
+        <span id="profile-username">{usernameVal}</span>
         <span class="dot-separator">•</span>
-        <span id="profile-pronouns">He/Him/His</span>
+        <span id="profile-pronouns">{pronounsVal}</span>
       </p>
 
       <!-- Clan Tag -->
-      <div class="clan-badge-wrapper" id="clan-badge-container" style="display: none;">
+      <div class="clan-badge-wrapper" id="clan-badge-container" style={clan && clan.identity_enabled ? "display: block;" : "display: none;"}>
         <span class="clan-badge">
           <span class="heart-icon">💜</span>
-          <span id="clan-tag">MEOW</span>
+          <span id="clan-tag">{clan?.tag || ""}</span>
         </span>
       </div>
 
       <!-- Discord Badges -->
       <div class="badges-row" id="badges-container">
-        <!-- Dynamic badges here -->
+        {badges.map((badge: any) => (
+          <img class="badge-icon" src={`https://cdn.discordapp.com/badge-icons/${badge.icon}.png`} alt={badge.description} title={badge.description} />
+        ))}
       </div>
     </div>
 
     <!-- Bio / Footer -->
     <div class="bio-footer">
-      <p id="profile-bio">Not ded yet!!</p>
+      <p id="profile-bio">{bioVal}</p>
     </div>
   </div>
 
@@ -717,77 +753,18 @@
 <script>
   const USER_ID = "931511745284038696";
 
-  async function loadProfileInfo() {
-    try {
-      const response = await fetch(`https://dcdn.dstn.to/profile/${USER_ID}`);
-      if (!response.ok) return;
-
-      const data = await response.json();
-      const user = data.user;
-      const profile = data.user_profile;
-
-      const displayName = document.getElementById("display-name");
-      if (displayName) displayName.textContent = user.global_name || user.username;
-
-      const username = document.getElementById("profile-username");
-      if (username) username.textContent = `@${user.username}`;
-
-      const pronouns = document.getElementById("profile-pronouns");
-      if (pronouns && profile.pronouns) {
-        pronouns.textContent = profile.pronouns;
-      }
-
-      const bio = document.getElementById("profile-bio");
-      if (bio && (profile.bio || user.bio)) {
-        bio.textContent = profile.bio || user.bio;
-      }
-
-      const card = document.getElementById("discord-card");
-      if (card && user.banner_color) {
-        card.style.borderTop = `6px solid ${user.banner_color}`;
-      }
-
-      const decorImg = document.getElementById("avatar-decoration") as HTMLImageElement;
-      if (decorImg && user.avatar_decoration_data) {
-        decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`;
-        decorImg.style.display = "block";
-      }
-
-      const clanContainer = document.getElementById("clan-badge-container");
-      const clanTag = document.getElementById("clan-tag");
-      if (clanContainer && clanTag && data.clan && data.clan.identity_enabled) {
-        clanTag.textContent = data.clan.tag;
-        clanContainer.style.display = "block";
-      }
-
-      const badgesContainer = document.getElementById("badges-container");
-      if (badgesContainer && data.badges) {
-        badgesContainer.innerHTML = data.badges.map((badge: any) => `
-          <img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" />
-        `).join("");
-      }
-
-      // Live accent color injection for dark mode
-      const accentInt = user.accent_color || (profile && profile.accent_color);
-      if (accentInt) {
-        const hex = `#${accentInt.toString(16).padStart(6, '0')}`;
-        (window as any).discordAccentColor = hex;
-        localStorage.setItem("discord-accent", hex);
-
-        const isDark = document.documentElement.getAttribute("data-theme") !== "light";
-        if (isDark) {
-          document.documentElement.style.setProperty("--accent-color", hex);
-        }
-      }
-
-    } catch (e) {
-      console.error("Failed to load profile details", e);
+  function handleFailure() {
+    const sidebar = document.querySelector(".sidebar") as HTMLElement;
+    if (sidebar) {
+      sidebar.style.display = "none";
+    }
+    const grid = document.querySelector(".landing-grid");
+    if (grid) {
+      grid.classList.add("no-sidebar");
     }
   }
 
-  // Load initially and keep fetching from the API every 30 seconds
-  loadProfileInfo();
-  setInterval(loadProfileInfo, 30000);
+  // LanyardCard details are preloaded server-side. WS handles real-time updates.
 
   let spotifyTimer: any = null;
   let spotifyData: any = null;
@@ -840,12 +817,24 @@
     if (timeSpan) timeSpan.textContent = formatTime(elapsed);
   }
 
+  let initialLoadTimeout: any = null;
+
   function connectLanyard() {
     const ws = new WebSocket("wss://api.lanyard.rest/socket");
     let heartbeatInterval: any;
 
+    initialLoadTimeout = setTimeout(() => {
+      console.warn("Lanyard WebSocket timed out waiting for init state");
+      handleFailure();
+    }, 4000);
+
     ws.onopen = () => {
       console.log("Connected to Lanyard WebSocket");
+    };
+
+    ws.onerror = (e) => {
+      console.error("Lanyard WebSocket error", e);
+      handleFailure();
     };
 
     ws.onmessage = (event) => {
@@ -863,6 +852,7 @@
         }));
       } else if (msg.op === 0) {
         if (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE") {
+          clearTimeout(initialLoadTimeout);
           updateLiveStatus(msg.d);
         }
       }
@@ -872,7 +862,9 @@
       clearInterval(heartbeatInterval);
       clearInterval(spotifyTimer);
       clearInterval(activityTimer);
-      setTimeout(connectLanyard, 5000);
+      if (initialLoadTimeout) {
+        setTimeout(connectLanyard, 5000);
+      }
     };
   }
 
@@ -887,6 +879,11 @@
   function updateLiveStatus(data: any) {
     const status = data.discord_status;
     const user = data.discord_user;
+
+    const container = document.getElementById("lanyard-sidebar-container");
+    if (container) {
+      container.style.display = "flex";
+    }
 
     // Status Indicator
     const indicator = document.getElementById("discord-status-dot");
