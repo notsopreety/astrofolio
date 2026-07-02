@@ -14,6 +14,20 @@ export async function getStaticPaths() {
 export const GET: APIRoute = async ({ props }) => {
   const { post } = props as { post: any };
 
+  // Fetch Discord profile color at build time
+  let discordColor = "#81c784"; // Default fallback soft green
+  try {
+    const profileRes = await fetch("https://dcdn.dstn.to/profile/931511745284038696");
+    if (profileRes.ok) {
+      const profileData = await profileRes.json();
+      if (profileData?.user?.banner_color) {
+        discordColor = profileData.user.banner_color;
+      }
+    }
+  } catch (e) {
+    console.error("Failed to fetch Discord accent color for OG image", e);
+  }
+
   // Fetch font for satori
   const fontBuffer = await fetch(
     "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.ttf"
@@ -28,14 +42,14 @@ export const GET: APIRoute = async ({ props }) => {
       type: "div",
       props: {
         style: {
-          background: "#0f1015",
+          background: "#111218", // Website --bg-color
           width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "70px 80px",
-          border: "4px solid #1f2028",
+          border: `4px solid ${discordColor}`, // Website --accent-color
           boxSizing: "border-box",
           position: "relative",
         },
@@ -51,7 +65,7 @@ export const GET: APIRoute = async ({ props }) => {
                 width: "400px",
                 height: "400px",
                 borderRadius: "200px",
-                background: "rgba(129, 199, 132, 0.15)",
+                background: `rgba(${parseInt(discordColor.slice(1, 3), 16)}, ${parseInt(discordColor.slice(3, 5), 16)}, ${parseInt(discordColor.slice(5, 7), 16)}, 0.15)`,
                 filter: "blur(100px)",
               },
             },
@@ -67,7 +81,7 @@ export const GET: APIRoute = async ({ props }) => {
                 width: "450px",
                 height: "450px",
                 borderRadius: "225px",
-                background: "rgba(0, 108, 172, 0.12)",
+                background: `rgba(${parseInt(discordColor.slice(1, 3), 16)}, ${parseInt(discordColor.slice(3, 5), 16)}, ${parseInt(discordColor.slice(5, 7), 16)}, 0.12)`,
                 filter: "blur(120px)",
               },
             },
@@ -96,7 +110,7 @@ export const GET: APIRoute = async ({ props }) => {
                         type: "span",
                         props: {
                           style: {
-                            color: "#81c784",
+                            color: discordColor,
                             fontFamily: "IBM Plex Mono",
                             fontWeight: "bold",
                             fontSize: "26px",
@@ -118,7 +132,7 @@ export const GET: APIRoute = async ({ props }) => {
                         type: "span",
                         props: {
                           style: {
-                            color: "#c7c5d0",
+                            color: "#c7c5d0", // Website --text-secondary
                             fontSize: "24px",
                           },
                           children: "posts",
@@ -131,7 +145,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "span",
                   props: {
                     style: {
-                      color: "rgba(255, 255, 255, 0.4)",
+                      color: "#8f8f9e", // Website --text-muted
                       fontSize: "20px",
                       letterSpacing: "1px",
                     },
@@ -157,7 +171,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "h1",
                   props: {
                     style: {
-                      color: "#ffffff",
+                      color: "#e3e2e6", // Website --text-primary
                       fontSize: "64px",
                       fontWeight: "bold",
                       margin: "0",
@@ -171,7 +185,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "p",
                   props: {
                     style: {
-                      color: "#c7c5d0",
+                      color: "#c7c5d0", // Website --text-secondary
                       fontSize: "26px",
                       lineHeight: "1.5",
                       margin: "0",
@@ -192,7 +206,7 @@ export const GET: APIRoute = async ({ props }) => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                borderTop: "1.5px solid rgba(255, 255, 255, 0.08)",
+                borderTop: "1.5px solid rgba(255, 255, 255, 0.06)", // Website --card-border
                 paddingTop: "32px",
                 width: "100%",
               },
@@ -213,7 +227,7 @@ export const GET: APIRoute = async ({ props }) => {
                             width: "12px",
                             height: "12px",
                             borderRadius: "6px",
-                            background: "#81c784",
+                            background: discordColor,
                           },
                         },
                       },
@@ -221,7 +235,7 @@ export const GET: APIRoute = async ({ props }) => {
                         type: "span",
                         props: {
                           style: {
-                            color: "#e3e2e6",
+                            color: "#e3e2e6", // Website --text-primary
                             fontSize: "24px",
                             fontWeight: "bold",
                           },
@@ -235,7 +249,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "span",
                   props: {
                     style: {
-                      color: "#81c784",
+                      color: discordColor,
                       fontSize: "22px",
                     },
                     children: "https://samirb.com.np",
