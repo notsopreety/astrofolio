@@ -302,8 +302,8 @@ const decorUrl = user.avatar_decoration_data
     width: 14px;
     height: 14px;
     background-color: transparent;
-    box-shadow: -4px -3px 0 0 var(--discord-idle);
-    transform: translate(2px, 2px);
+    box-shadow: 4px 3px 0 0 var(--discord-idle);
+    transform: translate(-2px, -2px);
   }
  
   /* Do Not Disturb status - Red circle with horizontal pill minus */
@@ -968,7 +968,6 @@ const decorUrl = user.avatar_decoration_data
             httpPollInterval = null;
           }
           updateLiveStatus(msg.d);
-          fetchProfileDetails();
         }
       }
     };
@@ -1129,6 +1128,7 @@ const decorUrl = user.avatar_decoration_data
         }
       }
     }
+    fetchProfileDetails();
   }
 
   connectLanyard();
