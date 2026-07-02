@@ -1,9 +1,23 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import LanyardCard from '../components/LanyardCard.astro';
 import Skills from '../components/Skills.astro';
 import Connect from '../components/Connect.astro';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const latestPost = posts.length > 0 ? posts.sort(
+	(a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+)[0] : null;
+
+function formatDate(date: Date) {
+	return date.toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+}
 ---
 
 <Layout>
@@ -11,7 +25,43 @@ import Connect from '../components/Connect.astro';
 		<div class="main-content">
 			<Hero />
 			<Skills />
+			
 			<Connect />
+
+			<!-- Recent Post Section -->
+			<section class="recent-post-section">
+				<fieldset class="recent-post-fieldset">
+					<legend class="recent-post-legend">Recent Post</legend>
+					{latestPost ? (
+						<div class="recent-post-content">
+							<a href={`/posts/${latestPost.id}`} class="post-title-link">
+								<h3 class="post-title">{latestPost.data.title}</h3>
+							</a>
+							<div class="post-meta">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="calendar-icon">
+									<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+									<line x1="16" y1="2" x2="16" y2="6"></line>
+									<line x1="8" y1="2" x2="8" y2="6"></line>
+									<line x1="3" y1="10" x2="21" y2="10"></line>
+								</svg>
+								<time datetime={latestPost.data.pubDatetime.toISOString()}>
+									{formatDate(latestPost.data.pubDatetime)}
+								</time>
+							</div>
+							<p class="post-desc">{latestPost.data.description}</p>
+							
+							<div class="view-all-container">
+								<a href="/posts" class="view-all-btn">
+									View All Posts
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+								</a>
+							</div>
+						</div>
+					) : (
+						<p class="no-posts">No posts found.</p>
+					)}
+				</fieldset>
+			</section>
 		</div>
 		<div class="sidebar">
 			<div class="sticky-sidebar">
@@ -48,6 +98,115 @@ import Connect from '../components/Connect.astro';
 	.sticky-sidebar {
 		position: sticky;
 		top: 3rem;
+	}
+
+	/* ── Recent Post Styling ── */
+	.recent-post-section {
+		padding: 0.25rem 0;
+	}
+
+	.recent-post-fieldset {
+		background: transparent;
+		border: 1.5px solid var(--accent-color);
+		border-radius: 16px;
+		padding: 1.5rem;
+		margin: 0;
+		min-inline-size: 0;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.recent-post-legend {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		font-weight: 700;
+		color: var(--accent-color);
+		letter-spacing: 0.08em;
+		font-family: var(--font-minecraft);
+		padding: 0 0.5rem;
+		margin-left: 0.5rem;
+		width: auto;
+		line-height: 1;
+	}
+
+	.post-title-link {
+		display: inline-block;
+		color: var(--accent-color);
+		text-decoration: none;
+		transition: opacity 0.2s ease;
+	}
+
+	.post-title-link:hover {
+		opacity: 0.85;
+		text-decoration: underline;
+		text-decoration-style: dashed;
+		text-underline-offset: 6px;
+	}
+
+	.post-title {
+		font-size: 1.35rem;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.post-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		color: var(--text-muted);
+		font-size: 0.85rem;
+		font-family: var(--font-mono);
+		margin: 0.4rem 0 0.6rem 0;
+	}
+
+	.calendar-icon {
+		opacity: 0.8;
+	}
+
+	.post-desc {
+		color: var(--text-secondary);
+		line-height: 1.5;
+		font-size: 0.95rem;
+		margin: 0 0 1.25rem 0;
+	}
+
+	.view-all-container {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.view-all-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+		transition: color 0.2s ease;
+	}
+
+	.view-all-btn:hover {
+		color: var(--accent-color);
+		text-decoration: underline;
+		text-decoration-style: dashed;
+		text-underline-offset: 4px;
+	}
+
+	.arrow-icon {
+		transition: transform 0.2s ease;
+	}
+
+	.view-all-btn:hover .arrow-icon {
+		transform: translateX(4px);
+	}
+
+	.no-posts {
+		color: var(--text-muted);
+		font-family: var(--font-mono);
+		font-size: 0.9rem;
+		margin: 0;
 	}
 
 	@media (max-width: 900px) {

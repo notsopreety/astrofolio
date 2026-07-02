@@ -37,7 +37,11 @@ const wordCount = post.body?.split(/\s+/).length ?? 0;
 const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
 ---
 
-<Layout title={`${post.data.title} | samirb.com.np`}>
+<Layout 
+  title={`${post.data.title} | samirb.com.np`}
+  description={post.data.description}
+  ogImage={`/posts/${post.id}/index.png`}
+>
   <!-- Reading progress bar -->
   <div class="progress-container" aria-hidden="true">
     <div class="progress-bar" id="reading-progress"></div>

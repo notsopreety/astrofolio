@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import { unified } from '@astrojs/markdown-remark';
 import remarkToc from 'remark-toc';
 import remarkCollapse from 'remark-collapse';
@@ -10,7 +11,8 @@ import rehypeCallouts from 'rehype-callouts';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [mdx()],
+  site: 'https://samirb.com.np',
+  integrations: [mdx(), sitemap()],
   markdown: {
     processor: unified({
       remarkPlugins: [
