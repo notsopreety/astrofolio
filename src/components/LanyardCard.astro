@@ -1083,8 +1083,10 @@ const decorUrl = user.avatar_decoration_data
         lanyardMascot.style.display = "block";
       } else {
         lanyardMascot.style.display = "none";
-        // Append back to root container to preserve it in DOM
-        container.appendChild(lanyardMascot);
+        // Append back to root container to preserve it in DOM only if not already there
+        if (container && lanyardMascot.parentElement !== container) {
+          container.appendChild(lanyardMascot);
+        }
       }
     }
   }
