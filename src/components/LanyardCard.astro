@@ -95,9 +95,11 @@ const decorUrl = user.avatar_decoration_data
     </div>
   </div>
 
+  <!-- Single mascot element dynamically moved between cards -->
+  <img id="lanyard-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
+
   <!-- Playing Activity Card -->
   <fieldset class="activity-card" id="playing-card" style="display: none;">
-    <img id="playing-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
     <legend class="card-header-label">Playing</legend>
     <div class="activity-card-body">
       <div class="activity-assets">
@@ -118,7 +120,6 @@ const decorUrl = user.avatar_decoration_data
 
   <!-- Spotify Card -->
   <fieldset class="activity-card" id="spotify-card" style="display: none;">
-    <img id="spotify-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
     <legend class="card-header-label">Listening to Spotify</legend>
     <div class="activity-card-body">
       <div class="vinyl-disc">
@@ -753,14 +754,27 @@ const decorUrl = user.avatar_decoration_data
 <script>
   const USER_ID = "931511745284038696";
 
+  let httpPollInterval: any = null;
+
   function handleFailure() {
-    const sidebar = document.querySelector(".sidebar") as HTMLElement;
-    if (sidebar) {
-      sidebar.style.display = "none";
-    }
-    const grid = document.querySelector(".landing-grid");
-    if (grid) {
-      grid.classList.add("no-sidebar");
+    console.log("Lanyard WebSocket failed or timed out. Falling back to HTTP polling.");
+    clearTimeout(initialLoadTimeout);
+    
+    // Do not hide the sidebar; instead, poll the Lanyard HTTP API for live updates
+    if (!httpPollInterval) {
+      const fetchLanyardHttp = () => {
+        fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`)
+          .then((res) => res.json())
+          .then((json) => {
+            if (json.success && json.data) {
+              updateLiveStatus(json.data);
+            }
+          })
+          .catch((err) => console.error("Lanyard HTTP fallback failed:", err));
+      };
+      
+      fetchLanyardHttp();
+      httpPollInterval = setInterval(fetchLanyardHttp, 10000);
     }
   }
 
@@ -853,6 +867,10 @@ const decorUrl = user.avatar_decoration_data
       } else if (msg.op === 0) {
         if (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE") {
           clearTimeout(initialLoadTimeout);
+          if (httpPollInterval) {
+            clearInterval(httpPollInterval);
+            httpPollInterval = null;
+          }
           updateLiveStatus(msg.d);
         }
       }
@@ -927,7 +945,6 @@ const decorUrl = user.avatar_decoration_data
     const playingState = document.getElementById("playing-state");
     const playingLarge = document.getElementById("playing-large-image") as HTMLImageElement;
     const playingSmall = document.getElementById("playing-small-image") as HTMLImageElement;
-    const playingMascot = document.getElementById("playing-mascot");
 
     const game = data.activities.find((a: any) => a.type !== 4 && a.name !== "Spotify");
 
@@ -974,7 +991,6 @@ const decorUrl = user.avatar_decoration_data
     const spotifyArtists = document.getElementById("spotify-artists");
     const spotifyArt = document.getElementById("spotify-art") as HTMLImageElement;
     const spotifyDuration = document.getElementById("spotify-duration");
-    const spotifyMascot = document.getElementById("spotify-mascot");
 
     clearInterval(spotifyTimer);
     let isSpotify = false;
@@ -996,16 +1012,22 @@ const decorUrl = user.avatar_decoration_data
     }
 
     // Mascot logic: Show on the first visible card
-    if (playingMascot && spotifyMascot) {
-      if (isPlaying) {
-        playingMascot.style.display = "block";
-        spotifyMascot.style.display = "none";
-      } else if (isSpotify) {
-        playingMascot.style.display = "none";
-        spotifyMascot.style.display = "block";
+    const lanyardMascot = document.getElementById("lanyard-mascot");
+    if (lanyardMascot) {
+      if (isPlaying && playingCard) {
+        if (lanyardMascot.parentElement !== playingCard) {
+          playingCard.appendChild(lanyardMascot);
+        }
+        lanyardMascot.style.display = "block";
+      } else if (isSpotify && spotifyCard) {
+        if (lanyardMascot.parentElement !== spotifyCard) {
+          spotifyCard.appendChild(lanyardMascot);
+        }
+        lanyardMascot.style.display = "block";
       } else {
-        playingMascot.style.display = "none";
-        spotifyMascot.style.display = "none";
+        lanyardMascot.style.display = "none";
+        // Append back to root container to preserve it in DOM
+        container.appendChild(lanyardMascot);
       }
     }
   }
