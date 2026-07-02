@@ -1,0 +1,62 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 Page Not Found | Samir Badaila">
+  <div class="not-found-container">
+    <h1 class="not-found-title">404</h1>
+    <span class="not-found-shrug" aria-hidden="true">¯\_(ツ)_/¯</span>
+    <p class="not-found-message">Page Not Found</p>
+    <a href="/" class="not-found-link">Go back home</a>
+  </div>
+</Layout>
+
+<style>
+  .not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 1.5rem;
+    min-height: 55vh;
+  }
+
+  .not-found-title {
+    font-size: clamp(6rem, 14vw, 8rem);
+    font-weight: 700;
+    color: var(--accent-color);
+    line-height: 1;
+    margin-bottom: 1rem;
+    font-family: var(--font-sans);
+  }
+
+  .not-found-shrug {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .not-found-message {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    font-family: var(--font-mono);
+  }
+
+  .not-found-link {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 8px;
+    transition: color 0.2s ease;
+  }
+
+  .not-found-link:hover {
+    color: var(--accent-color);
+  }
+</style>

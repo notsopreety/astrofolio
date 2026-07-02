@@ -1,11 +1,56 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Hero from '../components/Hero.astro';
+import LanyardCard from '../components/LanyardCard.astro';
+import Skills from '../components/Skills.astro';
+import Connect from '../components/Connect.astro';
 ---
 
 <Layout>
-	<Welcome />
+	<div class="landing-grid">
+		<div class="main-content">
+			<Hero />
+			<Skills />
+			<Connect />
+		</div>
+		<div class="sidebar">
+			<div class="sticky-sidebar">
+				<LanyardCard />
+			</div>
+		</div>
+	</div>
 </Layout>
+
+<style>
+	.landing-grid {
+		display: grid;
+		grid-template-columns: 1.5fr 1fr;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.main-content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.sidebar {
+		position: relative;
+	}
+
+	.sticky-sidebar {
+		position: sticky;
+		top: 3rem;
+	}
+
+	@media (max-width: 900px) {
+		.landing-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.sticky-sidebar {
+			position: static;
+		}
+	}
+</style>

@@ -1,0 +1,1017 @@
+---
+---
+
+<div class="lanyard-sidebar-container">
+  <!-- Main Profile Card -->
+  <div class="discord-profile-card" id="discord-card">
+    <!-- Custom Status Chip -->
+    <div class="status-chip-container">
+      <div class="status-chip-wrapper" id="speech-bubble" style="display: none;">
+        <div class="status-chip">
+          <span id="speech-bubble-text">ILLUSIONS -_-</span>
+        </div>
+        <div class="status-chip-tail"></div>
+      </div>
+    </div>
+
+    <!-- Avatar & Decoration -->
+    <div class="avatar-wrapper">
+      <div class="avatar-decor-container">
+        <div class="avatar-base">
+          <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" />
+        </div>
+        <img id="avatar-decoration" class="avatar-decor-img" src="" alt="" style="display: none;" />
+        <span class="status-dot offline" id="discord-status-dot"></span>
+      </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="profile-info-section">
+      <h2 class="profile-display-name">
+        <span id="display-name">Loading...</span>
+        <svg class="verified-icon" viewBox="0 0 24 24" width="18" height="18" fill="#ce33dc">
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+        </svg>
+      </h2>
+      <p class="profile-sub-title">
+        <span id="profile-username">@loading</span>
+        <span class="dot-separator">•</span>
+        <span id="profile-pronouns">He/Him/His</span>
+      </p>
+
+      <!-- Clan Tag -->
+      <div class="clan-badge-wrapper" id="clan-badge-container" style="display: none;">
+        <span class="clan-badge">
+          <span class="heart-icon">💜</span>
+          <span id="clan-tag">MEOW</span>
+        </span>
+      </div>
+
+      <!-- Discord Badges -->
+      <div class="badges-row" id="badges-container">
+        <!-- Dynamic badges here -->
+      </div>
+    </div>
+
+    <!-- Bio / Footer -->
+    <div class="bio-footer">
+      <p id="profile-bio">Not ded yet!!</p>
+    </div>
+  </div>
+
+  <!-- Playing Activity Card -->
+  <fieldset class="activity-card" id="playing-card" style="display: none;">
+    <img id="playing-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
+    <legend class="card-header-label">Playing</legend>
+    <div class="activity-card-body">
+      <div class="activity-assets">
+        <img id="playing-large-image" class="large-image" src="" alt="" />
+        <img id="playing-small-image" class="small-image" src="" alt="" style="display: none;" />
+      </div>
+      <div class="activity-details">
+        <h4 id="playing-name">Game/Application</h4>
+        <p id="playing-details"></p>
+        <p id="playing-state"></p>
+        <div class="playing-time-wrapper">
+          <span class="playing-icon"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"></line><line x1="8" x2="8" y1="9" y2="13"></line><line x1="15" x2="15.01" y1="12" y2="12"></line><line x1="18" x2="18.01" y1="10" y2="10"></line><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"></path></svg></span>
+          <span id="playing-time">00:00:00</span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Spotify Card -->
+  <fieldset class="activity-card" id="spotify-card" style="display: none;">
+    <img id="spotify-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
+    <legend class="card-header-label">Listening to Spotify</legend>
+    <div class="activity-card-body">
+      <div class="vinyl-disc">
+        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" />
+        <div class="vinyl-hole"></div>
+      </div>
+      <div class="spotify-details">
+        <h4 id="spotify-song">Song Title</h4>
+        <p id="spotify-artists">Artists</p>
+        <div class="spotify-playback">
+          <span id="spotify-elapsed">0:00</span>
+          <div class="spotify-bar">
+            <div id="spotify-progress-bar" style="width: 0%;"></div>
+          </div>
+          <span id="spotify-duration">0:00</span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<style is:global>
+  .lanyard-sidebar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 360px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Profile Card styling - Material 3 Surface */
+  .discord-profile-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--card-radius);
+    padding: 1rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Material You Custom Status Chip */
+  .status-chip-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.45rem;
+    width: 100%;
+  }
+
+  .status-chip-wrapper {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    max-width: 90%;
+  }
+
+  .status-chip {
+    background: transparent;
+    border-style: solid;
+    border-width: 6px;
+    border-image-source: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" fill="%2318181c" /><rect x="3" y="1" width="6" height="1" fill="%23c8c8c8" /><rect x="3" y="10" width="6" height="1" fill="%23c8c8c8" /><rect x="1" y="3" width="1" height="6" fill="%23c8c8c8" /><rect x="10" y="3" width="1" height="6" fill="%23c8c8c8" /><rect x="2" y="2" width="1" height="1" fill="%23c8c8c8" /><rect x="9" y="2" width="1" height="1" fill="%23c8c8c8" /><rect x="2" y="9" width="1" height="1" fill="%23c8c8c8" /><rect x="9" y="9" width="1" height="1" fill="%23c8c8c8" /></svg>');
+    border-image-slice: 3 fill;
+    border-image-repeat: stretch;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    width: 100%;
+    word-break: break-word;
+    font-family: var(--font-minecraft);
+    letter-spacing: 0.05em;
+  }
+
+  /* Sibling tail that sits on top of the status-chip border to make an open mouth */
+  .status-chip-tail {
+    position: absolute;
+    bottom: -13px;
+    left: calc(50% + 18px);
+    width: 18px;
+    height: 18px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6"><rect x="2" y="0" width="2" height="3" fill="%2318181c" /><rect x="1" y="3" width="2" height="1" fill="%2318181c" /><rect x="1" y="0" width="1" height="3" fill="%23c8c8c8" /><rect x="0" y="3" width="1" height="1" fill="%23c8c8c8" /><rect x="4" y="0" width="1" height="3" fill="%23c8c8c8" /><rect x="3" y="3" width="1" height="1" fill="%23c8c8c8" /><rect x="1" y="4" width="3" height="1" fill="%23c8c8c8" /></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Light theme speech bubble overrides */
+  [data-theme="light"] .status-chip {
+    border-image-source: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" fill="%23f9f9f9" /><rect x="3" y="1" width="6" height="1" fill="%23888888" /><rect x="3" y="10" width="6" height="1" fill="%23888888" /><rect x="1" y="3" width="1" height="6" fill="%23888888" /><rect x="10" y="3" width="1" height="6" fill="%23888888" /><rect x="2" y="2" width="1" height="1" fill="%23888888" /><rect x="9" y="2" width="1" height="1" fill="%23888888" /><rect x="2" y="9" width="1" height="1" fill="%23888888" /><rect x="9" y="9" width="1" height="1" fill="%23888888" /></svg>');
+  }
+
+  [data-theme="light"] .status-chip-tail {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6"><rect x="2" y="0" width="2" height="3" fill="%23f9f9f9" /><rect x="1" y="3" width="2" height="1" fill="%23f9f9f9" /><rect x="1" y="0" width="1" height="3" fill="%23888888" /><rect x="0" y="3" width="1" height="1" fill="%23888888" /><rect x="4" y="0" width="1" height="3" fill="%23888888" /><rect x="3" y="3" width="1" height="1" fill="%23888888" /><rect x="1" y="4" width="3" height="1" fill="%23888888" /></svg>');
+  }
+
+  /* Avatar & Decoration */
+  .avatar-wrapper {
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+
+  .avatar-decor-container {
+    position: relative;
+    width: 82px;
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatar-base {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .avatar-decor-img {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .status-dot {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .status-dot::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Online status - Solid green circle */
+  .status-dot.online::after {
+    width: 14px;
+    height: 14px;
+    background-color: var(--discord-online);
+  }
+
+  /* Idle status - Crescent moon */
+  .status-dot.idle::after {
+    width: 14px;
+    height: 14px;
+    background-color: transparent;
+    box-shadow: -4px -3px 0 0 var(--discord-idle);
+    transform: translate(2px, 2px);
+  }
+
+  /* Do Not Disturb status - Red circle with horizontal pill minus */
+  .status-dot.dnd {
+    position: absolute;
+  }
+  .status-dot.dnd::after {
+    width: 14px;
+    height: 14px;
+    background-color: var(--discord-dnd);
+  }
+  .status-dot.dnd::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 3px;
+    background-color: var(--card-bg);
+    z-index: 11;
+    border-radius: 1.5px;
+  }
+
+  /* Offline / Invisible status - Hollow grey ring */
+  .status-dot.offline::after {
+    width: 8px;
+    height: 8px;
+    background-color: transparent;
+    border: 3px solid var(--discord-offline);
+  }
+
+  /* Profile Info - Material 3 Typography */
+  .profile-info-section {
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .profile-display-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: var(--font-minecraft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    letter-spacing: 0.02em;
+  }
+
+  .profile-sub-title {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+    font-family: var(--font-mono);
+  }
+
+  .dot-separator {
+    margin: 0 0.35rem;
+    color: var(--text-muted);
+  }
+
+  .clan-badge-wrapper {
+    margin-top: 0.4rem;
+  }
+
+  .clan-badge {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.25rem 0.65rem;
+    border-radius: 12px; /* M3 sub-badge radius */
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+  }
+
+  .badges-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+  }
+
+  .badge-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .bio-footer {
+    border-top: 1px solid var(--card-border);
+    width: 100%;
+    padding-top: 0.6rem;
+  }
+
+  #profile-bio {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+  }
+
+  /* Activity Cards (Material 3 Card) */
+  .activity-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--card-border);
+    border-radius: 16px;
+    padding: 0.5rem 0.85rem 0.6rem 0.85rem;
+    margin: 0;
+    min-inline-size: 0;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .card-header-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    font-family: var(--font-minecraft);
+    padding: 0 0.35rem;
+    margin-left: 0.4rem;
+    width: auto;
+    line-height: 1;
+  }
+
+  .activity-card-body {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .activity-assets {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .activity-assets .large-image {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .activity-assets .small-image {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--card-bg);
+  }
+
+  .activity-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+    flex-grow: 1;
+  }
+
+  .activity-details h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: var(--font-minecraft);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .activity-details p {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .playing-time-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.15rem;
+    font-size: 0.68rem;
+    color: #34a853;
+    font-weight: 500;
+    font-family: var(--font-mono);
+  }
+
+  .playing-icon {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Spotify Styles */
+  /* Vinyl Disc */
+  .vinyl-disc {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    animation: spin-disc 8s linear infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    background: #111218;
+    overflow: hidden;
+  }
+
+  /* Concentric Groove Ring */
+  .vinyl-disc::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 65%;
+    height: 65%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes spin-disc {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .spotify-art-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Center Label Area */
+  .vinyl-hole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 40%;
+    border-radius: 50%;
+    background: #1e2230; /* Dark blue/grey label background */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 2;
+  }
+
+  /* Central Spindle Hole */
+  .vinyl-hole::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 38%;
+    height: 38%;
+    border-radius: 50%;
+    background: var(--bg-color); /* Dynamic card background */
+    border: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  .spotify-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .spotify-details h4 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: var(--font-minecraft);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .spotify-details p {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .spotify-playback {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.3rem;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    width: 100%;
+  }
+
+  .spotify-playback span {
+    flex-shrink: 0;
+  }
+
+  /* Material Design Squiggly Player */
+  .spotify-bar {
+    flex-grow: 1;
+    height: 12px; /* Taller touch target area for wave & slider thumb alignment */
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .spotify-bar::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--progress, 0%) + 10px); /* Start straight line 10px to the right of the progress end */
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15); /* Straight dark remaining progress line */
+    border-radius: 1px;
+  }
+
+  #spotify-progress-bar {
+    position: absolute;
+    left: 0;
+    height: 10px; /* Height of the wave SVG */
+    max-width: 100%;
+  }
+
+  /* Squiggly Wave sits on ::before to prevent clipping on the ::after thumb */
+  #spotify-progress-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--accent-color);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Cpath d='M0 5 C3 1, 9 1, 12 5 C15 9, 21 9, 24 5' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: repeat-x;
+    -webkit-mask-position: left center;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Cpath d='M0 5 C3 1, 9 1, 12 5 C15 9, 21 9, 24 5' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    mask-repeat: repeat-x;
+    mask-position: left center;
+    animation: wave-slide 1.4s linear infinite;
+  }
+
+  @keyframes wave-slide {
+    from {
+      -webkit-mask-position-x: 0px;
+      mask-position-x: 0px;
+    }
+    to {
+      -webkit-mask-position-x: 24px;
+      mask-position-x: 24px;
+    }
+  }
+
+  #spotify-progress-bar::after {
+    content: '';
+    position: absolute;
+    right: -6px; /* Push vertical thumb 6px to the right to create a gap */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 12px;
+    background-color: var(--accent-color); /* Theme-aware accent */
+    border-radius: 2px;
+    z-index: 2;
+  }
+
+  /* Light theme overrides for Spotify player elements */
+  [data-theme="light"] .spotify-bar::before {
+    background: rgba(0, 0, 0, 0.15); /* Dark remaining progress line */
+  }
+
+  /* Girl Mascot styling */
+  .girl-mascot-img {
+    position: absolute;
+    bottom: calc(100% - 8px); /* Bottom of image sits on top card border */
+    right: 4px;
+    width: 72px;
+    height: auto;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .discord-profile-card {
+      padding: 0.75rem 0.85rem;
+    }
+
+    .activity-card {
+      padding: 0.4rem 0.75rem 0.5rem 0.75rem;
+    }
+    
+    .profile-display-name {
+      font-size: 1.05rem;
+    }
+    
+    .activity-details h4, .spotify-details h4 {
+      font-size: 0.75rem;
+    }
+    
+    .activity-details p, .spotify-details p {
+      font-size: 0.65rem;
+    }
+    
+    .playing-time-wrapper, .spotify-playback {
+      font-size: 0.65rem;
+    }
+    
+    .activity-assets, .activity-assets .large-image {
+      width: 38px;
+      height: 38px;
+    }
+
+    .vinyl-disc {
+      width: 52px;
+      height: 52px;
+    }
+    
+    .girl-mascot-img {
+      width: 56px;
+      bottom: calc(100% - 6px);
+      right: 2px;
+    }
+    
+    .status-chip {
+      padding: 0.25rem 0.7rem;
+      font-size: 0.68rem;
+    }
+
+    .activity-card-body {
+      gap: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  const USER_ID = "931511745284038696";
+
+  async function loadProfileInfo() {
+    try {
+      const response = await fetch(`https://dcdn.dstn.to/profile/${USER_ID}`);
+      if (!response.ok) return;
+
+      const data = await response.json();
+      const user = data.user;
+      const profile = data.user_profile;
+
+      const displayName = document.getElementById("display-name");
+      if (displayName) displayName.textContent = user.global_name || user.username;
+
+      const username = document.getElementById("profile-username");
+      if (username) username.textContent = `@${user.username}`;
+
+      const pronouns = document.getElementById("profile-pronouns");
+      if (pronouns && profile.pronouns) {
+        pronouns.textContent = profile.pronouns;
+      }
+
+      const bio = document.getElementById("profile-bio");
+      if (bio && (profile.bio || user.bio)) {
+        bio.textContent = profile.bio || user.bio;
+      }
+
+      const card = document.getElementById("discord-card");
+      if (card && user.banner_color) {
+        card.style.borderTop = `6px solid ${user.banner_color}`;
+      }
+
+      const decorImg = document.getElementById("avatar-decoration") as HTMLImageElement;
+      if (decorImg && user.avatar_decoration_data) {
+        decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`;
+        decorImg.style.display = "block";
+      }
+
+      const clanContainer = document.getElementById("clan-badge-container");
+      const clanTag = document.getElementById("clan-tag");
+      if (clanContainer && clanTag && data.clan && data.clan.identity_enabled) {
+        clanTag.textContent = data.clan.tag;
+        clanContainer.style.display = "block";
+      }
+
+      const badgesContainer = document.getElementById("badges-container");
+      if (badgesContainer && data.badges) {
+        badgesContainer.innerHTML = data.badges.map((badge: any) => `
+          <img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" />
+        `).join("");
+      }
+
+      // Live accent color injection for dark mode
+      const accentInt = user.accent_color || (profile && profile.accent_color);
+      if (accentInt) {
+        const hex = `#${accentInt.toString(16).padStart(6, '0')}`;
+        (window as any).discordAccentColor = hex;
+        localStorage.setItem("discord-accent", hex);
+
+        const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+        if (isDark) {
+          document.documentElement.style.setProperty("--accent-color", hex);
+        }
+      }
+
+    } catch (e) {
+      console.error("Failed to load profile details", e);
+    }
+  }
+
+  // Load initially and keep fetching from the API every 30 seconds
+  loadProfileInfo();
+  setInterval(loadProfileInfo, 30000);
+
+  let spotifyTimer: any = null;
+  let spotifyData: any = null;
+
+  let activityTimer: any = null;
+  let activityStartTime = 0;
+
+  function formatTime(ms: number) {
+    const totalSecs = Math.floor(ms / 1000);
+    const hrs = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
+
+    const formattedMins = mins.toString().padStart(2, "0");
+    const formattedSecs = secs.toString().padStart(2, "0");
+
+    if (hrs > 0) {
+      return `${hrs}:${formattedMins}:${formattedSecs}`;
+    }
+    return `${mins}:${formattedSecs}`;
+  }
+
+  function tickSpotify() {
+    if (!spotifyData) return;
+    const start = spotifyData.timestamps.start;
+    const end = spotifyData.timestamps.end;
+    const now = Date.now();
+
+    const total = end - start;
+    const current = Math.min(total, Math.max(0, now - start));
+    const pct = (current / total) * 100;
+
+    const progressBar = document.getElementById("spotify-progress-bar");
+    if (progressBar) {
+      progressBar.style.width = `${pct}%`;
+      const parentBar = progressBar.parentElement;
+      if (parentBar) {
+        parentBar.style.setProperty("--progress", `${pct}%`);
+      }
+    }
+
+    const elapsedSpan = document.getElementById("spotify-elapsed");
+    if (elapsedSpan) elapsedSpan.textContent = formatTime(current);
+  }
+
+  function tickActivity() {
+    if (!activityStartTime) return;
+    const elapsed = Date.now() - activityStartTime;
+    const timeSpan = document.getElementById("playing-time");
+    if (timeSpan) timeSpan.textContent = formatTime(elapsed);
+  }
+
+  function connectLanyard() {
+    const ws = new WebSocket("wss://api.lanyard.rest/socket");
+    let heartbeatInterval: any;
+
+    ws.onopen = () => {
+      console.log("Connected to Lanyard WebSocket");
+    };
+
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+
+      if (msg.op === 1) {
+        const interval = msg.d.heartbeat_interval;
+        heartbeatInterval = setInterval(() => {
+          ws.send(JSON.stringify({ op: 3 }));
+        }, interval);
+
+        ws.send(JSON.stringify({
+          op: 2,
+          d: { subscribe_to_id: USER_ID }
+        }));
+      } else if (msg.op === 0) {
+        if (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE") {
+          updateLiveStatus(msg.d);
+        }
+      }
+    };
+
+    ws.onclose = () => {
+      clearInterval(heartbeatInterval);
+      clearInterval(spotifyTimer);
+      clearInterval(activityTimer);
+      setTimeout(connectLanyard, 5000);
+    };
+  }
+
+  function getAssetUrl(appId: string, assetId: string) {
+    if (!assetId) return "";
+    if (assetId.startsWith("mp:external/")) {
+      return `https://media.discordapp.net/${assetId.replace("mp:", "")}`;
+    }
+    return `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
+  }
+
+  function updateLiveStatus(data: any) {
+    const status = data.discord_status;
+    const user = data.discord_user;
+
+    // Status Indicator
+    const indicator = document.getElementById("discord-status-dot");
+    if (indicator) {
+      indicator.className = `status-dot ${status}`;
+    }
+
+    // Avatar
+    const avatar = document.getElementById("discord-avatar") as HTMLImageElement;
+    if (avatar && user.avatar) {
+      avatar.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${user.avatar}.webp?size=160`;
+    }
+
+    // Custom Status chip update (Material You style)
+    const speechBubble = document.getElementById("speech-bubble");
+    const speechBubbleText = document.getElementById("speech-bubble-text");
+
+    const customPresence = data.activities.find((a: any) => a.type === 4);
+    if (customPresence && (customPresence.state || customPresence.emoji)) {
+      if (speechBubble) speechBubble.style.display = "flex";
+      if (speechBubbleText) {
+        let emojiStr = "";
+        if (customPresence.emoji) {
+          if (customPresence.emoji.id) {
+            const ext = customPresence.emoji.animated ? "gif" : "png";
+            emojiStr = `<img src="https://cdn.discordapp.com/emojis/${customPresence.emoji.id}.${ext}?size=24" style="height: 1.25em; vertical-align: bottom; margin-right: 0.25rem;" alt="" />`;
+          } else {
+            emojiStr = `${customPresence.emoji.name} `;
+          }
+        }
+        speechBubbleText.innerHTML = `${emojiStr}${customPresence.state || ""}`;
+      }
+    } else {
+      if (speechBubble) speechBubble.style.display = "none";
+    }
+
+    // Playing card update
+    const playingCard = document.getElementById("playing-card");
+    const playingName = document.getElementById("playing-name");
+    const playingDetails = document.getElementById("playing-details");
+    const playingState = document.getElementById("playing-state");
+    const playingLarge = document.getElementById("playing-large-image") as HTMLImageElement;
+    const playingSmall = document.getElementById("playing-small-image") as HTMLImageElement;
+    const playingMascot = document.getElementById("playing-mascot");
+
+    const game = data.activities.find((a: any) => a.type !== 4 && a.name !== "Spotify");
+
+    clearInterval(activityTimer);
+    let isPlaying = false;
+    if (game) {
+      isPlaying = true;
+      if (playingCard) playingCard.style.display = "flex";
+      if (playingName) playingName.textContent = game.name;
+      if (playingDetails) playingDetails.textContent = game.details || "";
+      if (playingState) playingState.textContent = game.state || "";
+
+      // Timing
+      if (game.timestamps && game.timestamps.start) {
+        activityStartTime = game.timestamps.start;
+        tickActivity();
+        activityTimer = setInterval(tickActivity, 1000);
+      } else {
+        const timeSpan = document.getElementById("playing-time");
+        if (timeSpan) timeSpan.textContent = "";
+      }
+
+      // Assets
+      if (game.assets && game.assets.large_image) {
+        playingLarge.src = getAssetUrl(game.application_id, game.assets.large_image);
+        playingLarge.style.display = "block";
+      } else {
+        playingLarge.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+      }
+
+      if (game.assets && game.assets.small_image) {
+        playingSmall.src = getAssetUrl(game.application_id, game.assets.small_image);
+        playingSmall.style.display = "block";
+      } else {
+        playingSmall.style.display = "none";
+      }
+    } else {
+      if (playingCard) playingCard.style.display = "none";
+    }
+
+    // Spotify card update
+    const spotifyCard = document.getElementById("spotify-card");
+    const spotifySong = document.getElementById("spotify-song");
+    const spotifyArtists = document.getElementById("spotify-artists");
+    const spotifyArt = document.getElementById("spotify-art") as HTMLImageElement;
+    const spotifyDuration = document.getElementById("spotify-duration");
+    const spotifyMascot = document.getElementById("spotify-mascot");
+
+    clearInterval(spotifyTimer);
+    let isSpotify = false;
+    if (data.listening_to_spotify && data.spotify) {
+      isSpotify = true;
+      spotifyData = data.spotify;
+      if (spotifyCard) spotifyCard.style.display = "flex";
+      if (spotifySong) spotifySong.textContent = data.spotify.song;
+      if (spotifyArtists) spotifyArtists.textContent = data.spotify.artist;
+      if (spotifyArt) spotifyArt.src = data.spotify.album_art_url;
+
+      const durationMs = data.spotify.timestamps.end - data.spotify.timestamps.start;
+      if (spotifyDuration) spotifyDuration.textContent = formatTime(durationMs);
+
+      tickSpotify();
+      spotifyTimer = setInterval(tickSpotify, 1000);
+    } else {
+      if (spotifyCard) spotifyCard.style.display = "none";
+    }
+
+    // Mascot logic: Show on the first visible card
+    if (playingMascot && spotifyMascot) {
+      if (isPlaying) {
+        playingMascot.style.display = "block";
+        spotifyMascot.style.display = "none";
+      } else if (isSpotify) {
+        playingMascot.style.display = "none";
+        spotifyMascot.style.display = "block";
+      } else {
+        playingMascot.style.display = "none";
+        spotifyMascot.style.display = "none";
+      }
+    }
+  }
+
+  connectLanyard();
+</script>

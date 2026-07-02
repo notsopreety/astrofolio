@@ -1,23 +1,172 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+}
+
+const { title = "Samir Badaila | Backend Developer" } = Astro.props;
+const pathname = Astro.url.pathname;
+const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<ClientRouter />
+		
+		<!-- Theme Initialization to prevent flash of unstyled content -->
+		<script is:inline>
+			(function () {
+				const stored = localStorage.getItem("theme");
+				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+				const theme = stored ?? (prefersDark ? "dark" : "light");
+				document.documentElement.setAttribute("data-theme", theme);
+				document.documentElement.classList.toggle("dark", theme === "dark");
+
+				if (theme === "dark") {
+					const discordAccent = localStorage.getItem("discord-accent");
+					if (discordAccent) {
+						document.documentElement.style.setProperty("--accent-color", discordAccent);
+					}
+				}
+			})();
+		</script>
 	</head>
 	<body>
-		<slot />
+		<header class="site-header">
+			<div class="header-container">
+				<a href="/" class="site-logo" transition:name="site-logo">
+					sawmer<span class="logo-accent">.dev</span>
+				</a>
+
+				<nav id="site-nav" class="site-nav">
+					<a href="/" class:list={["nav-link", { active: currentPath === "/" }]}>Home</a>
+					<a href="/blog" class:list={["nav-link", { active: currentPath.startsWith("/blog") }]}>Blog</a>
+					<a href="/about" class:list={["nav-link", { active: currentPath.startsWith("/about") }]}>About</a>
+					
+					<!-- Archive Box Icon Link -->
+					<a href="/archive" class:list={["nav-link", "archive-icon-link", { active: currentPath.startsWith("/archive") }]} title="Archive" aria-label="Archive">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-archive-icon">
+							<path d="M21 8H3V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2z"></path>
+							<path d="M10 12h4"></path>
+							<path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"></path>
+						</svg>
+					</a>
+					
+					<button
+						id="theme-btn"
+						class="theme-toggle-btn"
+						aria-label="Toggle Theme"
+						title="Toggle Theme"
+					>
+						<!-- Sun icon (visible in dark mode) -->
+						<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="12" cy="12" r="4"></circle>
+							<path d="M12 2v2"></path>
+							<path d="M12 20v2"></path>
+							<path d="m4.93 4.93 1.41 1.41"></path>
+							<path d="m17.66 17.66 1.41 1.41"></path>
+							<path d="M2 12h2"></path>
+							<path d="M20 12h2"></path>
+							<path d="m6.34 17.66-1.41 1.41"></path>
+							<path d="m19.07 4.93-1.41 1.41"></path>
+						</svg>
+						<!-- Moon icon (visible in light mode) -->
+						<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+						</svg>
+					</button>
+				</nav>
+			</div>
+		</header>
+		<main class="container">
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<div class="footer-container">
+				<div class="footer-copyright">
+					<span>Copyright © {new Date().getFullYear()}</span>
+					<span class="copyright-separator"> | </span>
+					<span>All rights reserved.</span>
+				</div>
+				<div class="footer-socials">
+					<a href="https://github.com/notsopreety" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-social-icon">
+							<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+							<path d="M9 18c-4.51 2-5-2-7-2"></path>
+						</svg>
+					</a>
+					<a href="https://x.com/notsopreety" target="_blank" rel="noopener noreferrer" title="X (Twitter)" aria-label="X (Twitter)">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-social-icon">
+							<path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+							<path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+						</svg>
+					</a>
+					<a href="https://www.linkedin.com/in/samirbadaila/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-social-icon">
+							<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+							<rect x="2" y="9" width="4" height="12"></rect>
+							<circle cx="4" cy="4" r="2"></circle>
+						</svg>
+					</a>
+					<a href="mailto:forapibysamir@gmail.com" title="Email" aria-label="Email">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-social-icon">
+							<rect width="20" height="16" x="2" y="4" rx="2"></rect>
+							<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+						</svg>
+					</a>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			function applyTheme() {
+				const stored = localStorage.getItem("theme");
+				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+				const theme = stored ?? (prefersDark ? "dark" : "light");
+				
+				document.documentElement.setAttribute("data-theme", theme);
+				document.documentElement.classList.toggle("dark", theme === "dark");
+
+				if (theme === "dark") {
+					const discordAccent = localStorage.getItem("discord-accent") || (window as any).discordAccentColor;
+					if (discordAccent) {
+						document.documentElement.style.setProperty("--accent-color", discordAccent);
+					}
+				} else {
+					document.documentElement.style.removeProperty("--accent-color");
+				}
+			}
+
+			function setupTheme() {
+				const themeBtn = document.getElementById("theme-btn");
+				if (!themeBtn) return;
+
+				themeBtn.addEventListener("click", () => {
+					const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+					const newTheme = currentTheme === "light" ? "dark" : "light";
+					
+					localStorage.setItem("theme", newTheme);
+					applyTheme();
+				});
+			}
+
+			// Initialize
+			applyTheme();
+			setupTheme();
+
+			// Listen for view transitions
+			document.addEventListener("astro:after-swap", () => {
+				applyTheme();
+				setupTheme();
+			});
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

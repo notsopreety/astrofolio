@@ -1,0 +1,137 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+// Sort by date descending
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf()
+);
+
+// Group posts by year
+const postsByYear: Record<number, typeof posts> = {};
+for (const post of sortedPosts) {
+  const year = post.data.pubDatetime.getFullYear();
+  if (!postsByYear[year]) {
+    postsByYear[year] = [];
+  }
+  postsByYear[year].push(post);
+}
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+---
+
+<Layout title="Archive | sawmer.dev">
+  <div class="archive-container">
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span class="separator">&raquo;</span>
+      <span>Archives</span>
+    </div>
+    <header class="archive-header">
+      <h1 class="archive-title">Archive</h1>
+      <p class="archive-desc">All the articles I've archived.</p>
+    </header>
+
+    <div class="archive-years">
+      {years.map((year) => (
+        <section class="archive-year-section">
+          <h2 class="year-heading">{year}</h2>
+          <ul class="archive-posts-list">
+            {postsByYear[year].map((post) => (
+              <li class="archive-post-item">
+                <time class="post-date" datetime={post.data.pubDatetime.toISOString()}>
+                  {formatDate(post.data.pubDatetime)}
+                </time>
+                <a href={`/blog/${post.id}`} class="post-title-link" transition:name={post.id}>
+                  {post.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .archive-container {
+    width: 100%;
+  }
+
+  .archive-header {
+    margin-bottom: 3rem;
+  }
+
+  .archive-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .archive-desc {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+  }
+
+  .archive-year-section {
+    margin-bottom: 3rem;
+  }
+
+  .year-heading {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    border-bottom: 1px dashed var(--card-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .archive-posts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .archive-post-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .post-title-link {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .post-title-link:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 4px;
+  }
+</style>
