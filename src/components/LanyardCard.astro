@@ -990,6 +990,9 @@ const decorUrl = user.avatar_decoration_data
     return `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
   }
 
+  // Track last-known profile fingerprint to avoid redundant profile fetches
+  let lastProfileFingerprint = "";
+
   function updateLiveStatus(data: any) {
     const status = data.discord_status;
     const user = data.discord_user;
@@ -1128,7 +1131,19 @@ const decorUrl = user.avatar_decoration_data
         }
       }
     }
-    fetchProfileDetails();
+
+    // Only re-fetch profile details when something profile-specific actually changed
+    const currentFingerprint = [
+      user?.avatar || "",
+      user?.avatar_decoration_data?.asset || "",
+      user?.banner_color || "",
+      status || "",
+    ].join("|");
+
+    if (currentFingerprint !== lastProfileFingerprint) {
+      lastProfileFingerprint = currentFingerprint;
+      fetchProfileDetails();
+    }
   }
 
   connectLanyard();
