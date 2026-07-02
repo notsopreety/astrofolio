@@ -100,7 +100,7 @@ const decorUrl = user.avatar_decoration_data
   </div>
 
   <!-- Single mascot element dynamically moved between cards -->
-  <img id="lanyard-mascot" src="/1.png" class="girl-mascot-img" style="display: none;" alt="Mascot" />
+  <div id="lanyard-mascot" class="girl-mascot-img" style="display: none;"></div>
 
   <!-- Playing Activity Card -->
   <fieldset class="activity-card" id="playing-card" style="display: none;">
@@ -713,7 +713,11 @@ const decorUrl = user.avatar_decoration_data
     bottom: calc(100% - 8px); /* Bottom of image sits on top card border */
     right: 4px;
     width: 72px;
-    height: auto;
+    height: 94px;
+    background-image: url('/1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom right;
     z-index: 10;
     pointer-events: none;
   }
@@ -755,6 +759,7 @@ const decorUrl = user.avatar_decoration_data
     
     .girl-mascot-img {
       width: 56px;
+      height: 73px;
       bottom: calc(100% - 6px);
       right: 2px;
     }
