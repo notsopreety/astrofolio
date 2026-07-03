@@ -304,6 +304,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
   }
 
   let giscusObserver: MutationObserver | null = null;
+  let giscusIntersectionObserver: IntersectionObserver | null = null;
 
   function setupGiscus() {
     const commentsContainer = document.querySelector(".giscus-container");
@@ -311,6 +312,24 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
 
     commentsContainer.innerHTML = "";
 
+    // Lazy load Giscus when container is in/near viewport
+    if (giscusIntersectionObserver) giscusIntersectionObserver.disconnect();
+    giscusIntersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Disconnect observer once loaded
+          giscusIntersectionObserver?.disconnect();
+          giscusIntersectionObserver = null;
+          
+          loadGiscusScript(commentsContainer);
+        }
+      });
+    }, { rootMargin: "200px" });
+
+    giscusIntersectionObserver.observe(commentsContainer);
+  }
+
+  function loadGiscusScript(commentsContainer: Element) {
     const theme = document.documentElement.getAttribute("data-theme") || "dark";
     const giscusTheme = theme === "dark" ? "transparent_dark" : "light";
 
