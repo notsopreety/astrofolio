@@ -33,7 +33,7 @@ posts.forEach(post => {
 
 const sortedTags = Array.from(tagCounts.entries())
   .map(([slug, info]) => ({ slug, ...info }))
-  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <Layout title="Tags | samirb.com.np">
@@ -45,7 +45,7 @@ const sortedTags = Array.from(tagCounts.entries())
     </div>
     <header class="blog-header">
       <h1 class="blog-title" transition:name="posts-title">Tags</h1>
-      <p class="blog-desc" transition:name="posts-desc">All the tags used in my articles.</p>
+      <p class="blog-desc" transition:name="posts-desc">All the tags used in posts.</p>
     </header>
 
     <ul class="tags-list">
@@ -54,7 +54,6 @@ const sortedTags = Array.from(tagCounts.entries())
           <a href={`/tags/${tag.slug}/`} class="tag-link">
             <span class="tag-hash">#</span>
             <span class="tag-name">{tag.name}</span>
-            <span class="tag-count">({tag.count})</span>
           </a>
         </li>
       ))}
@@ -89,7 +88,7 @@ const sortedTags = Array.from(tagCounts.entries())
   .tags-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.5rem 1.75rem;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -102,35 +101,25 @@ const sortedTags = Array.from(tagCounts.entries())
   .tag-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
+    gap: 0.35rem;
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: 1.15rem;
     color: var(--text-primary);
-    transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 6px;
+    transition: color 0.2s;
   }
 
   .tag-link:hover {
-    border-color: var(--accent-color);
-    background: rgba(255, 255, 255, 0.02);
-    transform: translateY(-1px);
+    color: var(--accent-color);
   }
 
   .tag-hash {
-    color: var(--accent-color);
-    font-weight: 600;
+    opacity: 0.8;
   }
 
   .tag-name {
     font-weight: 500;
-  }
-
-  .tag-count {
-    color: var(--text-muted);
-    font-size: 0.8rem;
   }
 </style>
