@@ -73,7 +73,7 @@ const decorUrl = user.avatar_decoration_data
         <span class="clan-badge-wrapper" id="clan-badge-container" title={clan && clan.identity_enabled ? `Clan: ${clan.tag}` : ""} style={clan && clan.identity_enabled ? "display: inline-flex;" : "display: none;"}>
           <span class="clan-badge">
             {clan?.badge ? (
-              <img id="clan-badge-icon" class="clan-badge-icon" src={`https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`} alt="" referrerpolicy="no-referrer" />
+              <img id="clan-badge-icon" class="clan-badge-icon" src="/badges/clan_badge.png" alt="" referrerpolicy="no-referrer" />
             ) : (
               <span class="heart-icon">💜</span>
             )}
@@ -84,9 +84,16 @@ const decorUrl = user.avatar_decoration_data
 
       <!-- Discord Badges -->
       <div class="badges-row" id="badges-container">
-        {badges.map((badge: any) => (
-          <img class="badge-icon" src={`https://cdn.discordapp.com/badge-icons/${badge.icon}.png`} alt={badge.description} title={badge.description} referrerpolicy="no-referrer" />
-        ))}
+        {badges.map((badge: any) => {
+          const localMap: Record<string, string> = {
+            "3aa41de486fa12454c3761e8e223442e": "/badges/hypesquad_house_3.png",
+            "6de6d34650760ba5551a79732e98ed60": "/badges/legacy_username.png",
+            "7d9ae358c8c5e118768335dbe68b4fb8": "/badges/quest_completed.png",
+            "83d8a1eb09a8d64e59233eec5d4d5c2d": "/badges/orb_profile_badge.png"
+          };
+          const src = localMap[badge.icon] || `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
+          return <img class="badge-icon" src={src} alt={badge.description} title={badge.description} referrerpolicy="no-referrer" />;
+        })}
       </div>
     </div>
 
@@ -827,7 +834,7 @@ const decorUrl = user.avatar_decoration_data
           }
           if (clanTag) clanTag.textContent = clan.tag;
           if (clanBadgeIcon && clan.badge) {
-            clanBadgeIcon.src = `https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`;
+            clanBadgeIcon.src = "/badges/clan_badge.png";
             clanBadgeIcon.style.display = "block";
           } else if (clanBadgeIcon) {
             clanBadgeIcon.style.display = "none";
@@ -839,9 +846,16 @@ const decorUrl = user.avatar_decoration_data
         // Update Badges Row
         const badgesContainer = document.getElementById("badges-container");
         if (badgesContainer && data.badges) {
-          badgesContainer.innerHTML = data.badges.map((badge: any) => 
-            `<img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" referrerpolicy="no-referrer" />`
-          ).join("");
+          const localMap: Record<string, string> = {
+            "3aa41de486fa12454c3761e8e223442e": "/badges/hypesquad_house_3.png",
+            "6de6d34650760ba5551a79732e98ed60": "/badges/legacy_username.png",
+            "7d9ae358c8c5e118768335dbe68b4fb8": "/badges/quest_completed.png",
+            "83d8a1eb09a8d64e59233eec5d4d5c2d": "/badges/orb_profile_badge.png"
+          };
+          badgesContainer.innerHTML = data.badges.map((badge: any) => {
+            const src = localMap[badge.icon] || `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
+            return `<img class="badge-icon" src="${src}" alt="${badge.description}" title="${badge.description}" referrerpolicy="no-referrer" />`;
+          }).join("");
         }
 
         // Update Avatar
@@ -1019,6 +1033,12 @@ const decorUrl = user.avatar_decoration_data
   function getAssetUrl(appId: string, assetId: string) {
     if (!assetId) return "";
     if (assetId.startsWith("mp:external/")) {
+      if (assetId.includes("https/")) {
+        return "https://" + assetId.split("https/")[1];
+      }
+      if (assetId.includes("http/")) {
+        return "http://" + assetId.split("http/")[1];
+      }
       return `https://media.discordapp.net/${assetId.replace("mp:", "")}`;
     }
     return `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
