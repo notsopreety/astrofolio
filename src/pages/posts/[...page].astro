@@ -25,7 +25,7 @@ function formatDate(date: Date) {
 
 <Layout title={`Posts - Page ${page.currentPage} | samirb.com.np`}>
   <div class="blog-container">
-    <div class="breadcrumb">
+    <div class="breadcrumb" transition:name="posts-breadcrumb">
       <a href="/">Home</a>
       <span class="separator">&raquo;</span>
       {page.lastPage > 1 ? (
@@ -35,8 +35,8 @@ function formatDate(date: Date) {
       )}
     </div>
     <header class="blog-header">
-      <h1 class="blog-title">Posts</h1>
-      <p class="blog-desc">All the articles I've posted.</p>
+      <h1 class="blog-title" transition:name="posts-title">Posts</h1>
+      <p class="blog-desc" transition:name="posts-desc">All the articles I've posted.</p>
     </header>
 
     <ul class="posts-list" transition:name="posts-list" transition:animate="fade">
