@@ -52,9 +52,9 @@ const decorUrl = user.avatar_decoration_data
     <div class="avatar-wrapper">
       <div class="avatar-decor-container">
         <div class="avatar-base">
-          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" referrerpolicy="no-referrer" />
+          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </div>
-        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} referrerpolicy="no-referrer" />
+        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} crossorigin="anonymous" referrerpolicy="no-referrer" />
         <span class="discord-status-dot offline" id="discord-status-dot"></span>
       </div>
     </div>
@@ -124,7 +124,7 @@ const decorUrl = user.avatar_decoration_data
     <legend class="card-header-label">Listening to Spotify</legend>
     <div class="activity-card-body">
       <div class="vinyl-disc">
-        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" referrerpolicy="no-referrer" />
+        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <div class="vinyl-hole"></div>
       </div>
       <div class="spotify-details">
