@@ -156,6 +156,10 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
         </div>
       </div>
 
+      <div class="giscus-wrapper" style="margin-top: 4rem; border-top: 1px dashed var(--card-border); padding-top: 3rem; margin-bottom: 3rem;">
+        <div class="giscus-container"></div>
+      </div>
+
       <div class="prev-next-section">
         {prevPost && (
           <a href={`/posts/${prevPost.id}`} class="prev-link">
@@ -178,10 +182,6 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
       </div>
     </footer>
   </article>
-
-  <div class="giscus-wrapper" style="margin-top: 4rem; border-top: 1px dashed var(--card-border); padding-top: 3rem;">
-    <div class="giscus-container"></div>
-  </div>
 
   <ReportModal postId={post.id} />
 </Layout>
