@@ -131,6 +131,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 				<nav id="site-nav" class="site-nav">
 					<a href="/" class:list={["nav-link", { active: currentPath === "/" }]}>Home</a>
 					<a href="/posts" class:list={["nav-link", { active: currentPath.startsWith("/posts") }]}>Posts</a>
+					<a href="/tags" class:list={["nav-link", { active: currentPath.startsWith("/tags") }]}>Tags</a>
 					<a href="/message" class:list={["nav-link", { active: currentPath.startsWith("/message") }]}>Message</a>
 					
 					<!-- Archive Box Icon Link -->
