@@ -773,6 +773,8 @@ const decorUrl = user.avatar_decoration_data
 
 <script>
   const USER_ID = "931511745284038696";
+  let currentAvatarHash = "";
+  let currentDecorAsset = "";
 
   let httpPollInterval: any = null;
   let profilePollInterval: any = null;
@@ -845,23 +847,29 @@ const decorUrl = user.avatar_decoration_data
         // Update Avatar
         const avatarImg = document.getElementById("discord-avatar") as HTMLImageElement;
         if (avatarImg && data.user) {
-          const ts = Date.now();
-          if (data.user.avatar) {
-            avatarImg.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${data.user.avatar}.webp?size=160&_t=${ts}`;
-          } else {
-            avatarImg.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+          const newAvatar = data.user.avatar || "";
+          if (newAvatar !== currentAvatarHash) {
+            currentAvatarHash = newAvatar;
+            if (newAvatar) {
+              avatarImg.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${newAvatar}.webp?size=160&_t=${Date.now()}`;
+            } else {
+              avatarImg.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+            }
           }
         }
 
         // Update Avatar Decoration
         const decorImg = document.getElementById("avatar-decoration") as HTMLImageElement;
         if (decorImg && data.user) {
-          if (data.user.avatar_decoration_data?.asset) {
-            const asset = data.user.avatar_decoration_data.asset;
-            decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?_t=${Date.now()}`;
-            decorImg.style.display = "block";
-          } else {
-            decorImg.style.display = "none";
+          const newDecor = data.user.avatar_decoration_data?.asset || "";
+          if (newDecor !== currentDecorAsset) {
+            currentDecorAsset = newDecor;
+            if (newDecor) {
+              decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${newDecor}.png?_t=${Date.now()}`;
+              decorImg.style.display = "block";
+            } else {
+              decorImg.style.display = "none";
+            }
           }
         }
 
