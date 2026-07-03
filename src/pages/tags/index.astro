@@ -1,0 +1,136 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+
+// Simple slugify function
+function slugify(text: string) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+}
+
+// Get unique tags and count how many posts use them
+const tagCounts = new Map<string, { name: string; count: number }>();
+posts.forEach(post => {
+  if (post.data.tags) {
+    post.data.tags.forEach(tag => {
+      const slug = slugify(tag);
+      const existing = tagCounts.get(slug);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        tagCounts.set(slug, { name: tag, count: 1 });
+      }
+    });
+  }
+});
+
+const sortedTags = Array.from(tagCounts.entries())
+  .map(([slug, info]) => ({ slug, ...info }))
+  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+---
+
+<Layout title="Tags | samirb.com.np">
+  <div class="blog-container">
+    <div class="breadcrumb" transition:name="posts-breadcrumb">
+      <a href="/">Home</a>
+      <span class="separator">&raquo;</span>
+      <span>Tags</span>
+    </div>
+    <header class="blog-header">
+      <h1 class="blog-title" transition:name="posts-title">Tags</h1>
+      <p class="blog-desc" transition:name="posts-desc">All the tags used in my articles.</p>
+    </header>
+
+    <ul class="tags-list">
+      {sortedTags.map(tag => (
+        <li class="tag-item">
+          <a href={`/tags/${tag.slug}/`} class="tag-link">
+            <span class="tag-hash">#</span>
+            <span class="tag-name">{tag.name}</span>
+            <span class="tag-count">({tag.count})</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .blog-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 50vh;
+  }
+
+  .blog-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-desc {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tag-item {
+    margin: 0;
+  }
+
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+
+  .tag-link:hover {
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.02);
+    transform: translateY(-1px);
+  }
+
+  .tag-hash {
+    color: var(--accent-color);
+    font-weight: 600;
+  }
+
+  .tag-name {
+    font-weight: 500;
+  }
+
+  .tag-count {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+</style>

@@ -3,6 +3,16 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import ReportModal from "../../components/ReportModal.astro";
 
+function slugify(text: string) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+}
+
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
   return posts.map((post) => ({
@@ -105,7 +115,9 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
       <div class="tags-row">
         <div class="tags-container">
           {post.data.tags && post.data.tags.map((tag) => (
-            <span class="tag-badge">#{tag}</span>
+            <a href={`/tags/${slugify(tag)}/`} class="tag-badge-link">
+              <span class="tag-badge">#{tag}</span>
+            </a>
           ))}
         </div>
         <button id="back-to-top-btn" class="back-to-top-btn">
@@ -893,6 +905,15 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
     gap: 0.5rem;
   }
 
+  .tag-badge-link {
+    text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+
+  .tag-badge-link:hover {
+    transform: translateY(-1px);
+  }
+
   .tag-badge {
     font-family: var(--font-mono);
     font-size: 0.85rem;
@@ -904,6 +925,12 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
     text-decoration: underline;
     text-decoration-style: dashed;
     text-underline-offset: 3px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .tag-badge-link:hover .tag-badge {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
   }
 
   .back-to-top-btn {
