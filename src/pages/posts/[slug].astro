@@ -179,6 +179,10 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
     </footer>
   </article>
 
+  <div class="giscus-wrapper" style="margin-top: 4rem; border-top: 1px dashed var(--card-border); padding-top: 3rem;">
+    <div class="giscus-container"></div>
+  </div>
+
   <ReportModal postId={post.id} />
 </Layout>
 
@@ -299,12 +303,68 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
     });
   }
 
+  let giscusObserver: MutationObserver | null = null;
+
+  function setupGiscus() {
+    const commentsContainer = document.querySelector(".giscus-container");
+    if (!commentsContainer) return;
+
+    commentsContainer.innerHTML = "";
+
+    const theme = document.documentElement.getAttribute("data-theme") || "dark";
+    const giscusTheme = theme === "dark" ? "transparent_dark" : "light";
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "notsopreety/astrofolio");
+    script.setAttribute("data-repo-id", "R_kgDOTLZMEw");
+    script.setAttribute("data-category", "Announcements");
+    script.setAttribute("data-category-id", "DIC_kwDOTLZMEw");
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute("data-theme", giscusTheme);
+    script.setAttribute("data-lang", "en");
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+
+    commentsContainer.appendChild(script);
+
+    // Watch for live theme toggle updates to keep Giscus in sync
+    if (giscusObserver) giscusObserver.disconnect();
+    giscusObserver = new MutationObserver(() => {
+      const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+      const targetTheme = currentTheme === "dark" ? "transparent_dark" : "light";
+      const iframe = document.querySelector("iframe.giscus-frame") as HTMLIFrameElement;
+      if (iframe) {
+        iframe.contentWindow?.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: targetTheme,
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    });
+
+    giscusObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+  }
+
   function init() {
     setupProgressBar();
     setupBackToTop();
     setupHeadingAnchors();
     setupCopyButtons();
     wrapMediaElements();
+    setupGiscus();
   }
 
   init();
