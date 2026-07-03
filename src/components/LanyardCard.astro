@@ -52,9 +52,9 @@ const decorUrl = user.avatar_decoration_data
     <div class="avatar-wrapper">
       <div class="avatar-decor-container">
         <div class="avatar-base">
-          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" />
+          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </div>
-        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} />
+        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} crossorigin="anonymous" referrerpolicy="no-referrer" />
         <span class="discord-status-dot offline" id="discord-status-dot"></span>
       </div>
     </div>
@@ -73,7 +73,7 @@ const decorUrl = user.avatar_decoration_data
         <span class="clan-badge-wrapper" id="clan-badge-container" title={clan && clan.identity_enabled ? `Clan: ${clan.tag}` : ""} style={clan && clan.identity_enabled ? "display: inline-flex;" : "display: none;"}>
           <span class="clan-badge">
             {clan?.badge ? (
-              <img id="clan-badge-icon" class="clan-badge-icon" src={`https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`} alt="" />
+              <img id="clan-badge-icon" class="clan-badge-icon" src={`https://cdn.discordapp.com/clan-badges/${clan.identity_guild_id}/${clan.badge}.png?size=40`} alt="" crossorigin="anonymous" referrerpolicy="no-referrer" />
             ) : (
               <span class="heart-icon">💜</span>
             )}
@@ -85,7 +85,7 @@ const decorUrl = user.avatar_decoration_data
       <!-- Discord Badges -->
       <div class="badges-row" id="badges-container">
         {badges.map((badge: any) => (
-          <img class="badge-icon" src={`https://cdn.discordapp.com/badge-icons/${badge.icon}.png`} alt={badge.description} title={badge.description} />
+          <img class="badge-icon" src={`https://cdn.discordapp.com/badge-icons/${badge.icon}.png`} alt={badge.description} title={badge.description} crossorigin="anonymous" referrerpolicy="no-referrer" />
         ))}
       </div>
     </div>
@@ -104,8 +104,8 @@ const decorUrl = user.avatar_decoration_data
     <legend class="card-header-label">Playing</legend>
     <div class="activity-card-body">
       <div class="activity-assets">
-        <img id="playing-large-image" class="large-image" src="" alt="" />
-        <img id="playing-small-image" class="small-image" src="" alt="" style="display: none;" />
+        <img id="playing-large-image" class="large-image" src="" alt="" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <img id="playing-small-image" class="small-image" src="" alt="" style="display: none;" crossorigin="anonymous" referrerpolicy="no-referrer" />
       </div>
       <div class="activity-details">
         <h4 id="playing-name">Game/Application</h4>
@@ -124,7 +124,7 @@ const decorUrl = user.avatar_decoration_data
     <legend class="card-header-label">Listening to Spotify</legend>
     <div class="activity-card-body">
       <div class="vinyl-disc">
-        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" />
+        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <div class="vinyl-hole"></div>
       </div>
       <div class="spotify-details">
@@ -840,7 +840,7 @@ const decorUrl = user.avatar_decoration_data
         const badgesContainer = document.getElementById("badges-container");
         if (badgesContainer && data.badges) {
           badgesContainer.innerHTML = data.badges.map((badge: any) => 
-            `<img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" />`
+            `<img class="badge-icon" src="https://cdn.discordapp.com/badge-icons/${badge.icon}.png" alt="${badge.description}" title="${badge.description}" crossorigin="anonymous" referrerpolicy="no-referrer" />`
           ).join("");
         }
 
@@ -1060,7 +1060,7 @@ const decorUrl = user.avatar_decoration_data
         if (customPresence.emoji) {
           if (customPresence.emoji.id) {
             const ext = customPresence.emoji.animated ? "gif" : "png";
-            emojiStr = `<img src="https://cdn.discordapp.com/emojis/${customPresence.emoji.id}.${ext}?size=24" style="height: 1.25em; vertical-align: bottom; margin-right: 0.25rem;" alt="" />`;
+            emojiStr = `<img src="https://cdn.discordapp.com/emojis/${customPresence.emoji.id}.${ext}?size=24" style="height: 1.25em; vertical-align: bottom; margin-right: 0.25rem;" alt="" crossorigin="anonymous" referrerpolicy="no-referrer" />`;
           } else {
             emojiStr = `${customPresence.emoji.name} `;
           }
