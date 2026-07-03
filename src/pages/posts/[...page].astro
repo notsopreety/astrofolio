@@ -28,10 +28,8 @@ function formatDate(date: Date) {
     <div class="breadcrumb">
       <a href="/">Home</a>
       <span class="separator">&raquo;</span>
-      {page.currentPage > 1 ? (
-        <a href="/posts">Posts</a>
-        <span class="separator">&raquo;</span>
-        <span>Page {page.currentPage}</span>
+      {page.lastPage > 1 ? (
+        <span>Posts (Page {page.currentPage})</span>
       ) : (
         <span>Posts</span>
       )}
@@ -41,7 +39,7 @@ function formatDate(date: Date) {
       <p class="blog-desc">All the articles I've posted.</p>
     </header>
 
-    <ul class="posts-list">
+    <ul class="posts-list" transition:name="posts-list" transition:animate="fade">
       {page.data.map((post) => (
         <li class="post-item">
           <a href={`/posts/${post.id}`} class="post-title-link">
@@ -226,5 +224,17 @@ function formatDate(date: Date) {
   .page-indicator {
     color: var(--text-primary);
     font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .pagination-nav {
+      gap: 1rem;
+      font-size: 0.85rem;
+      margin-top: 2rem;
+    }
+    .arrow-icon {
+      width: 1rem;
+      height: 1rem;
+    }
   }
 </style>
