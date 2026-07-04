@@ -1,46 +1,70 @@
-# Astro Starter Kit: Basics
+# Astrofolio
 
-```sh
-npm create astro@latest -- --template basics
-```
+A personal portfolio and blog website built with Astro and Vanilla CSS. It features real-time Discord presence tracking, dynamic view transitions, and a centralized configuration file for easy customization.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Features
 
-## 🚀 Project Structure
+- **Astro 5.0**: Fast build times and optimized static site generation.
+- **Discord Presence**: Live Discord profile card showing status and Spotify playback using WebSockets (via Lanyard API).
+- **View Transitions**: Seamless morphing animations across page navigations.
+- **Centralized Config**: A single configuration file controls all portfolio details, bio data, social links, and API tokens.
+- **Contact Forms**: direct messaging and post reporting integrated with Web3Forms (including honeypot protection).
+- **Markdown Blog**: Blog post collection with tagging and RSS feed generation.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Getting Started
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+### Prerequisites
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- Node.js (v18 or higher recommended)
+- pnpm (package manager)
 
-## 🧞 Commands
+### Installation
 
-All commands are run from the root of the project, from a terminal:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/notsopreety/astrofolio.git
+   cd astrofolio
+   ```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-## 👀 Want to learn more?
+3. Start the development server:
+   ```bash
+   pnpm run dev
+   ```
+   Open `http://localhost:4321` in your browser.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Customization
+
+All website content and configurations are managed in `src/config/portfolioData.ts`. 
+
+### Personal Information & Copy
+Modify `personalInfo` and `heroData` to customize the name, birthdate (used for automatic age and birthday countdown status), bio, and landing page introduction texts.
+
+### Integration Tokens
+Update these variables to wire up your APIs:
+- `discordId`: Your Discord user ID for the Lanyard integration.
+- `web3FormsAccessToken`: Your Web3Forms key for form submissions.
+
+### Tech Stack & Timeline
+- `socialsData` and `footerSocials`: Configure external links.
+- `skillsData`: Edit languages, backend frameworks, databases, and tools with their respective SVGs and brand colors.
+- `educationData` and `journeyData`: Manage your academic timeline and history.
+
+## Commands
+
+All commands are run from the project root:
+
+| Command | Action |
+| :--- | :--- |
+| `pnpm install` | Installs dependencies. |
+| `pnpm run dev` | Starts local dev server at `localhost:4321`. |
+| `pnpm run build` | Builds the production site to `/dist`. |
+| `pnpm run preview` | Previews the build locally. |
+
+## License
+
+MIT License.
