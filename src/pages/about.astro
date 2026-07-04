@@ -23,7 +23,7 @@ const monthName = months[birthday.getMonth()];
 const yearBirth = birthday.getFullYear();
 const formattedBirthdate = `${birthDay}${getOrdinalSuffix(birthDay)} ${monthName} ${yearBirth}`;
 
-function getDaysUntilBirthday(birthdateStr: string): string {
+function getBirthdayStatus(birthdateStr: string): { show: boolean; text: string } {
   const bday = new Date(birthdateStr);
   const today = new Date();
   
@@ -31,19 +31,40 @@ function getDaysUntilBirthday(birthdateStr: string): string {
   today.setHours(0, 0, 0, 0);
   currentYearBday.setHours(0, 0, 0, 0);
   
+  const oneDayMs = 1000 * 60 * 60 * 24;
+  
+  // Check if today is the birthday
+  if (today.getTime() === currentYearBday.getTime()) {
+    return { show: true, text: "Today! 🎉" };
+  }
+  
+  // Check if it's AFTER the birthday of this year (within 7 days after)
+  const diffTimeSinceBday = today.getTime() - currentYearBday.getTime();
+  const diffDaysSinceBday = Math.round(diffTimeSinceBday / oneDayMs);
+  
+  if (diffDaysSinceBday > 0 && diffDaysSinceBday <= 7) {
+    return { show: true, text: `${diffDaysSinceBday} ${diffDaysSinceBday === 1 ? 'day' : 'days'} ago` };
+  }
+  
+  // Otherwise, calculate countdown to next birthday
   let targetBday = currentYearBday;
   if (today.getTime() > currentYearBday.getTime()) {
     targetBday = new Date(today.getFullYear() + 1, bday.getMonth(), bday.getDate());
-  } else if (today.getTime() === currentYearBday.getTime()) {
-    return "Today! 🎉";
+    targetBday.setHours(0, 0, 0, 0);
   }
   
-  const diffTime = targetBday.getTime() - today.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return `${diffDays} days`;
+  const diffTimeToBday = targetBday.getTime() - today.getTime();
+  const diffDaysToBday = Math.round(diffTimeToBday / oneDayMs);
+  
+  // Only show if the birthday is in 50 days or less
+  if (diffDaysToBday <= 50) {
+    return { show: true, text: `${diffDaysToBday} days` };
+  }
+  
+  return { show: false, text: "" };
 }
 
-const birthdayCountdown = getDaysUntilBirthday(personalInfo.birthdate);
+const birthdayStatus = getBirthdayStatus(personalInfo.birthdate);
 
 const rootNode = educationData.find(node => node.id === 'highschool');
 const leftNode = educationData.find(node => node.id === 'selftaught');
@@ -77,10 +98,14 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
             </ul>
           </div>
 
-          <div class="birthday-countdown-bar">
-            <span class="countdown-label">Birthday in:</span>
-            <span class="countdown-value">{birthdayCountdown}</span>
-          </div>
+          {birthdayStatus.show && (
+            <div class="birthday-countdown-bar">
+              <span class="countdown-label">
+                {birthdayStatus.text.includes('ago') ? 'Birthday was:' : birthdayStatus.text.includes('Today') ? 'Birthday is:' : 'Birthday in:'}
+              </span>
+              <span class="countdown-value">{birthdayStatus.text}</span>
+            </div>
+          )}
         </fieldset>
       </section>
 
