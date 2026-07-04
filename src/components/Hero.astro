@@ -19,6 +19,8 @@
     </p>
     <p class="hero-tagline">
       I enjoy backend problem-solving, reverse-engineering web systems, and automating repetitive workflows.
+      <br />
+      <a href="/about" class="know-more-link">Know more about me &rarr;</a>
     </p>
   </div>
 </section>
@@ -89,6 +91,20 @@
     font-size: 0.95rem;
     color: var(--text-secondary);
     line-height: 1.6;
+  }
+
+  .know-more-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    display: inline-block;
+    border-bottom: 1.5px dotted var(--accent-color);
+    transition: opacity 0.2s ease;
+  }
+
+  .know-more-link:hover {
+    opacity: 0.85;
   }
 
   @media (max-width: 600px) {
