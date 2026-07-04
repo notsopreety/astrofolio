@@ -72,19 +72,20 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
 ---
 
 <Layout title="About Me | Samir Badaila" description="Learn more about Samir Badaila, a backend-focused developer from Kathmandu, Nepal. View his timeline, education, and development journey.">
-  <div class="about-page-container">
+  <div class="about-page-wrapper">
     <div class="breadcrumb" transition:name="posts-breadcrumb">
       <a href="/">Home</a>
       <span class="separator">&raquo;</span>
       <span>About</span>
     </div>
 
-    <header class="blog-header">
-      <h1 class="blog-title" transition:name="posts-title">About Me</h1>
-      <p class="blog-desc" transition:name="posts-desc">A little bit about who I am and what I do.</p>
+    <header class="about-header">
+      <h1 class="about-title" transition:name="posts-title">About</h1>
+      <p class="about-desc" transition:name="posts-desc">A little bit about my background, education, and journey.</p>
     </header>
 
-    <div class="about-top-grid">
+    <div class="about-page-container">
+      <div class="about-top-grid">
       <div class="bio-and-info">
         <section class="about-section">
           <fieldset class="about-fieldset">
@@ -226,21 +227,26 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
       </section>
     </div>
   </div>
+</div>
 </Layout>
 
 <style>
-  .blog-header {
+  .about-page-wrapper {
+    width: 100%;
+  }
+
+  .about-header {
     margin-bottom: 2rem;
   }
 
-  .blog-title {
+  .about-title {
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
   }
 
-  .blog-desc {
+  .about-desc {
     color: var(--text-muted);
     font-size: 1.05rem;
   }
