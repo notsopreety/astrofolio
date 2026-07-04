@@ -129,13 +129,19 @@ const decorUrl = user.avatar_decoration_data
   <fieldset class="activity-card" id="spotify-card" style="display: none;">
     <legend class="card-header-label">Listening to Spotify</legend>
     <div class="activity-card-body">
-      <div class="vinyl-disc">
-        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" width="60" height="60" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <div class="vinyl-hole"></div>
-      </div>
+      <a id="spotify-album-link" href="#" target="_blank" rel="noopener noreferrer" class="spotify-album-link" title="Listen to Album">
+        <div class="vinyl-disc">
+          <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" width="60" height="60" crossorigin="anonymous" referrerpolicy="no-referrer" />
+          <div class="vinyl-hole"></div>
+        </div>
+      </a>
       <div class="spotify-details">
-        <h3 id="spotify-song">Song Title</h3>
-        <p id="spotify-artists">Artists</p>
+        <h3>
+          <a id="spotify-track-link" href="#" target="_blank" rel="noopener noreferrer" class="spotify-link">Song Title</a>
+        </h3>
+        <p>
+          <a id="spotify-artist-link" href="#" target="_blank" rel="noopener noreferrer" class="spotify-link">Artists</a>
+        </p>
         <div class="spotify-playback">
           <span id="spotify-elapsed">0:00</span>
           <div class="spotify-bar">
@@ -622,6 +628,28 @@ const decorUrl = user.avatar_decoration_data
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .spotify-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .spotify-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+  }
+
+  .spotify-album-link {
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .spotify-album-link:hover {
+    transform: scale(1.05);
   }
 
   .spotify-playback {
@@ -1135,10 +1163,10 @@ const decorUrl = user.avatar_decoration_data
       if (playingCard) playingCard.style.display = "none";
     }
 
-    // Spotify card update
     const spotifyCard = document.getElementById("spotify-card");
-    const spotifySong = document.getElementById("spotify-song");
-    const spotifyArtists = document.getElementById("spotify-artists");
+    const spotifyTrackLink = document.getElementById("spotify-track-link") as HTMLAnchorElement;
+    const spotifyArtistLink = document.getElementById("spotify-artist-link") as HTMLAnchorElement;
+    const spotifyAlbumLink = document.getElementById("spotify-album-link") as HTMLAnchorElement;
     const spotifyArt = document.getElementById("spotify-art") as HTMLImageElement;
     const spotifyDuration = document.getElementById("spotify-duration");
 
@@ -1148,8 +1176,23 @@ const decorUrl = user.avatar_decoration_data
       isSpotify = true;
       spotifyData = data.spotify;
       if (spotifyCard) spotifyCard.style.display = "flex";
-      if (spotifySong) spotifySong.textContent = data.spotify.song;
-      if (spotifyArtists) spotifyArtists.textContent = data.spotify.artist;
+      
+      if (spotifyTrackLink) {
+        spotifyTrackLink.textContent = data.spotify.song;
+        spotifyTrackLink.href = data.spotify.track_id ? `https://open.spotify.com/track/${data.spotify.track_id}` : "#";
+      }
+      if (spotifyArtistLink) {
+        spotifyArtistLink.textContent = data.spotify.artist;
+        if (data.spotify.artist_ids && data.spotify.artist_ids.length > 0) {
+          spotifyArtistLink.href = `https://open.spotify.com/artist/${data.spotify.artist_ids[0]}`;
+        } else {
+          spotifyArtistLink.href = `https://open.spotify.com/search/${encodeURIComponent(data.spotify.artist)}`;
+        }
+      }
+      if (spotifyAlbumLink) {
+        spotifyAlbumLink.href = data.spotify.album_id ? `https://open.spotify.com/album/${data.spotify.album_id}` : "#";
+      }
+
       if (spotifyArt) {
         let artUrl = data.spotify.album_art_url;
         if (artUrl && artUrl.includes("ab67616d0000b273")) {
