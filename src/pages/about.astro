@@ -64,6 +64,14 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
               </div>
             )}
 
+            <!-- Connection lines (Pure CSS connectors, perfectly aligned and non-stretching) -->
+            <div class="tree-connectors" aria-hidden="true">
+              <div class="connector-stem"></div>
+              <div class="connector-bar">
+                <div class="connector-branch left-branch-line"></div>
+                <div class="connector-branch right-branch-line"></div>
+              </div>
+            </div>
 
             <!-- Branch column grid containing left/right nodes -->
             <div class="tree-branches">
@@ -194,6 +202,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     margin: 0 0 1.5rem 0;
   }
 
+  /* Education Cards */
   /* Education Tree Styles */
   .edu-tree {
     display: flex;
@@ -207,70 +216,61 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     width: 100%;
     max-width: 480px;
     z-index: 2;
-    position: relative;
   }
 
-  /* Vertical stem from root card extending down */
-  .tree-root::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
+  .tree-connectors {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .connector-stem {
     width: 2px;
     height: 20px;
     background: var(--accent-color);
   }
 
-  .tree-branches {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    width: 100%;
-    align-items: start;
-    margin-top: 20px; /* Space for connecting lines */
-    position: relative;
-  }
-
-  /* Horizontal connecting bar between columns */
-  .tree-branches::before {
-    content: '';
+  .connector-bar {
     position: absolute;
-    top: -20px;
+    top: 20px;
     left: 25%;
     right: 25%;
     height: 2px;
     background: var(--accent-color);
   }
 
+  .connector-branch {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 20px;
+  }
+
+  .connector-branch.left-branch-line {
+    left: 0;
+    background: var(--accent-color);
+  }
+
+  .connector-branch.right-branch-line {
+    right: 0;
+    border-left: 2px dashed var(--text-muted);
+  }
+
+  .tree-branches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    align-items: start;
+  }
+
   .tree-branch-col {
     display: flex;
     flex-direction: column;
     width: 100%;
-    position: relative;
-  }
-
-  /* Vertical stem for left child */
-  .left-branch::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    width: 2px;
-    height: 20px;
-    background: var(--accent-color);
-  }
-
-  /* Vertical stem for right child (dashed style for upcoming) */
-  .right-branch::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    width: 2px;
-    height: 20px;
-    background: linear-gradient(to bottom, var(--text-muted) 50%, transparent 50%);
-    background-size: 2px 8px;
   }
 
   .education-card {
@@ -332,8 +332,6 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
     font-size: 0.78rem;
     margin-bottom: 0.25rem;
   }
@@ -348,34 +346,15 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     font-weight: 600;
   }
 
-  .edu-duration {
-    font-size: 0.72rem;
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.15rem 0.4rem;
-    border-radius: 4px;
-    border: 1px solid var(--card-border);
-    background: rgba(255, 255, 255, 0.03);
+  .education-card.future .edu-badge {
+    background: rgba(156, 163, 175, 0.1);
     color: var(--text-secondary);
+    border-color: var(--text-secondary);
   }
 
-  .completed .edu-duration {
-    color: var(--accent-color);
-    background: rgba(129, 199, 132, 0.05);
-    border-color: rgba(129, 199, 132, 0.2);
-  }
-
-  .ongoing .edu-duration {
-    color: #60a5fa;
-    background: rgba(96, 165, 250, 0.05);
-    border-color: rgba(96, 165, 250, 0.2);
-  }
-
-  .upcoming .edu-duration {
-    color: var(--text-muted);
-    background: rgba(143, 143, 158, 0.05);
-    border-color: rgba(143, 143, 158, 0.2);
+  .edu-duration {
+    color: var(--text-secondary);
+    font-weight: 500;
   }
 
   .edu-title {
@@ -607,16 +586,13 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
   }
 
   @media (max-width: 768px) {
-    .tree-root::after,
-    .tree-branches::before,
-    .tree-branch-col::before {
-      display: none !important;
+    .tree-connectors {
+      display: none;
     }
 
     .tree-branches {
       grid-template-columns: 1fr;
       gap: 1.5rem;
-      margin-top: 1.5rem;
     }
 
     .edu-tree {
@@ -644,7 +620,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
       content: '';
       position: absolute;
       left: -20px;
-      top: 2.2rem;
+      top: 2rem;
       width: 10px;
       height: 10px;
       border-radius: 50%;
