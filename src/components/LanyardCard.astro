@@ -90,7 +90,15 @@ const decorUrl = user.avatar_decoration_data
       <!-- Discord Badges -->
       <div class="badges-row" id="badges-container">
         {badges.map((badge: any) => {
-          const src = `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
+          const localBadges = [
+            "3aa41de486fa12454c3761e8e223442e",
+            "6de6d34650760ba5551a79732e98ed60",
+            "7d9ae358c8c5e118768335dbe68b4fb8",
+            "83d8a1eb09a8d64e59233eec5d4d5c2d"
+          ];
+          const src = localBadges.includes(badge.icon)
+            ? `/${badge.icon}.png`
+            : `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
           return <img class="badge-icon" src={src} alt={badge.description} title={badge.description} referrerpolicy="no-referrer" />;
         })}
       </div>
@@ -849,7 +857,15 @@ const decorUrl = user.avatar_decoration_data
         const badgesContainer = document.getElementById("badges-container");
         if (badgesContainer && data.badges) {
           badgesContainer.innerHTML = data.badges.map((badge: any) => {
-            const src = `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
+            const localBadges = [
+              "3aa41de486fa12454c3761e8e223442e",
+              "6de6d34650760ba5551a79732e98ed60",
+              "7d9ae358c8c5e118768335dbe68b4fb8",
+              "83d8a1eb09a8d64e59233eec5d4d5c2d"
+            ];
+            const src = localBadges.includes(badge.icon)
+              ? `/${badge.icon}.png`
+              : `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
             return `<img class="badge-icon" src="${src}" alt="${badge.description}" title="${badge.description}" referrerpolicy="no-referrer" />`;
           }).join("");
         }
