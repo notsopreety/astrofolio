@@ -110,7 +110,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 			})();
 		</script>
 	</head>
-	<body>
+	<body data-discord-id={discordId}>
 		<header class="site-header">
 			<div class="header-container">
 				<a href="/" class="site-logo" transition:name="site-logo">
@@ -224,7 +224,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 			</div>
 		</footer>
 
-		<script define:vars={{ discordId }}>
+		<script>
 			function applyTheme() {
 				const stored = localStorage.getItem("theme");
 				const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -234,6 +234,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 				document.documentElement.classList.toggle("dark", theme === "dark");
 
 				if (theme === "dark") {
+					const discordId = document.body.getAttribute("data-discord-id") || "931511745284038696";
 					const discordAccent = localStorage.getItem("discord-accent") || (window as any).discordAccentColor;
 					if (discordAccent) {
 						document.documentElement.style.setProperty("--accent-color", discordAccent);
