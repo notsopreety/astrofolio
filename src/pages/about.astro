@@ -129,6 +129,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
             {rootNode && (
               <div class="tree-root">
                 <div class={`education-card ${rootNode.status}`}>
+                  <span class="edu-card-icon">{rootNode.icon}</span>
                   <div class="edu-header">
                     <span class="edu-badge">{rootNode.label}</span>
                     <span class="edu-duration">{rootNode.year ? `${rootNode.year} • ` : ""}{rootNode.status}</span>
@@ -155,6 +156,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
               {leftNode && (
                 <div class="tree-branch-col left-branch">
                   <div class={`education-card ${leftNode.status}`}>
+                    <span class="edu-card-icon">{leftNode.icon}</span>
                     <div class="edu-header">
                       <span class="edu-badge">{leftNode.label}</span>
                       <span class="edu-duration">{leftNode.year ? `${leftNode.year} • ` : ""}{leftNode.status}</span>
@@ -170,6 +172,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
               {rightNode && (
                 <div class="tree-branch-col right-branch">
                   <div class={`education-card ${rightNode.status}`}>
+                    <span class="edu-card-icon">{rightNode.icon}</span>
                     <div class="edu-header">
                       <span class="edu-badge">{rightNode.label}</span>
                       <span class="edu-duration">{rightNode.year ? `${rightNode.year} • ` : ""}{rightNode.status}</span>
@@ -366,7 +369,17 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    position: relative;
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .edu-card-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 1.4rem;
+    pointer-events: none;
+    z-index: 2;
   }
 
   .education-card:hover {
@@ -440,6 +453,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
   .edu-duration {
     color: var(--text-secondary);
     font-weight: 500;
+    margin-right: 2rem;
   }
 
   .edu-title {
