@@ -46,8 +46,8 @@ Modify `personalInfo` and `heroData` to customize the name, birthdate (used for 
 
 ### Integration Tokens
 Update these variables to wire up your APIs:
-- `discordId`: Your Discord user ID for the Lanyard integration.
-- `web3FormsAccessToken`: Your Web3Forms key for form submissions.
+- `discordId`: Your Discord user ID for the [Lanyard](https://github.com/phineas/lanyard) integration. **Note:** To enable live presence updates, your account must join the Lanyard Discord server at [discord.gg/lanyard](https://discord.gg/lanyard).
+- `web3FormsAccessToken`: Your access token for contact form submissions. Get your free key at [web3forms.com](https://web3forms.com).
 
 ### Tech Stack & Timeline
 - `socialsData` and `footerSocials`: Configure external links.
@@ -64,6 +64,11 @@ All commands are run from the project root:
 | `pnpm run dev` | Starts local dev server at `localhost:4321`. |
 | `pnpm run build` | Builds the production site to `/dist`. |
 | `pnpm run preview` | Previews the build locally. |
+
+## Credits
+
+- Discord presence is powered by [Lanyard](https://github.com/phineas/lanyard).
+- Email receive API is powered by [Web3Forms](https://web3forms.com).
 
 ## License
 
