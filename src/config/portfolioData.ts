@@ -206,7 +206,7 @@ export const educationData: EducationNode[] = [
   },
   {
     id: "bachelors",
-    label: "BSc. (Hons) CS / IT",
+    label: "Computer Engineering",
     title: "Bachelor's Degree",
     subtitle: "Upcoming / Planned",
     status: "upcoming",
