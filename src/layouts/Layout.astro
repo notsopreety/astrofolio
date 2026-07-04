@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { discordId, footerSocials } from '../config/portfolioData';
+import { discordId, footerSocials, lightModeAccentColor, darkModeAccentColor } from '../config/portfolioData';
 import '../styles/global.css';
 
 interface Props {
@@ -71,7 +71,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 		<ClientRouter />
 		
 		<!-- Theme Initialization to prevent flash of unstyled content -->
-		<script is:inline define:vars={{ discordId }}>
+		<script is:inline define:vars={{ discordId, lightModeAccentColor, darkModeAccentColor }}>
 			(function () {
 				if ('scrollRestoration' in history) {
 					history.scrollRestoration = 'manual';
@@ -98,19 +98,21 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 								localStorage.setItem("discord-accent", color);
 								document.documentElement.style.setProperty("--accent-color", color);
 							} else if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", "#81c784");
+								document.documentElement.style.setProperty("--accent-color", darkModeAccentColor);
 							}
 						})
 						.catch(() => {
 							if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", "#81c784");
+								document.documentElement.style.setProperty("--accent-color", darkModeAccentColor);
 							}
 						});
+				} else {
+					document.documentElement.style.setProperty("--accent-color", lightModeAccentColor);
 				}
 			})();
 		</script>
 	</head>
-	<body data-discord-id={discordId}>
+	<body data-discord-id={discordId} data-light-accent={lightModeAccentColor} data-dark-accent={darkModeAccentColor}>
 		<header class="site-header">
 			<div class="header-container">
 				<a href="/" class="site-logo" transition:name="site-logo">
@@ -233,6 +235,9 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 				document.documentElement.setAttribute("data-theme", theme);
 				document.documentElement.classList.toggle("dark", theme === "dark");
 
+				const lightAccent = document.body.getAttribute("data-light-accent") || "#006cac";
+				const darkAccent = document.body.getAttribute("data-dark-accent") || "#81c784";
+
 				if (theme === "dark") {
 					const discordId = document.body.getAttribute("data-discord-id") || "931511745284038696";
 					const discordAccent = localStorage.getItem("discord-accent") || (window as any).discordAccentColor;
@@ -247,16 +252,16 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 								localStorage.setItem("discord-accent", color);
 								document.documentElement.style.setProperty("--accent-color", color);
 							} else if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", "#81c784");
+								document.documentElement.style.setProperty("--accent-color", darkAccent);
 							}
 						})
 						.catch(() => {
 							if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", "#81c784");
+								document.documentElement.style.setProperty("--accent-color", darkAccent);
 							}
 						});
 				} else {
-					document.documentElement.style.removeProperty("--accent-color");
+					document.documentElement.style.setProperty("--accent-color", lightAccent);
 				}
 			}
 
