@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { discordId, footerSocials, lightModeAccentColor, darkModeAccentColor } from '../config/portfolioData';
+import { discordId, footerSocials, lightModeAccentColor, darkModeAccentColor, syncDiscordAccentInDark, syncDiscordAccentInLight } from '../config/portfolioData';
 import '../styles/global.css';
 
 interface Props {
@@ -71,7 +71,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 		<ClientRouter />
 		
 		<!-- Theme Initialization to prevent flash of unstyled content -->
-		<script is:inline define:vars={{ discordId, lightModeAccentColor, darkModeAccentColor }}>
+		<script is:inline define:vars={{ discordId, lightModeAccentColor, darkModeAccentColor, syncDiscordAccentInDark, syncDiscordAccentInLight }}>
 			(function () {
 				if ('scrollRestoration' in history) {
 					history.scrollRestoration = 'manual';
@@ -84,35 +84,42 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 				document.documentElement.setAttribute("data-theme", theme);
 				document.documentElement.classList.toggle("dark", theme === "dark");
 
-				if (theme === "dark") {
-					const discordAccent = localStorage.getItem("discord-accent");
-					if (discordAccent) {
-						document.documentElement.style.setProperty("--accent-color", discordAccent);
+				function applyAccentColor(targetTheme) {
+					const sync = targetTheme === "dark" ? syncDiscordAccentInDark : syncDiscordAccentInLight;
+					const fallback = targetTheme === "dark" ? darkModeAccentColor : lightModeAccentColor;
+
+					if (sync) {
+						const discordAccent = localStorage.getItem("discord-accent");
+						if (discordAccent) {
+							document.documentElement.style.setProperty("--accent-color", discordAccent);
+						}
+						// Fetch and cache the latest Discord accent color in the background
+						fetch(`https://dcdn.dstn.to/profile/${discordId}`)
+							.then(res => res.json())
+							.then(data => {
+								const color = data?.user?.banner_color;
+								if (color) {
+									localStorage.setItem("discord-accent", color);
+									document.documentElement.style.setProperty("--accent-color", color);
+								} else if (!discordAccent) {
+									document.documentElement.style.setProperty("--accent-color", fallback);
+								}
+							})
+							.catch(() => {
+								if (!discordAccent) {
+									document.documentElement.style.setProperty("--accent-color", fallback);
+								}
+							});
+					} else {
+						document.documentElement.style.setProperty("--accent-color", fallback);
 					}
-					// Fetch and cache the latest Discord accent color in the background
-					fetch(`https://dcdn.dstn.to/profile/${discordId}`)
-						.then(res => res.json())
-						.then(data => {
-							const color = data?.user?.banner_color;
-							if (color) {
-								localStorage.setItem("discord-accent", color);
-								document.documentElement.style.setProperty("--accent-color", color);
-							} else if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", darkModeAccentColor);
-							}
-						})
-						.catch(() => {
-							if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", darkModeAccentColor);
-							}
-						});
-				} else {
-					document.documentElement.style.setProperty("--accent-color", lightModeAccentColor);
 				}
+
+				applyAccentColor(theme);
 			})();
 		</script>
 	</head>
-	<body data-discord-id={discordId} data-light-accent={lightModeAccentColor} data-dark-accent={darkModeAccentColor}>
+	<body data-discord-id={discordId} data-light-accent={lightModeAccentColor} data-dark-accent={darkModeAccentColor} data-sync-dark={syncDiscordAccentInDark ? "true" : "false"} data-sync-light={syncDiscordAccentInLight ? "true" : "false"}>
 		<header class="site-header">
 			<div class="header-container">
 				<a href="/" class="site-logo" transition:name="site-logo">
@@ -237,8 +244,13 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 
 				const lightAccent = document.body.getAttribute("data-light-accent") || "#006cac";
 				const darkAccent = document.body.getAttribute("data-dark-accent") || "#81c784";
+				const syncDark = document.body.getAttribute("data-sync-dark") === "true";
+				const syncLight = document.body.getAttribute("data-sync-light") === "true";
 
-				if (theme === "dark") {
+				const sync = theme === "dark" ? syncDark : syncLight;
+				const fallback = theme === "dark" ? darkAccent : lightAccent;
+
+				if (sync) {
 					const discordId = document.body.getAttribute("data-discord-id") || "931511745284038696";
 					const discordAccent = localStorage.getItem("discord-accent") || (window as any).discordAccentColor;
 					if (discordAccent) {
@@ -252,16 +264,16 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 								localStorage.setItem("discord-accent", color);
 								document.documentElement.style.setProperty("--accent-color", color);
 							} else if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", darkAccent);
+								document.documentElement.style.setProperty("--accent-color", fallback);
 							}
 						})
 						.catch(() => {
 							if (!discordAccent) {
-								document.documentElement.style.setProperty("--accent-color", darkAccent);
+								document.documentElement.style.setProperty("--accent-color", fallback);
 							}
 						});
 				} else {
-					document.documentElement.style.setProperty("--accent-color", lightAccent);
+					document.documentElement.style.setProperty("--accent-color", fallback);
 				}
 			}
 

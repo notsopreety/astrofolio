@@ -20,6 +20,9 @@ export const web3FormsAccessToken = "9154ff52-22b2-4f18-a5fb-8bdf249f0d50";
 export const lightModeAccentColor = "#006cac";
 export const darkModeAccentColor = "#81c784";
 
+export const syncDiscordAccentInDark = true;
+export const syncDiscordAccentInLight = false;
+
 export interface FooterSocial {
   platform: 'github' | 'x' | 'linkedin' | 'email';
   url: string;
