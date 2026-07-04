@@ -543,6 +543,20 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     position: relative;
   }
 
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 16px;
+    width: 26px;
+    height: 18px;
+    border-bottom: 2px dotted var(--card-border);
+    border-left: 2px dotted var(--card-border);
+    border-bottom-left-radius: 8px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
   .timeline-badge-container {
     position: absolute;
     left: -2rem;
