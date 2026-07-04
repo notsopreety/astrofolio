@@ -14,6 +14,7 @@ export interface EducationNode {
   status: 'completed' | 'ongoing' | 'upcoming';
   desc: string;
   icon: string;
+  year?: string;
   branch?: 'main' | 'left' | 'right';
   connections?: string[]; // IDs of child nodes it connects to
 }
@@ -86,6 +87,7 @@ export const educationData: EducationNode[] = [
     status: "completed",
     desc: "Gained fundamental knowledge in algorithms, database design basics, and programming logic.",
     icon: "🏫",
+    year: "2025",
     branch: "main",
     connections: ["selftaught", "bachelors"]
   },
@@ -97,6 +99,7 @@ export const educationData: EducationNode[] = [
     status: "ongoing",
     desc: "Deep-diving into web protocols, server architecture, performance tuning, and scripting systems.",
     icon: "⚙️",
+    year: "2025 - Present",
     branch: "left"
   },
   {
@@ -107,6 +110,7 @@ export const educationData: EducationNode[] = [
     status: "upcoming",
     desc: "Planning to pursue advanced studies to deepen theoretical knowledge in systems engineering and distributed computing.",
     icon: "🎓",
+    year: "Future",
     branch: "right"
   }
 ];
