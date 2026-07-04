@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { web3FormsAccessToken } from "../config/portfolioData";
 ---
 
 <Layout title="Message | samirb.com.np">
@@ -26,7 +27,7 @@ import Layout from "../layouts/Layout.astro";
         </div>
 
         <form id="contact-form" class="contact-form">
-          <input type="hidden" name="access_key" value="9154ff52-22b2-4f18-a5fb-8bdf249f0d50" />
+          <input type="hidden" name="access_key" value={web3FormsAccessToken} />
           <input type="hidden" name="from_name" value="samirb.com.np Contact Form" />
           <input type="hidden" name="subject" value="New Contact Message from samirb.com.np" />
           

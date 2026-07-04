@@ -14,6 +14,22 @@ export const personalInfo: PersonalInfo = {
   bio: "I am a passionate MERN stack developer with a strong focus on backend development. My journey in programming began with a curiosity about how web applications work behind the scenes, which led me to specialize in creating efficient, scalable backend solutions. I enjoy solving complex problems, reverse-engineering web systems, and continuously learning new technologies to enhance my skills."
 };
 
+export const discordId = "931511745284038696";
+export const web3FormsAccessToken = "9154ff52-22b2-4f18-a5fb-8bdf249f0d50";
+
+export interface FooterSocial {
+  platform: 'github' | 'x' | 'linkedin' | 'email';
+  url: string;
+}
+
+export const footerSocials: FooterSocial[] = [
+  { platform: "github", url: "https://github.com/notsopreety" },
+  { platform: "x", url: "https://x.com/notsopreety" },
+  { platform: "linkedin", url: "https://www.linkedin.com/in/samirbadaila/" },
+  { platform: "email", url: "mailto:forapibysamir@gmail.com" }
+];
+
+
 export interface HeroData {
   statusText: string;
   titlePrefix: string;

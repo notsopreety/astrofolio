@@ -1,5 +1,6 @@
 ---
-const USER_ID = "931511745284038696";
+import { discordId } from '../config/portfolioData';
+const USER_ID = discordId;
 
 let initialProfileData = null;
 let fetchFailed = false;
@@ -35,7 +36,7 @@ const decorUrl = user.avatar_decoration_data
   : null;
 ---
 
-<div class="lanyard-sidebar-container" id="lanyard-sidebar-container" transition:persist="lanyard-card" style={fetchFailed ? "display: none;" : "display: flex;"}>
+<div class="lanyard-sidebar-container" id="lanyard-sidebar-container" data-user-id={USER_ID} transition:persist="lanyard-card" style={fetchFailed ? "display: none;" : "display: flex;"}>
   <!-- Main Profile Card -->
   <div class="discord-profile-card" id="discord-card" style={bannerColor ? `border-top: 6px solid ${bannerColor};` : ""}>
     <!-- Custom Status Chip -->
@@ -779,7 +780,8 @@ const decorUrl = user.avatar_decoration_data
 </style>
 
 <script>
-  const USER_ID = "931511745284038696";
+  const container = document.getElementById("lanyard-sidebar-container");
+  const USER_ID = container ? (container.getAttribute("data-user-id") || "931511745284038696") : "931511745284038696";
   let currentAvatarHash = "";
   let currentDecorAsset = "";
 

@@ -1,4 +1,6 @@
 ---
+import { web3FormsAccessToken } from '../config/portfolioData';
+
 interface Props {
   postId: string;
 }
@@ -24,7 +26,7 @@ const { postId } = Astro.props;
 
     <form id="report-form" class="report-form">
       <!-- Hidden Web3Forms fields -->
-      <input type="hidden" name="access_key" value="9154ff52-22b2-4f18-a5fb-8bdf249f0d50" />
+      <input type="hidden" name="access_key" value={web3FormsAccessToken} />
       <input type="hidden" name="from_name" value="Post Report System" />
       <input type="hidden" name="subject" id="report-subject" value="Content Report: spam" />
       
