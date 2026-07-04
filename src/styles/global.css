@@ -9,8 +9,8 @@
 :root {
   --bg-color: #111218; /* Material 3 Dark Surface */
   --text-primary: #e3e2e6; /* Material 3 Dark On-Surface */
-  --text-secondary: #c7c5d0; /* Material 3 Dark On-Surface Variant */
-  --text-muted: #8f8f9e;
+  --text-secondary: #dcdbe2; /* Improved contrast variant */
+  --text-muted: #a6a6b8; /* Improved contrast muted */
   
   --accent-color: #81c784; /* Soft Material Green */
   --accent-container: #1b351e; /* Material 3 Primary Container */
@@ -44,8 +44,8 @@
 [data-theme="light"] {
   --bg-color: #fdfdfd;
   --text-primary: #282728;
-  --text-secondary: #6b7280;
-  --text-muted: #8f8f9e;
+  --text-secondary: #4a505c; /* Improved contrast variant */
+  --text-muted: #5e5e6c; /* Improved contrast muted */
   
   --accent-color: #006cac; /* AstroPaper light accent blue */
   --accent-container: #e6e6e6;
