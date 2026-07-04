@@ -22,7 +22,7 @@ export const personalInfo: PersonalInfo = {
   bio: "I am a passionate MERN stack developer with a strong focus on backend development. My journey in programming began with a curiosity about how web applications work behind the scenes, which led me to specialize in creating efficient, scalable backend solutions. I enjoy solving complex problems, reverse-engineering web systems, and continuously learning new technologies to enhance my skills.",
   customFields: [
     { label: "Gender", value: "Male" },
-    { label: "Hobbies", value: "Coding, Reverse-Engineering, Automation" }
+    { label: "Hobbies", value: "Coding, Listening Music, Gaming" }
   ]
 };
 

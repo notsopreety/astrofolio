@@ -32,7 +32,7 @@ const avatarUrl = user.avatar
 const bannerColor = user.banner_color || null;
 
 const decorUrl = user.avatar_decoration_data
-  ? `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`
+  ? `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png?size=160`
   : null;
 ---
 
@@ -53,9 +53,9 @@ const decorUrl = user.avatar_decoration_data
     <div class="avatar-wrapper">
       <div class="avatar-decor-container">
         <div class="avatar-base">
-          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" crossorigin="anonymous" referrerpolicy="no-referrer" />
+          <img id="discord-avatar" class="avatar-img" src={avatarUrl} alt="Avatar" width="76" height="76" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </div>
-        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" style={decorUrl ? "display: block;" : "display: none;"} crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <img id="avatar-decoration" class="avatar-decor-img" src={decorUrl || ""} alt="" width="76" height="76" style={decorUrl ? "display: block;" : "display: none;"} crossorigin="anonymous" referrerpolicy="no-referrer" />
         <span class="discord-status-dot offline" id="discord-status-dot"></span>
       </div>
     </div>
@@ -112,8 +112,8 @@ const decorUrl = user.avatar_decoration_data
     <legend class="card-header-label">Playing</legend>
     <div class="activity-card-body">
       <div class="activity-assets">
-        <img id="playing-large-image" class="large-image" src="" alt="" referrerpolicy="no-referrer" />
-        <img id="playing-small-image" class="small-image" src="" alt="" style="display: none;" referrerpolicy="no-referrer" />
+        <img id="playing-large-image" class="large-image" src="" alt="" width="60" height="60" referrerpolicy="no-referrer" />
+        <img id="playing-small-image" class="small-image" src="" alt="" width="20" height="20" style="display: none;" referrerpolicy="no-referrer" />
       </div>
       <div class="activity-details">
         <h3 id="playing-name">Game/Application</h3>
@@ -132,7 +132,7 @@ const decorUrl = user.avatar_decoration_data
     <legend class="card-header-label">Listening to Spotify</legend>
     <div class="activity-card-body">
       <div class="vinyl-disc">
-        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <img id="spotify-art" class="spotify-art-img" src="" alt="Album Art" width="60" height="60" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <div class="vinyl-hole"></div>
       </div>
       <div class="spotify-details">
@@ -881,7 +881,7 @@ const decorUrl = user.avatar_decoration_data
           if (newDecor !== currentDecorAsset) {
             currentDecorAsset = newDecor;
             if (newDecor) {
-              decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${newDecor}.png?_t=${Date.now()}`;
+              decorImg.src = `https://cdn.discordapp.com/avatar-decoration-presets/${newDecor}.png?size=160&_t=${Date.now()}`;
               decorImg.style.display = "block";
             } else {
               decorImg.style.display = "none";
@@ -1041,13 +1041,8 @@ const decorUrl = user.avatar_decoration_data
   function getAssetUrl(appId: string, assetId: string) {
     if (!assetId) return "";
     if (assetId.startsWith("mp:external/")) {
-      if (assetId.includes("https/")) {
-        return "https://" + assetId.split("https/")[1];
-      }
-      if (assetId.includes("http/")) {
-        return "http://" + assetId.split("http/")[1];
-      }
-      return `https://media.discordapp.net/${assetId.replace("mp:", "")}`;
+      const cleanPath = assetId.replace("mp:external/", "");
+      return `https://media.discordapp.net/external/${cleanPath}?width=80&height=80`;
     }
     return `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png`;
   }
@@ -1161,7 +1156,13 @@ const decorUrl = user.avatar_decoration_data
       if (spotifyCard) spotifyCard.style.display = "flex";
       if (spotifySong) spotifySong.textContent = data.spotify.song;
       if (spotifyArtists) spotifyArtists.textContent = data.spotify.artist;
-      if (spotifyArt) spotifyArt.src = data.spotify.album_art_url;
+      if (spotifyArt) {
+        let artUrl = data.spotify.album_art_url;
+        if (artUrl && artUrl.includes("ab67616d0000b273")) {
+          artUrl = artUrl.replace("ab67616d0000b273", "ab67616d00001e02");
+        }
+        spotifyArt.src = artUrl;
+      }
 
       const durationMs = data.spotify.timestamps.end - data.spotify.timestamps.start;
       if (spotifyDuration) spotifyDuration.textContent = formatTime(durationMs);
