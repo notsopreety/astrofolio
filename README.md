@@ -1,7 +1,7 @@
 # Astrofolio
 
-[![GitHub stars](https://img.shields.io/github/stars/milancodess/universalDownloader?style=social)](https://github.com/milancodess/universalDownloader/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/milancodess/universalDownloader?style=social)](https://github.com/milancodess/universalDownloader/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/notsopreety/astrofolio?style=social)](https://github.com/notsopreety/astrofolio/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/notsopreety/astrofolio?style=social)](https://github.com/notsopreety/astrofolio/network/members)
 
 **Live Preview:** [samirb.com.np](http://samirb.com.np/)
 
@@ -11,6 +11,7 @@ A personal portfolio and blog website built with Astro and Vanilla CSS. It featu
 
 - **Astro 5.0**: Fast build times and optimized static site generation.
 - **Discord Presence**: Live Discord profile card showing status and Spotify playback using WebSockets (via Lanyard API).
+- **Material You UI Concepts**: Dynamic user interface theme colors generated on-the-fly from Discord's custom profile banner color.
 - **View Transitions**: Seamless morphing animations across page navigations.
 - **Centralized Config**: A single configuration file controls all portfolio details, bio data, social links, and API tokens.
 - **Contact Forms**: direct messaging and post reporting integrated with Web3Forms (including honeypot protection).
