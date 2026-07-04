@@ -9,7 +9,7 @@ import { heroData } from '../config/portfolioData';
       <span class="status-text">{heroData.statusText}</span>
     </div>
     <h1 class="hero-title">
-      {heroData.titlePrefix} <span class="text-gradient" transition:name="user-profile-name">{heroData.name}</span><img src="/emoji.webp" class="hero-animated-emoji" width="40" height="40" alt="animated emoji" />
+      {heroData.titlePrefix} <span class="text-gradient" transition:name="user-profile-name">{heroData.name}</span><img src="/emoji.webp" class="hero-animated-emoji" width="40" height="40" decoding="async" alt="animated emoji" />
     </h1>
     <p class="hero-subtitle" set:html={heroData.subtitle}></p>
     <div class="hero-meta-divider"></div>

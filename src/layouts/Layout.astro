@@ -60,6 +60,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 		<!-- Fonts Preloading -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="preconnect" href="https://media.discordapp.net" crossorigin />
 		<link rel="preload" href="/fonts/MinecraftTen-VGORe.woff" as="font" type="font/woff" crossorigin />
 		<!-- Google Fonts Asynchronous Loading -->
 		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" />
@@ -94,22 +95,24 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 							document.documentElement.style.setProperty("--accent-color", discordAccent);
 						}
 						// Fetch and cache the latest Discord accent color in the background
-						fetch(`https://dcdn.dstn.to/profile/${discordId}`)
-							.then(res => res.json())
-							.then(data => {
-								const color = data?.user?.banner_color;
-								if (color) {
-									localStorage.setItem("discord-accent", color);
-									document.documentElement.style.setProperty("--accent-color", color);
-								} else if (!discordAccent) {
-									document.documentElement.style.setProperty("--accent-color", fallback);
-								}
-							})
-							.catch(() => {
-								if (!discordAccent) {
-									document.documentElement.style.setProperty("--accent-color", fallback);
-								}
-							});
+						setTimeout(() => {
+							fetch(`https://dcdn.dstn.to/profile/${discordId}`)
+								.then(res => res.json())
+								.then(data => {
+									const color = data?.user?.banner_color;
+									if (color) {
+										localStorage.setItem("discord-accent", color);
+										document.documentElement.style.setProperty("--accent-color", color);
+									} else if (!discordAccent) {
+										document.documentElement.style.setProperty("--accent-color", fallback);
+									}
+								})
+								.catch(() => {
+									if (!discordAccent) {
+										document.documentElement.style.setProperty("--accent-color", fallback);
+									}
+								});
+						}, 300);
 					} else {
 						document.documentElement.style.setProperty("--accent-color", fallback);
 					}

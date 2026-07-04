@@ -26,7 +26,7 @@ export const personalInfo: PersonalInfo = {
   ]
 };
 
-export const discordId = "1043814866189832262";
+export const discordId = "931511745284038696";
 export const web3FormsAccessToken = "9154ff52-22b2-4f18-a5fb-8bdf249f0d50";
 
 export const lightModeAccentColor = "#006cac";
