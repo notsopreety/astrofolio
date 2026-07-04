@@ -101,26 +101,50 @@ const journey = [
         <fieldset class="about-fieldset">
           <legend class="about-legend">Education</legend>
           
-          <div class="education-cards">
-            <!-- Entry 1 -->
-            <div class="education-card">
-              <div class="edu-header">
-                <span class="edu-badge">+2 Computer Science</span>
-                <span class="edu-duration">Completed</span>
-              </div>
-              <h3 class="edu-title">High School Graduation</h3>
-              <p class="edu-faculty">Management Faculty</p>
-              <p class="edu-desc">Gained fundamental knowledge in algorithms, database design basics, and programming logic.</p>
+          <div class="education-tree">
+            <!-- Center branch lines (visible on desktop) -->
+            <div class="tree-canvas-wrapper">
+              <svg class="tree-canvas" viewBox="0 0 100 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Main trunk -->
+                <path d="M 50,0 L 50,200" class="tree-path trunk" />
+                <!-- Left branch to Completed Card -->
+                <path d="M 50,60 Q 25,60 10,75" class="tree-path branch branch-left" />
+                <!-- Right branch to Future Card -->
+                <path d="M 50,140 Q 75,140 90,155" class="tree-path branch branch-right" />
+                
+                <!-- Joint dots -->
+                <circle cx="50" cy="60" r="4" class="tree-dot jointcompleted" />
+                <circle cx="50" cy="140" r="4" class="tree-dot jointfuture" />
+                
+                <!-- End indicators -->
+                <circle cx="10" cy="75" r="5" class="tree-dot end-left" />
+                <circle cx="90" cy="155" r="5" class="tree-dot end-right" />
+              </svg>
             </div>
             
-            <!-- Entry 2 (Further/Future Education Placeholder) -->
-            <div class="education-card future">
-              <div class="edu-header">
-                <span class="edu-badge">Bachelor's Degree</span>
-                <span class="edu-duration">Upcoming / Planned</span>
+            <div class="tree-cards-container">
+              <!-- Completed Card -->
+              <div class="education-card completed-node">
+                <div class="edu-header">
+                  <span class="edu-badge">+2 Computer Science</span>
+                  <span class="edu-duration">Completed</span>
+                </div>
+                <h3 class="edu-title">High School Graduation</h3>
+                <p class="edu-faculty">Management Faculty</p>
+                <p class="edu-desc">Gained fundamental knowledge in algorithms, database design basics, and programming logic.</p>
               </div>
-              <h3 class="edu-title">BSc. (Hons) in Computer Science / IT</h3>
-              <p class="edu-desc">Planning to pursue advanced studies to deepen theoretical knowledge in systems engineering, security, and distributed computing architectures.</p>
+              
+              <div class="tree-space"></div>
+
+              <!-- Future Card -->
+              <div class="education-card future-node future">
+                <div class="edu-header">
+                  <span class="edu-badge">Bachelor's Degree</span>
+                  <span class="edu-duration">Upcoming / Planned</span>
+                </div>
+                <h3 class="edu-title">BSc. (Hons) in Computer Science / IT</h3>
+                <p class="edu-desc">Planning to pursue advanced studies to deepen theoretical knowledge in systems engineering, security, and distributed computing architectures.</p>
+              </div>
             </div>
           </div>
         </fieldset>
@@ -219,11 +243,92 @@ const journey = [
     margin: 0 0 1.5rem 0;
   }
 
-  /* Education Cards */
-  .education-cards {
+  /* Education Tree Layout */
+  .education-tree {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .tree-canvas-wrapper {
+    display: none; /* Hide on mobile/stacked layouts by default */
+  }
+
+  @media (min-width: 768px) {
+    .education-tree {
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+    }
+
+    .tree-canvas-wrapper {
+      display: block;
+      grid-column: 1;
+      height: 380px;
+      position: relative;
+    }
+
+    .tree-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .tree-path {
+      stroke-width: 3px;
+      stroke-linecap: round;
+    }
+
+    .tree-path.trunk {
+      stroke: var(--card-border);
+    }
+
+    .tree-path.branch-left {
+      stroke: var(--accent-color);
+      filter: drop-shadow(0 0 4px rgba(129, 199, 132, 0.4));
+    }
+
+    .tree-path.branch-right {
+      stroke: var(--text-muted);
+      stroke-dasharray: 4px;
+    }
+
+    .tree-dot {
+      stroke-width: 3px;
+      fill: var(--bg-color);
+    }
+
+    .tree-dot.jointcompleted {
+      stroke: var(--accent-color);
+      fill: var(--accent-color);
+    }
+
+    .tree-dot.jointfuture {
+      stroke: var(--text-muted);
+      fill: var(--text-muted);
+    }
+
+    .tree-dot.end-left {
+      stroke: var(--accent-color);
+      fill: var(--bg-color);
+    }
+
+    .tree-dot.end-right {
+      stroke: var(--text-muted);
+      fill: var(--bg-color);
+    }
+
+    .tree-cards-container {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 380px;
+      padding: 1rem 0;
+    }
+
+    .tree-space {
+      height: 40px;
+    }
   }
 
   .education-card {
@@ -506,9 +611,5 @@ const journey = [
     }
   }
 
-  @media (max-width: 600px) {
-    .education-cards {
-      grid-template-columns: 1fr;
-    }
-  }
+
 </style>
