@@ -12,7 +12,7 @@ interface Props {
 const { 
 	title = "Samir Badaila | Backend Developer",
 	description = "Personal website and blog of Samir Badaila, a backend developer based in Nepal. I build modular APIs, reverse-engineer web protocols, and automate processes.",
-	ogImage = "/default-og.png"
+	ogImage = "/og-image.png"
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
@@ -27,7 +27,8 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://samirb.com.np').href;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		
 		<!-- Canonical URL -->
