@@ -73,6 +73,17 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
 
 <Layout title="About Me | Samir Badaila" description="Learn more about Samir Badaila, a backend-focused developer from Kathmandu, Nepal. View his timeline, education, and development journey.">
   <div class="about-page-container">
+    <div class="breadcrumb" transition:name="posts-breadcrumb">
+      <a href="/">Home</a>
+      <span class="separator">&raquo;</span>
+      <span>About</span>
+    </div>
+
+    <header class="blog-header">
+      <h1 class="blog-title" transition:name="posts-title">About Me</h1>
+      <p class="blog-desc" transition:name="posts-desc">A little bit about who I am and what I do.</p>
+    </header>
+
     <div class="about-top-grid">
       <div class="bio-and-info">
         <section class="about-section">
@@ -218,6 +229,22 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
 </Layout>
 
 <style>
+  .blog-header {
+    margin-bottom: 2rem;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-desc {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+  }
+
   .about-page-container {
     display: flex;
     flex-direction: column;

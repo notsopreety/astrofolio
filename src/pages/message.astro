@@ -4,15 +4,15 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Message | samirb.com.np">
   <div class="message-container">
-    <div class="breadcrumb">
+    <div class="breadcrumb" transition:name="posts-breadcrumb">
       <a href="/">Home</a>
       <span class="separator">&raquo;</span>
       <span>Message</span>
     </div>
 
     <header class="message-header">
-      <h1 class="message-title">Message</h1>
-      <p class="message-desc">Send me a message directly.</p>
+      <h1 class="message-title" transition:name="posts-title">Message</h1>
+      <p class="message-desc" transition:name="posts-desc">Send me a message directly.</p>
     </header>
 
     <div class="message-content">

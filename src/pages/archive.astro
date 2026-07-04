@@ -32,14 +32,14 @@ function formatDate(date: Date) {
 
 <Layout title="Archive | samirb.com.np">
   <div class="archive-container">
-    <div class="breadcrumb">
+    <div class="breadcrumb" transition:name="posts-breadcrumb">
       <a href="/">Home</a>
       <span class="separator">&raquo;</span>
       <span>Archives</span>
     </div>
     <header class="archive-header">
-      <h1 class="archive-title">Archive</h1>
-      <p class="archive-desc">All the articles I've archived.</p>
+      <h1 class="archive-title" transition:name="posts-title">Archive</h1>
+      <p class="archive-desc" transition:name="posts-desc">All the articles I've archived.</p>
     </header>
 
     <div class="archive-years">
