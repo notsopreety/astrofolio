@@ -74,6 +74,7 @@ All commands are run from the project root:
 ## Credits
 
 - Discord presence is powered by [Lanyard](https://github.com/phineas/lanyard).
+- Discord profile API thanks to [Dustin Rouillard](https://dstn.to/).
 - Email receive API is powered by [Web3Forms](https://web3forms.com).
 
 ## Author
