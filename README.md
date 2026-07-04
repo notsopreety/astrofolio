@@ -1,5 +1,8 @@
 # Astrofolio
 
+[![GitHub stars](https://img.shields.io/github/stars/milancodess/universalDownloader?style=social)](https://github.com/milancodess/universalDownloader/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/milancodess/universalDownloader?style=social)](https://github.com/milancodess/universalDownloader/network/members)
+
 A personal portfolio and blog website built with Astro and Vanilla CSS. It features real-time Discord presence tracking, dynamic view transitions, and a centralized configuration file for easy customization.
 
 ## Features
@@ -69,6 +72,10 @@ All commands are run from the project root:
 
 - Discord presence is powered by [Lanyard](https://github.com/phineas/lanyard).
 - Email receive API is powered by [Web3Forms](https://web3forms.com).
+
+## Author
+
+- **Samir Badaila** - [@notsopreety](https://github.com/notsopreety)
 
 ## License
 
