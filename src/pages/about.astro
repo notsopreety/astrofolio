@@ -234,12 +234,14 @@ const journey = [
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   .education-card:hover {
     border-color: var(--accent-color);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(145deg, var(--card-bg), rgba(129, 199, 132, 0.02));
   }
 
   .education-card.future {
@@ -302,6 +304,14 @@ const journey = [
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .info-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(145deg, var(--card-bg), rgba(129, 199, 132, 0.02));
   }
 
   .info-card-title {
@@ -348,15 +358,16 @@ const journey = [
   }
 
   .info-link {
-    color: var(--text-primary);
+    color: var(--accent-color);
     text-decoration: none;
-    border-bottom: 1px dotted var(--text-secondary);
-    transition: color 0.2s ease;
+    transition: opacity 0.2s ease;
   }
 
   .info-link:hover {
-    color: var(--accent-color);
-    border-bottom-color: var(--accent-color);
+    opacity: 0.85;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 6px;
   }
 
   /* Timeline / Journey styles */
@@ -397,9 +408,10 @@ const journey = [
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--bg-primary);
+    background: var(--bg-color);
     border: 3px solid var(--accent-color);
     z-index: 2;
+    box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.15), 0 0 10px rgba(129, 199, 132, 0.4);
   }
 
   .timeline-icon-box {
@@ -411,12 +423,14 @@ const journey = [
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 1.25rem;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   .timeline-content-card:hover {
     border-color: var(--accent-color);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(145deg, var(--card-bg), rgba(129, 199, 132, 0.02));
   }
 
   .timeline-header {
