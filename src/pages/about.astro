@@ -375,11 +375,32 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
 
   .edu-card-icon {
     position: absolute;
-    top: 1rem;
-    right: 1.25rem;
-    font-size: 1.4rem;
+    top: -12px;
+    right: -12px;
+    background: var(--bg-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    z-index: 10;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
     pointer-events: none;
-    z-index: 2;
+  }
+
+  .education-card.completed .edu-card-icon {
+    border-color: var(--accent-color);
+  }
+
+  .education-card.ongoing .edu-card-icon {
+    border-color: #60a5fa;
+  }
+
+  .education-card.upcoming .edu-card-icon {
+    border-color: var(--text-muted);
   }
 
   .education-card:hover {
@@ -453,7 +474,6 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
   .edu-duration {
     color: var(--text-secondary);
     font-weight: 500;
-    margin-right: 2rem;
   }
 
   .edu-title {
