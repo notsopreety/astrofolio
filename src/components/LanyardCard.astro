@@ -903,11 +903,17 @@ const decorUrl = user.avatar_decoration_data
 
           if (color) {
             discordCard.style.borderTop = `6px solid ${color}`;
-            document.documentElement.style.setProperty("--accent-color", color);
+            const isDark = document.documentElement.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark";
+            if (isDark) {
+              document.documentElement.style.setProperty("--accent-color", color);
+            }
             localStorage.setItem("discord-accent", color);
           } else {
             discordCard.style.borderTop = "";
-            document.documentElement.style.setProperty("--accent-color", "#81c784");
+            const isDark = document.documentElement.classList.contains("dark") || document.documentElement.getAttribute("data-theme") === "dark";
+            if (isDark) {
+              document.documentElement.style.setProperty("--accent-color", "#81c784");
+            }
             localStorage.setItem("discord-accent", "#81c784");
           }
         }
