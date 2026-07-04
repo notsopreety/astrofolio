@@ -1,24 +1,23 @@
 ---
+import { heroData } from '../config/portfolioData';
 ---
 
 <section class="hero-section">
   <div class="hero-content">
     <div class="status-badge">
       <span class="status-dot"></span>
-      <span class="status-text">Open to Backend Projects & APIs</span>
+      <span class="status-text">{heroData.statusText}</span>
     </div>
     <h1 class="hero-title">
-      Hi, I'm <span class="text-gradient" transition:name="user-profile-name">Samir Badaila</span><img src="/emoji.webp" class="hero-animated-emoji" width="40" height="40" alt="animated emoji" />
+      {heroData.titlePrefix} <span class="text-gradient" transition:name="user-profile-name">{heroData.name}</span><img src="/emoji.webp" class="hero-animated-emoji" width="40" height="40" alt="animated emoji" />
     </h1>
-    <p class="hero-subtitle">
-      Backend-focused developer from <strong>Nepal 🇳🇵</strong>.
-    </p>
+    <p class="hero-subtitle" set:html={heroData.subtitle}></p>
     <div class="hero-meta-divider"></div>
     <p class="hero-description">
-      I build reliable APIs, automation systems, and data-driven backend services with a focus on performance, maintainability, and real-world usage.
+      {heroData.description}
     </p>
     <p class="hero-tagline">
-      I enjoy backend problem-solving, reverse-engineering web systems, and automating repetitive workflows.
+      <Fragment set:html={heroData.tagline} />
       <br />
       <a href="/about" class="know-more-link">Know more about me &rarr;</a>
     </p>
