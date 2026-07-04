@@ -108,6 +108,16 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
                 <li><span class="info-label">Born:</span> <span>{formattedBirthdate} ({age} Y/O)</span></li>
                 <li><span class="info-label">Location:</span> <span>{personalInfo.location}</span></li>
                 <li><span class="info-label">Email:</span> <a href={`mailto:${personalInfo.email}`} class="info-link">{personalInfo.email}</a></li>
+                {personalInfo.customFields && personalInfo.customFields.map(field => (
+                  <li>
+                    <span class="info-label">{field.label}:</span>
+                    {field.isLink ? (
+                      <a href={`${field.linkPrefix || ''}${field.value}`} target="_blank" rel="noopener noreferrer" class="info-link">{field.value}</a>
+                    ) : (
+                      <span>{field.value}</span>
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
 

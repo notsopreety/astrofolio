@@ -1,9 +1,17 @@
+export interface PersonalInfoField {
+  label: string;
+  value: string;
+  isLink?: boolean;
+  linkPrefix?: string;
+}
+
 export interface PersonalInfo {
   name: string;
   birthdate: string; // "YYYY-MM-DD"
   location: string;
   email: string;
   bio: string;
+  customFields?: PersonalInfoField[];
 }
 
 export const personalInfo: PersonalInfo = {
@@ -11,14 +19,18 @@ export const personalInfo: PersonalInfo = {
   birthdate: "2006-08-11",
   location: "Kathmandu, Nepal",
   email: "itssamir444@gmail.com",
-  bio: "I am a passionate MERN stack developer with a strong focus on backend development. My journey in programming began with a curiosity about how web applications work behind the scenes, which led me to specialize in creating efficient, scalable backend solutions. I enjoy solving complex problems, reverse-engineering web systems, and continuously learning new technologies to enhance my skills."
+  bio: "I am a passionate MERN stack developer with a strong focus on backend development. My journey in programming began with a curiosity about how web applications work behind the scenes, which led me to specialize in creating efficient, scalable backend solutions. I enjoy solving complex problems, reverse-engineering web systems, and continuously learning new technologies to enhance my skills.",
+  customFields: [
+    { label: "Gender", value: "Male" },
+    { label: "Hobbies", value: "Coding, Reverse-Engineering, Automation" }
+  ]
 };
 
 export const discordId = "931511745284038696";
 export const web3FormsAccessToken = "9154ff52-22b2-4f18-a5fb-8bdf249f0d50";
 
 export const lightModeAccentColor = "#006cac";
-export const darkModeAccentColor = "#81c784";
+export const darkModeAccentColor = "#c78196";
 
 export const syncDiscordAccentInDark = true;
 export const syncDiscordAccentInLight = false;
