@@ -550,6 +550,13 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     color: var(--text-primary);
   }
 
+  .info-list li > :not(.info-label) {
+    text-align: right;
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+  }
+
   .info-label {
     color: var(--text-secondary);
     font-weight: 500;
@@ -757,6 +764,10 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
     .info-list li {
       flex-direction: column;
       gap: 0.2rem;
+    }
+
+    .info-list li > :not(.info-label) {
+      text-align: left;
     }
   }
 
