@@ -19,7 +19,6 @@ export interface JourneyItem {
   title: string;
   description: string;
   type: 'education' | 'project' | 'work' | 'achievement';
-  icon: string;
 }
 
 export interface EducationNode {
@@ -29,7 +28,6 @@ export interface EducationNode {
   subtitle?: string;
   status: 'completed' | 'ongoing' | 'upcoming';
   desc: string;
-  icon: string;
   year?: string;
   branch?: 'main' | 'left' | 'right';
   connections?: string[]; // IDs of child nodes it connects to
@@ -40,57 +38,37 @@ export const journeyData: JourneyItem[] = [
     year: "2020",
     title: "Started Learning Web Development",
     description: "Began my journey into web development with HTML, CSS, and JavaScript fundamentals.",
-    type: "education",
-    icon: "📖"
+    type: "education"
   },
   {
     year: "2021",
     title: "First React Project",
     description: "Built my first React application, a task management system with basic CRUD functionality.",
-    type: "project",
-    icon: "💻"
+    type: "project"
   },
   {
     year: "2021",
     title: "Learned Node.js & Express",
     description: "Expanded my skills to backend development with Node.js and Express, building RESTful APIs.",
-    type: "education",
-    icon: "📖"
-  },
-  {
-    year: "2022",
-    title: "First Freelance Project",
-    description: "Completed my first paid freelance project, an e-commerce website for a local business.",
-    type: "work",
-    icon: "💼"
+    type: "education"
   },
   {
     year: "2022",
     title: "MongoDB Certification",
     description: "Earned MongoDB certification, deepening my knowledge of NoSQL database design and optimization.",
-    type: "achievement",
-    icon: "🏆"
+    type: "achievement"
   },
   {
     year: "2023",
-    title: "Full-Stack E-Commerce Platform",
-    description: "Developed a complete e-commerce platform with user authentication, payment processing, and admin dashboard.",
-    type: "project",
-    icon: "💻"
-  },
-  {
-    year: "2023",
-    title: "Junior Developer Position",
-    description: "Secured a position as a Junior MERN Stack Developer at a tech startup, working on innovative web applications.",
-    type: "work",
-    icon: "💼"
+    title: "Worked on Autonomous Bot Project",
+    description: "Developed some cool Chatbot project on Node.js for telegram, discord and other platforms.",
+    type: "project"
   },
   {
     year: "Present",
     title: "Continuous Learning & Growth",
     description: "Constantly expanding my skills with new technologies and frameworks while building meaningful projects.",
-    type: "education",
-    icon: "🚀"
+    type: "education"
   }
 ];
 
@@ -102,7 +80,6 @@ export const educationData: EducationNode[] = [
     subtitle: "Nepal Kasthamandap SS (Management Faculty)",
     status: "completed",
     desc: "Gained fundamental knowledge in algorithms, database design basics, programming logic and management related concepts.",
-    icon: "🏫",
     year: "2025",
     branch: "main",
     connections: ["selftaught", "bachelors"]
@@ -114,7 +91,6 @@ export const educationData: EducationNode[] = [
     subtitle: "Reverse-Engineering & Automation",
     status: "ongoing",
     desc: "Deep-diving into web protocols, server architecture, performance tuning, and scripting systems.",
-    icon: "⚙️",
     year: "2025 - Present",
     branch: "left"
   },
@@ -125,7 +101,6 @@ export const educationData: EducationNode[] = [
     subtitle: "Upcoming / Planned",
     status: "upcoming",
     desc: "Planning to pursue advanced studies to deepen theoretical knowledge in systems engineering and distributed computing.",
-    icon: "🎓",
     year: "Future",
     branch: "right"
   }
