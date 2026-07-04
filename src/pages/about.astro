@@ -104,7 +104,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
                 Personal Info
               </h3>
               <ul class="info-list">
-                <li><span class="info-label">Name:</span> <span class="highlight">{personalInfo.name}</span></li>
+                <li><span class="info-label">Name:</span> <span class="highlight" transition:name="user-profile-name">{personalInfo.name}</span></li>
                 <li><span class="info-label">Born:</span> <span>{formattedBirthdate} ({age} Y/O)</span></li>
                 <li><span class="info-label">Location:</span> <span>{personalInfo.location}</span></li>
                 <li><span class="info-label">Email:</span> <a href={`mailto:${personalInfo.email}`} class="info-link">{personalInfo.email}</a></li>
