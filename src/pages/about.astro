@@ -17,7 +17,7 @@ function getOrdinalSuffix(day: number) {
     default: return "th";
   }
 }
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const birthDay = birthday.getDate();
 const monthName = months[birthday.getMonth()];
 const yearBirth = birthday.getFullYear();
@@ -40,7 +40,7 @@ function getDaysUntilBirthday(birthdateStr: string): string {
   
   const diffTime = targetBday.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return `in ${diffDays} days`;
+  return `${diffDays} days`;
 }
 
 const birthdayCountdown = getDaysUntilBirthday(personalInfo.birthdate);
@@ -71,10 +71,15 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
             </h3>
             <ul class="info-list">
               <li><span class="info-label">Name:</span> <span class="highlight">{personalInfo.name}</span></li>
-              <li><span class="info-label">Born:</span> <span>{formattedBirthdate} ({age} years old, {birthdayCountdown})</span></li>
+              <li><span class="info-label">Born:</span> <span>{formattedBirthdate} ({age} Y/O)</span></li>
               <li><span class="info-label">Location:</span> <span>{personalInfo.location}</span></li>
               <li><span class="info-label">Email:</span> <a href={`mailto:${personalInfo.email}`} class="info-link">{personalInfo.email}</a></li>
             </ul>
+          </div>
+
+          <div class="birthday-countdown-bar">
+            <span class="countdown-label">Birthday in:</span>
+            <span class="countdown-value">{birthdayCountdown}</span>
           </div>
         </fieldset>
       </section>
@@ -679,5 +684,30 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
       flex-direction: column;
       gap: 0.2rem;
     }
+  }
+
+  /* Birthday Countdown Bar styling */
+  .birthday-countdown-bar {
+    margin-top: 1.25rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(129, 199, 132, 0.04);
+    border: 1px dashed var(--accent-color);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+  }
+
+  .countdown-label {
+    font-family: var(--font-minecraft);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  .countdown-value {
+    color: var(--accent-color);
+    font-weight: 700;
   }
 </style>
