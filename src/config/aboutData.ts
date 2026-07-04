@@ -82,7 +82,7 @@ export const educationData: EducationNode[] = [
     id: "highschool",
     label: "+2 Computer Science",
     title: "High School Graduation",
-    subtitle: "Management Faculty",
+    subtitle: "Nepal Kasthamandap SS (Management Faculty)",
     status: "completed",
     desc: "Gained fundamental knowledge in algorithms, database design basics, and programming logic.",
     icon: "🏫",
