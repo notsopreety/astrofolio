@@ -1,14 +1,50 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LanyardCard from '../components/LanyardCard.astro';
-import { journeyData, educationData } from '../config/aboutData';
+import { journeyData, educationData, personalInfo } from '../config/aboutData';
 
-const birthday = new Date("2006-08-11");
+const birthday = new Date(personalInfo.birthdate);
 const ageDifMs = Date.now() - birthday.getTime();
 const ageDate = new Date(ageDifMs);
 const age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
-// Find structured node relations for graph rendering
+function getOrdinalSuffix(day: number) {
+  if (day > 3 && day < 21) return 'th';
+  switch (day % 10) {
+    case 1:  return "st";
+    case 2:  return "nd";
+    case 3:  return "rd";
+    default: return "th";
+  }
+}
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const birthDay = birthday.getDate();
+const monthName = months[birthday.getMonth()];
+const yearBirth = birthday.getFullYear();
+const formattedBirthdate = `${birthDay}${getOrdinalSuffix(birthDay)} ${monthName} ${yearBirth}`;
+
+function getDaysUntilBirthday(birthdateStr: string): string {
+  const bday = new Date(birthdateStr);
+  const today = new Date();
+  
+  const currentYearBday = new Date(today.getFullYear(), bday.getMonth(), bday.getDate());
+  today.setHours(0, 0, 0, 0);
+  currentYearBday.setHours(0, 0, 0, 0);
+  
+  let targetBday = currentYearBday;
+  if (today.getTime() > currentYearBday.getTime()) {
+    targetBday = new Date(today.getFullYear() + 1, bday.getMonth(), bday.getDate());
+  } else if (today.getTime() === currentYearBday.getTime()) {
+    return "Today! 🎉";
+  }
+  
+  const diffTime = targetBday.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return `in ${diffDays} days`;
+}
+
+const birthdayCountdown = getDaysUntilBirthday(personalInfo.birthdate);
+
 const rootNode = educationData.find(node => node.id === 'highschool');
 const leftNode = educationData.find(node => node.id === 'selftaught');
 const rightNode = educationData.find(node => node.id === 'bachelors');
@@ -23,7 +59,7 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
           
           <div class="bio-text">
             <p>
-              I am a passionate MERN stack developer with a strong focus on backend development. My journey in programming began with a curiosity about how web applications work behind the scenes, which led me to specialize in creating efficient, scalable backend solutions. I enjoy solving complex problems, reverse-engineering web systems, and continuously learning new technologies to enhance my skills.
+              {personalInfo.bio}
             </p>
           </div>
 
@@ -34,10 +70,10 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
               Personal Info
             </h3>
             <ul class="info-list">
-              <li><span class="info-label">Name:</span> <span class="highlight">Samir Badaila</span></li>
-              <li><span class="info-label">Age:</span> <span>{age} years old</span></li>
-              <li><span class="info-label">Location:</span> <span>Kathmandu, Nepal</span></li>
-              <li><span class="info-label">Email:</span> <a href="mailto:itssamir444@gmail.com" class="info-link">itssamir444@gmail.com</a></li>
+              <li><span class="info-label">Name:</span> <span class="highlight">{personalInfo.name}</span></li>
+              <li><span class="info-label">Born:</span> <span>{formattedBirthdate} ({age} years old, {birthdayCountdown})</span></li>
+              <li><span class="info-label">Location:</span> <span>{personalInfo.location}</span></li>
+              <li><span class="info-label">Email:</span> <a href={`mailto:${personalInfo.email}`} class="info-link">{personalInfo.email}</a></li>
             </ul>
           </div>
         </fieldset>
@@ -422,6 +458,8 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
   .info-list li {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
     line-height: 1.4;
     color: var(--text-primary);
   }
@@ -635,6 +673,11 @@ const rightNode = educationData.find(node => node.id === 'bachelors');
 
     .education-card.upcoming::before {
       border-color: var(--text-muted);
+    }
+
+    .info-list li {
+      flex-direction: column;
+      gap: 0.2rem;
     }
   }
 </style>

@@ -1,3 +1,19 @@
+export interface PersonalInfo {
+  name: string;
+  birthdate: string; // "YYYY-MM-DD"
+  location: string;
+  email: string;
+  bio: string;
+}
+
+export const personalInfo: PersonalInfo = {
+  name: "Samir Badaila",
+  birthdate: "2006-08-11",
+  location: "Kathmandu, Nepal",
+  email: "itssamir444@gmail.com",
+  bio: "I am a passionate MERN stack developer with a strong focus on backend development. My journey in programming began with a curiosity about how web applications work behind the scenes, which led me to specialize in creating efficient, scalable backend solutions. I enjoy solving complex problems, reverse-engineering web systems, and continuously learning new technologies to enhance my skills."
+};
+
 export interface JourneyItem {
   year: string;
   title: string;
@@ -85,7 +101,7 @@ export const educationData: EducationNode[] = [
     title: "High School Graduation",
     subtitle: "Nepal Kasthamandap SS (Management Faculty)",
     status: "completed",
-    desc: "Gained fundamental knowledge in algorithms, database design basics, and programming logic.",
+    desc: "Gained fundamental knowledge in algorithms, database design basics, programming logic and management related concepts.",
     icon: "🏫",
     year: "2025",
     branch: "main",
