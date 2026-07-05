@@ -79,6 +79,10 @@ body, header, footer, a, span, p, h1, h2, h3, h4, h5, h6, input, textarea, selec
   transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, fill 0.4s ease, stroke 0.4s ease;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
