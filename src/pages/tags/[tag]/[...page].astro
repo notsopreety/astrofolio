@@ -77,7 +77,7 @@ function formatDate(date: Date) {
       )}
     </div>
     <header class="blog-header">
-      <h1 class="blog-title" transition:name="posts-title">Tag: #{tagName}</h1>
+      <h1 class="blog-title" transition:name="posts-title">Tag: #<span transition:name={`tag-${tag}`}>{tagName}</span></h1>
       <p class="blog-desc" transition:name="posts-desc">All articles tagged with #{tagName}.</p>
     </header>
 

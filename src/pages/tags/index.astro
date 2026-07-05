@@ -53,7 +53,7 @@ const sortedTags = Array.from(tagCounts.entries())
         <li class="tag-item">
           <a href={`/tags/${tag.slug}/`} class="tag-link">
             <span class="tag-hash">#</span>
-            <span class="tag-name">{tag.name}</span>
+            <span class="tag-name" transition:name={`tag-${tag.slug}`}>{tag.name}</span>
           </a>
         </li>
       ))}
