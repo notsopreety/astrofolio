@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import ReportModal from "../../components/ReportModal.astro";
+import { giscusConfig } from "../../config/portfolioData";
 
 function slugify(text: string) {
   return text
@@ -157,7 +158,20 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
       </div>
 
       <div class="giscus-wrapper" style="margin-top: 4rem; border-top: 1px dashed var(--card-border); padding-top: 3rem; margin-bottom: 3rem;">
-        <div class="giscus-container"></div>
+        <div 
+          class="giscus-container"
+          data-repo={giscusConfig.repo}
+          data-repo-id={giscusConfig.repoId}
+          data-category={giscusConfig.category}
+          data-category-id={giscusConfig.categoryId}
+          data-mapping={giscusConfig.mapping}
+          data-strict={giscusConfig.strict}
+          data-reactions-enabled={giscusConfig.reactionsEnabled}
+          data-emit-metadata={giscusConfig.emitMetadata}
+          data-input-position={giscusConfig.inputPosition}
+          data-lang={giscusConfig.lang}
+          data-loading={giscusConfig.loading}
+        ></div>
       </div>
 
       <div class="prev-next-section">
@@ -335,17 +349,20 @@ const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
-    script.setAttribute("data-repo", "notsopreety/astrofolio");
-    script.setAttribute("data-repo-id", "R_kgDOTLZMEw");
-    script.setAttribute("data-category", "Announcements");
-    script.setAttribute("data-category-id", "DIC_kwDOTLZME84DAaR8");
-    script.setAttribute("data-mapping", "pathname");
-    script.setAttribute("data-strict", "0");
-    script.setAttribute("data-reactions-enabled", "1");
-    script.setAttribute("data-emit-metadata", "0");
-    script.setAttribute("data-input-position", "bottom");
+
+    const dataset = (commentsContainer as HTMLElement).dataset;
+
+    script.setAttribute("data-repo", dataset.repo || "");
+    script.setAttribute("data-repo-id", dataset.repoId || "");
+    script.setAttribute("data-category", dataset.category || "");
+    script.setAttribute("data-category-id", dataset.categoryId || "");
+    script.setAttribute("data-mapping", dataset.mapping || "pathname");
+    script.setAttribute("data-strict", dataset.strict || "0");
+    script.setAttribute("data-reactions-enabled", dataset.reactionsEnabled || "1");
+    script.setAttribute("data-emit-metadata", dataset.emitMetadata || "0");
+    script.setAttribute("data-input-position", dataset.inputPosition || "bottom");
     script.setAttribute("data-theme", giscusTheme);
-    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-lang", dataset.lang || "en");
     script.setAttribute("crossorigin", "anonymous");
     script.async = true;
 

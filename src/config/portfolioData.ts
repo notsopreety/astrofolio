@@ -29,6 +29,21 @@ export const personalInfo: PersonalInfo = {
 export const discordId = "931511745284038696";
 export const web3FormsAccessToken = "9154ff52-22b2-4f18-a5fb-8bdf249f0d50";
 
+export const giscusConfig = {
+  repo: "notsopreety/astrofolio" as `${string}/${string}`,
+  repoId: "R_kgDONG6J6w", // Replace with your actual repository ID
+  category: "Announcements",
+  categoryId: "DIC_kwDONG6J684CkWL5", // Replace with your actual category ID
+  mapping: "pathname" as const,
+  strict: "0",
+  reactionsEnabled: "1",
+  emitMetadata: "0",
+  inputPosition: "bottom" as const,
+  theme: "preferred_color_scheme",
+  lang: "en",
+  loading: "lazy" as const,
+};
+
 export const lightModeAccentColor = "#006cac";
 export const darkModeAccentColor = "#c78196";
 
