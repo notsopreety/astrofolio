@@ -63,7 +63,7 @@ Update these variables to wire up your APIs:
 > Ensure you update both the `repoId` and `categoryId` values in the configuration to match your repository. Storing comments on default ids will cause submissions to fail or route incorrectly.
 
 To set up Giscus:
-1. Navigate to [giscus.app](https://giscus.app/).
+1. Navigate to [giscus.app](https:  //giscus.app/).
 2. Input your public repository name (`username/repo`).
 3. Select your discussion category mappings.
 4. Copy the generated `data-repo-id` and `data-category-id` from the script preview on the page, and insert them into the `giscusConfig` object inside `src/config/portfolioData.ts`.
