@@ -64,6 +64,19 @@ Modify `personalInfo` and `heroData` to customize the name, birthdate (used for 
 Update these variables to wire up your APIs:
 - `discordId`: Your Discord user ID for the [Lanyard](https://github.com/phineas/lanyard) integration. **Note:** To enable live presence updates, your account must join the Lanyard Discord server at [discord.gg/lanyard](https://discord.gg/lanyard).
 - `web3FormsAccessToken`: Your access token for contact form submissions. Get your free key at [web3forms.com](https://web3forms.com).
+- `giscusConfig`: Setup properties for the comment section on blog posts.
+
+> [!NOTE]
+> Giscus relies on GitHub Discussions to store and display comments. Your repository must be public and have the Discussions feature enabled.
+
+> [!WARNING]
+> Ensure you update both the `repoId` and `categoryId` values in the configuration to match your repository. Storing comments on default IDs will cause submissions to fail or route incorrectly.
+
+To set up Giscus:
+1. Navigate to [giscus.app](https://giscus.app/).
+2. Input your public repository name (`username/repo`).
+3. Select your discussion category mappings.
+4. Copy the generated `data-repo-id` and `data-category-id` from the script preview on the page, and insert them into the `giscusConfig` object inside `src/config/portfolioData.ts`.
 
 ### Tech Stack & Timeline
 - `socialsData` and `footerSocials`: Configure external links.
@@ -86,6 +99,7 @@ All commands are run from the project root:
 - Discord presence is powered by [Lanyard](https://github.com/phineas/lanyard).
 - Discord profile API thanks to [Dustin Rouillard](https://dstn.to/).
 - Email receive API is powered by [Web3Forms](https://web3forms.com).
+- Blog comment engine powered by [Giscus](https://giscus.app/).
 
 ## Author
 
