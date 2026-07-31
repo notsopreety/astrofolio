@@ -127,14 +127,12 @@ const rightNodes = educationData
               </ul>
             </div>
 
-            {birthdayStatus.show && (
-              <div class="birthday-countdown-bar">
-                <span class="countdown-label">
-                  {birthdayStatus.text.includes('ago') ? 'Birthday was:' : birthdayStatus.text.includes('Today') ? 'Birthday is:' : 'Birthday in:'}
-                </span>
-                <span class="countdown-value">{birthdayStatus.text}</span>
-              </div>
-            )}
+            <div class="birthday-countdown-bar" id="birthday-bar" data-birthdate={personalInfo.birthdate} style={birthdayStatus.show ? "" : "display: none;"}>
+              <span class="countdown-label" id="birthday-label">
+                {birthdayStatus.text.includes('ago') ? 'Birthday was:' : birthdayStatus.text.includes('Today') ? 'Birthday is:' : 'Birthday in:'}
+              </span>
+              <span class="countdown-value" id="birthday-value">{birthdayStatus.text}</span>
+            </div>
           </fieldset>
         </section>
       </div>
@@ -1009,4 +1007,67 @@ const rightNodes = educationData
 
   setupTimelineFlow();
   document.addEventListener('astro:after-swap', setupTimelineFlow);
+
+  function updateBirthdayCountdown() {
+    const bar = document.getElementById('birthday-bar');
+    const label = document.getElementById('birthday-label');
+    const value = document.getElementById('birthday-value');
+    if (!bar || !label || !value) return;
+
+    const birthdateStr = bar.getAttribute('data-birthdate');
+    if (!birthdateStr) return;
+
+    const bday = new Date(birthdateStr);
+    const today = new Date();
+    const currentYearBday = new Date(today.getFullYear(), bday.getMonth(), bday.getDate());
+    today.setHours(0, 0, 0, 0);
+    currentYearBday.setHours(0, 0, 0, 0);
+
+    const oneDayMs = 1000 * 60 * 60 * 24;
+
+    let show = false;
+    let text = "";
+    let labelText = "Birthday in:";
+
+    if (today.getTime() === currentYearBday.getTime()) {
+      show = true;
+      text = "Today! 🎉";
+      labelText = "Birthday is:";
+    } else {
+      const diffTimeSinceBday = today.getTime() - currentYearBday.getTime();
+      const diffDaysSinceBday = Math.round(diffTimeSinceBday / oneDayMs);
+
+      if (diffDaysSinceBday > 0 && diffDaysSinceBday <= 7) {
+        show = true;
+        text = `${diffDaysSinceBday} ${diffDaysSinceBday === 1 ? 'day' : 'days'} ago`;
+        labelText = "Birthday was:";
+      } else {
+        let targetBday = currentYearBday;
+        if (today.getTime() > currentYearBday.getTime()) {
+          targetBday = new Date(today.getFullYear() + 1, bday.getMonth(), bday.getDate());
+          targetBday.setHours(0, 0, 0, 0);
+        }
+
+        const diffTimeToBday = targetBday.getTime() - today.getTime();
+        const diffDaysToBday = Math.round(diffTimeToBday / oneDayMs);
+
+        if (diffDaysToBday <= 50) {
+          show = true;
+          text = `${diffDaysToBday} days`;
+          labelText = "Birthday in:";
+        }
+      }
+    }
+
+    if (show) {
+      bar.style.display = "";
+      label.textContent = labelText;
+      value.textContent = text;
+    } else {
+      bar.style.display = "none";
+    }
+  }
+
+  updateBirthdayCountdown();
+  document.addEventListener('astro:after-swap', updateBirthdayCountdown);
 </script>
